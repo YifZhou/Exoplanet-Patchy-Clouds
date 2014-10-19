@@ -58,18 +58,15 @@
 ; MODIFICATION HISTORY:
 ;
 ;-
-FUNCTION my_shift2d, im, shiftxy, cubic = cubic
-  sz = size(im)
-  xlen = sz[1]
-  ylen = sz[2]
+FUNCTION my_shift2d, im, shiftxy, cubic = 0.5
+  xlen = size(im)[1]
+  ylen = size(im)[2]
   x0 = findgen(xlen)
   y0 = findgen(ylen)
-  xnew = x0 - shiftxy[0]
+  xnew = x0 + shiftxy[0]
   xnew = xnew - xlen * floor(xnew / xlen)
-  ynew = y0 - shiftxy[1]
+  ynew = y0 + shiftxy[1]
   ynew = ynew - ylen * floor(ynew / ylen)
-  IF N_ELEMENTS(cubic) EQ 0 THEN cubic = -0.5
-  IF cubic NE 0 THEN imnew = interpolate(im, xnew, ynew, /grid, cubic=cubic) ELSE imnew = interpolate(im, xnew, ynew, /grid)
-  return, imnew  
-END
+  imnew = interpolation(im, xnew, ynew, cubic = cubic)
+  return, imnew
   

@@ -1,0 +1,81 @@
+;+
+; NAME:
+;
+;
+;
+; PURPOSE:
+;
+;
+;
+; CATEGORY:
+;
+;
+;
+; CALLING SEQUENCE:
+;
+;
+;
+; INPUTS:
+;
+;
+;
+; OPTIONAL INPUTS:
+;
+;
+;
+; KEYWORD PARAMETERS:
+;
+;
+;
+; OUTPUTS:
+;
+;
+;
+; OPTIONAL OUTPUTS:
+;
+;
+;
+; COMMON BLOCKS:
+;
+;
+;
+; SIDE EFFECTS:
+;
+;
+;
+; RESTRICTIONS:
+;
+;
+;
+; PROCEDURE:
+;
+;
+;
+; EXAMPLE:
+;
+;
+;
+; MODIFICATION HISTORY:
+;
+;-
+PRO crosscorr_test
+  dataDir = '../data/ABPIC-B/CR_removed/'
+  fileList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
+  nFile = N_ELEMENTS(fitsFNList)
+  im0 = mrdfits(fileList[0], 1, hd)
+  xy_cen0 = [114.356, 169.259] ;; take the center of first image as a reference
+  xcen = fltarr(nFile)
+  ycen = fltarr(nFile)
+  xcen[0] = xy_cen0[0]
+  ycen[0] = xy_cen0[1]
+  FOR i=1, nFile - 1 DO BEGIN
+     im_i = mrdfits(fileList[i], 1, hd)
+     corr = crosscorr(im0, im_i, pmax)
+     IF pmax(0) GE 0. THEN dx =  ww/2. - pmax(0) ELSE dx =  -ww/2. + abs(pmax(0))
+     IF pmax(1) GE 0. THEN dy =  ww/2. - pmax(1) ELSE dy =  -ww/2. + abs(pmax(1))
+     xcen[i] = xcen[0] + dx
+     ycen[i] = ycen[0] + dy
+  ENDFOR
+  forprint, xcen, ycen, textout = 'crosscorr_result.dat',/nocomment ;;
+END 
+  
