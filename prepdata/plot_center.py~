@@ -1,0 +1,35 @@
+#! /usr/bin/env python
+
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import glob
+from astropy.io import fits
+
+if __name__ == '__main__':
+    target = 'ABPIC-B'
+    dataDir = os.path.join(os.pardir, 'data', target, 'CR_removed/')
+    x_cen, y_cen = np.loadtxt('cntrd_result.dat', unpack = True)
+    x_gcen, y_gcen = np.loadtxt('gcntrd_result.dat', unpack = True)
+    for index, fitsfn in enumerate(glob.glob(os.join(dataDir, '*.fits'))):
+        fits_file = fits.open(fitsfn)
+        im = fits_file[1].data
+        fig, ax = plt.subplots()
+        ax.imshow(np.arcsinh(fits_file[1].data), cmap = 'gray')
+        circ1 = plt.Circle((x_cen[i], y_cen[i]), 5, fc = 'none', ec = 'r')
+        circ2 = plt.Circle((x_cen[i], y_cen[i]), 20, fc = 'none', ec = 'r')
+        circ3 = plt.Circle((x_cen[i], y_cen[i]), 40, fc = 'none', ec = 'r')
+        gcirc1 = plt.Circle((x_gcen[i], y_gcen[i]), 5, fc = 'none', ec = 'b')
+        gcirc2 = plt.Circle((x_gcen[i], y_gcen[i]), 20, fc = 'none', ec = 'b')
+        gcirc3 = plt.Circle((x_gcen[i], y_gcen[i]), 40, fc = 'none', ec = 'b')
+        ax.add_patch(circ1)
+        ax.add_patch(circ2)
+        ax.add_patch(circ3)
+        ax.add_patch(gcirc1)
+        ax.add_patch(gcirc2)
+        ax.add_patch(gcirc3)
+
+        fig.savefig(fitsfn.replace('.fits', '.pdf'))
+        plt.close(fig)
+        fits_file.close()
+        

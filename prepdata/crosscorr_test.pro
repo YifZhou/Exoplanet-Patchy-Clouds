@@ -64,7 +64,7 @@ PRO crosscorr_test
   nFile = N_ELEMENTS(fileList)
   im01 = mrdfits(fileList[0], 1, hd)
   im02 = mrdfits(fileList[13], 1, hd)
-  xy_cen01 = [114.356, 169.259] ;; take the center of first image as a reference
+  xy_cen01 = [114.212, 169.284] ;; take the center of first image as a reference
   xy_cen02 = [130.276, 177.494]
   xcen = fltarr(nFile)
   ycen = fltarr(nFile)
@@ -99,7 +99,7 @@ PRO WCS_test
   nFile = N_ELEMENTS(fileList)
   im01 = mrdfits(fileList[0], 1, hd01)
   im02 = mrdfits(fileList[13], 1, hd02)
-  xy_cen01 = [114.356, 169.259] ;; take the center of first image as a reference
+  xy_cen01 = [114.212, 169.284] ;; take the center of first image as a reference
   xy_cen02 = [130.276, 177.494]
   xcen = fltarr(nFile)
   ycen = fltarr(nFile)

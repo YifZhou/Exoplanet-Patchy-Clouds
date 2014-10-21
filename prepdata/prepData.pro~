@@ -1,0 +1,73 @@
+;+
+; NAME:
+;
+;
+;
+; PURPOSE:
+;
+;
+;
+; CATEGORY:
+;
+;
+;
+; CALLING SEQUENCE:
+;
+;
+;
+; INPUTS:
+;
+;
+;
+; OPTIONAL INPUTS:
+;
+;
+;
+; KEYWORD PARAMETERS:
+;
+;
+;
+; OUTPUTS:
+;
+;
+;
+; OPTIONAL OUTPUTS:
+;
+;
+;
+; COMMON BLOCKS:
+;
+;
+;
+; SIDE EFFECTS:
+;
+;
+;
+; RESTRICTIONS:
+;
+;
+;
+; PROCEDURE:
+;
+;
+;
+; EXAMPLE:
+;
+;
+;
+; MODIFICATION HISTORY:
+;
+;-
+pro prepData, target, saveFN
+  infoStruct = {info, filter = '', exposureTime = 0, data-obs = '', time-obs = ''}
+  dataDir = STRJOIN(['/home/yzhou/Documents/Exoplanet_Patchy_Project/data', target], '/')
+  fitsFNList = FILE_SEARCH(STRJOIN([dataDir, '*flt.fits'], '/'))
+  nFile = N_ELEMENTS(fitsFNList)
+  cube = make_array(256, 256, nFile, /DOUBLE)
+  for i = 0, nFile - 1 do begin
+     print, fitsFNList[i]
+  endfor
+end
+
+
+  

@@ -58,7 +58,7 @@
 ; MODIFICATION HISTORY:
 ;
 ;-
-pro prepData, target, saveFN
+PRO prepData, target, saveFN
   infoStruct = {info, filter:'', exposureTime:0, data_obs:'', time_obs:''}
   dataDir = STRJOIN(['/home/yzhou/Documents/Exoplanet_Patchy_Project/data', target, 'CR_removed'], '/')
   fitsFNList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
