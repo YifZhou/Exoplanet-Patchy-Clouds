@@ -1,0 +1,117 @@
+;+
+; NAME:
+;
+;
+;
+; PURPOSE:
+;
+;
+;
+; CATEGORY:
+;
+;
+;
+; CALLING SEQUENCE:
+;
+;
+;
+; INPUTS:
+;
+;
+;
+; OPTIONAL INPUTS:
+;
+;
+;
+; KEYWORD PARAMETERS:
+;
+;
+;
+; OUTPUTS:
+;
+;
+;
+; OPTIONAL OUTPUTS:
+;
+;
+;
+; COMMON BLOCKS:
+;
+;
+;
+; SIDE EFFECTS:
+;
+;
+;
+; RESTRICTIONS:
+;
+;
+;
+; PROCEDURE:
+;
+;
+;
+; EXAMPLE:
+;
+;
+;
+; MODIFICATION HISTORY:
+;
+;-
+PRO crosscorr_test, saveFn
+  dataDir = '../data/ABPIC-B/CR_removed/'
+  fileList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
+  nFile = N_ELEMENTS(fileList)
+;  readcol,'crosscorr_result.dat', format = 'x,f,f', xcen0, ycen0
+  im01 = mrdfits(fileList[0], 1)
+  im02 = mrdfits(fileList[1], 1)
+  xy_cen01 = [114.212, 169.284] ;; take the center of first image as a reference
+  xy_cen02 = [114.213, 169.284] ;; different filter align with different images
+  xcen = fltarr(nFile)
+  ycen = fltarr(nFile)
+  imSize = size(im01)
+  ww = imSize[1]
+  FOR i=0, nFile - 1 DO BEGIN
+     im_i = mrdfits(fileList[i], 1)
+     fn_splited = strsplit(fileList[i], '/', /extract)
+     fn = fn_splited[N_ELEMENTS(fn_splited) - 1]
+     filter_name = strmid(fn, 19, 5)
+     IF filter_name EQ 'F125W' THEN BEGIN 
+        corr = crosscorr(im01, im_i, pmax, dxy, range = 10)
+        dx = dxy[0]
+        dy = dxy[1]
+        xcen[i] = xy_cen01[0] + dx
+        ycen[i] = xy_cen01[1] + dy
+     ENDIF ELSE BEGIN
+        corr = crosscorr(im02, im_i, pmax, dxy, range = 10)
+        dx = dxy[0]
+        dy = dxy[1]
+        xcen[i] = xy_cen02[0] + dx
+        ycen[i] = xy_cen02[1] + dy
+     ENDELSE 
+     fileList[i] = fn
+  ENDFOR
+  forprint, fileList, xcen, ycen, textout = saveFn,/nocomment , width = 120 ;;
+END
+
+PRO WCS_test, saveFn
+  dataDir = '../data/ABPIC-B/CR_removed/'
+  fileList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
+  nFile = N_ELEMENTS(fileList)
+  im01 = mrdfits(fileList[0], 1, hd01)
+  xy_cen01 = [114.212, 169.284] ;; take the center of first image as a reference
+  xcen = fltarr(nFile)
+  ycen = fltarr(nFile)
+  imSize = size(im01)
+  ww = imSize[1]
+  FOR i=0, nFile - 1 DO BEGIN
+     im_i = mrdfits(fileList[i], 1, hd_i)
+     fn_splited = strsplit(fileList[i], '/', /extract)
+     fn = fn_splited[N_ELEMENTS(fn_splited) - 1]
+     xyxy, hd01, hd_i, xy_cen01[0], xy_cen01[1], x0, y0
+     xcen[i] = x0
+     ycen[i] = y0
+     fileList[i] = fn
+  ENDFOR
+  forprint, fileList, xcen, ycen, textout = saveFn,/nocomment , width = 120 ;;
+END 
