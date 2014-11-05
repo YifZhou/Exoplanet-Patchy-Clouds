@@ -1,8 +1,9 @@
 \BOOKMARK [1][-]{section.1}{Summary}{}% 1
 \BOOKMARK [1][-]{section.2}{Image\040Alignment}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Alignment\040Precision\040Test}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{The\040Modification\040for\040IDL\040crosscorr\040Routine}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{PSF\040subtraction\040result}{section.2}% 5
-\BOOKMARK [1][-]{section.3}{Aperture\040Photometry\040Result}{}% 6
-\BOOKMARK [2][-]{subsection.3.1}{Light\040Curves}{section.3}% 7
-\BOOKMARK [2][-]{subsection.3.2}{Error\040Estimation}{section.3}% 8
+\BOOKMARK [2][-]{subsection.2.2}{Modification\040of\040Cross\040correlation}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Test\040with\040Noise\040Adding\040in}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{PSF\040subtraction\040result}{}% 6
+\BOOKMARK [1][-]{section.4}{Aperture\040Photometry\040Result}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Light\040Curves}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Error\040Estimation}{section.4}% 9

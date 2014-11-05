@@ -24,6 +24,9 @@
    (TeX-add-symbols
     '("horrule" 1))
    (LaTeX-add-labels
+    "fig:shift1"
+    "fig:shift2"
+    "eqn:fit"
     "fig:subcomp"
     "fig:lightcurve"
     "fig:glenn")))
