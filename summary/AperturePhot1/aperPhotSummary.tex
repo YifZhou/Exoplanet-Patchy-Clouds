@@ -79,11 +79,11 @@
   $\sim 0.01$ pixels, which is far better than the precision that IDL
   \texttt{cntrd.pro} and \texttt{gcntrd.pro} routines can
   provide. According to the patterns on PSF subtracted images, cross
-  correlation has better performance tan WCS alignment.
+  correlation has better performance than WCS alignment.
 \item Aperture photometry for secondary object in ABPIC system is
-  carried out with a fixed aperture radius of 5 pixels. The light
+  carried out, with a fixed aperture radius of 5 pixels. The light
   curves are very similar to Glenn's measurement. The light curves for
-  two filters, F125W and F160W have better agreement in my
+  two filters, F125W and F160W seem to have better agreement in my
   measurement.
 \item Taking only statistical uncertainty (counting error) and
   background fluctuations into account, a rough estimation gives an
@@ -92,24 +92,25 @@
 \end{enumerate}
 \section{Image Registration}
 \subsection{Image Registration Precision Test}
-The performance of image registration method is valuated by the accuracy of
-the measurement for shift between two images. In practice, I
-choose one image, shift this image with a specific distance with
-\texttt{fshift.pro}, measure the shift, and calculate the offset of
-the measured shift and real shift. With above procedure, I tested the
-performance of 3 image registration method. Results are plotted in figure \ref{fig:shift1}.\par
+The performance of image registration method is valuated by the
+accuracy of the measurement for shift between two images. In practice,
+I choose one image, shift it for a specific distance with
+\texttt{fshift.pro}, measure the shift with various methods, and
+calculate the difference of the measured shift and real shift. With
+above procedure, I tested the performances of 3 image registration
+methods. Results are demonstrated in figure \ref{fig:shift1}.\par
 
-The offsets for cntrd and gcntrd methods can be as large as 0.2 - 0.3
-pixels. However cross correlation method can limit the offset within
+The difference of measured shift and real shift  for cntrd and gcntrd methods can be as large as 0.2 - 0.3
+pixels. In contrast, cross correlation method can limit the offset within
 0.06 pixels. It is surprising that none of the three distributions of
-offsets has a Gaussian like  profile. For cross correlation, I plotted
+offsets has a Gaussian shaped  profile. For cross correlation, I plotted
 the offset against the real shift distance. It turned out that the
 offset oscillates with shift distance with a period of exact 1 pixel
-and an amplitude of 0.05 pixels. I do not know clearly why they have
+and an amplitude of $\sim$0.06 pixels. I do not know clearly why they have
 such a relationship.\par
 
-According to the test result, cross correlation has a much better
-performance on registration images.
+Nevertheless, according to the test result, cross correlation has a better
+performance on registration images.\par
 
 \begin{figure}
   \centering
@@ -124,23 +125,21 @@ performance on registration images.
 \end{figure}
 
 \subsection{Modification of  Cross correlation}
-The general idea of cross correlation method is that it calculate
-cross correlation matrix of one image and one reference image. The
-coordinate of the maximum in cross correlation matrix then can be
-converted to the shifts in x and y direction of the image  relative to
-the reference image. To locate the peak in cross correlation matrix
-is one key factor of the accuracy of this method. The original
-\texttt{crosscorr.pro} routine use \texttt{polyfit2d.pro} to find the
-maximum, which uses a polynomial function (default order is 4) to fit
-the an area around the maximum value (default is a (5 pixel)$^{2}$
-square) and find the peak. I tried to fit either with a higher order
-or larger area, the result turned to be unstable. Especially, when I
-kept on using an order of 4 polynomial function to fit a (10
-pixel)$^{2}$ square around the peak, the program got stuck and
-returned error.\par
+The general idea of cross correlation registration is to use the
+position of peak  in cross correlation matrix calculated with
+two images to determine how they shift from each other.  To locate the
+peak in cross correlation matrix is one key factor of the accuracy of
+this method. The original \texttt{crosscorr.pro} routine uses
+\texttt{polyfit2d.pro} to find the maximum, which fits a polynomial
+function (default order is 4) to an area around the maximum
+value (default is a (5 pixel)$^{2}$ square) and find the peak. I tried
+to fit either with a higher order or larger area, but the result turned to
+be unstable. Especially, when I kept on using an order of 4 polynomial
+function to fit a (10 pixel)$^{2}$ square around the peak, the program
+got stuck and returned error.\par
 
 Therefore, I tried \texttt{mpfit2dpeak.pro} routine which fits either
-Gaussian, Lorentz or Moffat function to find the peak. It turned out
+Gaussian, Lorentz or Moffat profile  to find the peak. It turned out
 that  mpfit could improve the accuracy of cross correlation for
 nearly an order of magnitude. With mpfit, the offset for measured
 shift and real shift can be limited within 0.008 pixels. However, the
@@ -156,10 +155,10 @@ weird oscillation still exists.\par
 Primary star image is subtracted with a PSF image that has a different
 rolling angle. Thus it is important to know the accuracy in the
 scenario  where only the primary star image stays the same, other
-objects rolled to a specific angle. To simulate rolling, I add 5 fake
+objects rolled to a specific angle. To simulate rolling, I added 5 fake
 star images in random positions to both original image and shifted
 image and then use cross correlation to measure the shift. As shown in
-figure \ref{fig:shift2}, noise star images does not affect the
+figure \ref{fig:shift2}, fake star images does not affect the
 accuracy too much.
 
 \begin{figure}[h]
@@ -167,7 +166,7 @@ accuracy too much.
       \includegraphics[width=0.8\textwidth]{crosscorr_cenWithNoise}
       \caption{offset for measured shift and real shift. Original
         image and shifted iamge were both added with 5 fake star in
-        random poistions.}
+        random positions.}
       \label{fig:shift2}
     \end{figure}
 
@@ -178,7 +177,7 @@ subtraction with both data set.\par
 
 For one specific image(img$_{0}$), every other image(img$_{i}$) that was taken with the same
 filter and different rolling angle were selected to be
-subtracted. With equation \ref{eqn:fit}:
+subtracted from img$_{0}$. With equation \ref{eqn:fit}:
 \begin{equation}
   \label{eqn:fit}
   res = \sum(img_{0} - c\cdot img_{i})^{2}
@@ -186,10 +185,11 @@ subtracted. With equation \ref{eqn:fit}:
 tunable scale factor $c$ is calculated with minimum least square
 fitting. The PSF is chosen with the criterion of least residual. \par
 
-Figure \ref{fig:subcomp} illustrate the difference of PSF subtraction
-results between cross correlation and WCS registration. It is clearly
-shown that cross correlation gives a better alignment that the
-residual image is much more even. WCS aligned PSF is clearly offset to
+Figure \ref{fig:subcomp} illustrate an example of the difference of
+PSF subtraction results between cross correlation and WCS
+registration. It is clearly shown that cross correlation gives a
+better alignment. The residual image is more even with cross
+correlation registration. WCS aligned PSF is clearly offset to
 downright direction.\par
 
 The background fluctuation of the region around secondary is $\sim
@@ -202,6 +202,7 @@ The background fluctuation of the region around secondary is $\sim
   \caption{PSF subtraction comparison. Above: cross
     correlation. Below: WCS}\label{fig:subcomp}
 \end{figure}
+
 \section{Aperture Photometry Result}
 \subsection{Light Curves}
 
@@ -211,10 +212,10 @@ fluxes are shown in Figure \ref{fig:lightcurve}. Figure
 figure \ref{fig:lightcurve} is very similar to figure
 \ref{fig:glenn}. However, in figure \ref{fig:glenn}, the light curves
 for F125W and F160W show considerable discrepancies in 5th and 6th
-orbits. However in my measurement, the two curves agree better. Apart
+orbits. In my measurement, the two curves seemed to agree better. Apart
 from this, the most prominent features are shown in both light
-curves, e.g. the light curves are lower in 2nd orbit and the
-discrepancy at start of the 3rd orbit.
+curves, e.g. the light curves are lower in 2nd orbit and there is a 
+discrepancy of two curves at start of the 3rd orbit.
 
 \begin{figure}
   \centering

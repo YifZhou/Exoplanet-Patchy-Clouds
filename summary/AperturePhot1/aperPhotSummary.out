@@ -1,6 +1,6 @@
 \BOOKMARK [1][-]{section.1}{Summary}{}% 1
-\BOOKMARK [1][-]{section.2}{Image\040Alignment}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Alignment\040Precision\040Test}{section.2}% 3
+\BOOKMARK [1][-]{section.2}{Image\040Registration}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Image\040Registration\040Precision\040Test}{section.2}% 3
 \BOOKMARK [2][-]{subsection.2.2}{Modification\040of\040Cross\040correlation}{section.2}% 4
 \BOOKMARK [2][-]{subsection.2.3}{Test\040with\040Noise\040Adding\040in}{section.2}% 5
 \BOOKMARK [1][-]{section.3}{PSF\040subtraction\040result}{}% 6
