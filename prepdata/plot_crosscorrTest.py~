@@ -1,0 +1,12 @@
+#! /usr/bin/env python
+
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+
+if __name__ == '__main__':
+xshift, yshift, dx, dy = np.loadtxt(sys.argv[1])
+plt.plot(xshift, dx, '.')
+plt.xlabel('x shift (pixels)')
+plt.xlabel('x offset (pixels)')
+plt.savefig(sys.argv[1].strip('.dat') + '.pdf')

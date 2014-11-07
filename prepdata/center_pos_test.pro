@@ -131,15 +131,15 @@ PRO center_pos_test2, method
      step = 10 * randomu(seed)
      dx = step * randomn(seed)
      dy = step * randomn(seed)
-     imShiftedOverSamp = fshift(imageOverSamp, dx * OverSample, dy * OverSample)
-     imShifted = congrid(imShiftedOverSamp, ww, ww, cubic = -0.5)
-     ;imshifted = fshift(image, dx, dy)
+     ;; imShiftedOverSamp = fshift(imageOverSamp, dx * OverSample, dy * OverSample)
+     ;; imShifted = congrid(imShiftedOverSamp, ww, ww, cubic = -0.5)
+     imshifted = fshift(image, dx, dy)
      image0 = image
-     nNoise = ceil(5 * randomu(seed))
-     FOR j = 1, nNoise DO BEGIN
-        imshifted = imshifted + 500 * psf_gaussian(npixel = 256, centroid = [255 *randomu(seed), 255*randomu(seed)], fwhm = 1.8)
-        image0 = image0 + 500 * psf_gaussian(npixel = 256, centroid = [255 *randomu(seed), 255*randomu(seed)], fwhm = 1.8)
-     ENDFOR
+     ;; nNoise = ceil(5 * randomu(seed))
+     ;; FOR j = 1, nNoise DO BEGIN
+     ;;    imshifted = imshifted + 500 * psf_gaussian(npixel = 256, centroid = [255 *randomu(seed), 255*randomu(seed)], fwhm = 1.8)
+     ;;    image0 = image0 + 500 * psf_gaussian(npixel = 256, centroid = [255 *randomu(seed), 255*randomu(seed)], fwhm = 1.8)
+     ;; ENDFOR
      CASE method OF
         'cntrd': BEGIN
            cntrd, image, x0, y0, xcen, ycen, 1.79
@@ -169,7 +169,7 @@ PRO center_pos_test2, method
         END 
      ENDCASE     
   ENDFOR
-  forprint, dxList, dyList, xoff, yoff, textout = method + '_cenWithNoise.dat',/nocomment
+  forprint, dxList, dyList, xoff, yoff, textout = method + '_cenTest2.dat',/nocomment
 END
 
 
