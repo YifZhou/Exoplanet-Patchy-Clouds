@@ -69,11 +69,19 @@ PRO aperturePhot, inFn, aperRadius = aperRadius
   FOR i = 0, N_ELEMENTS(f125id) - 1 DO BEGIN
      print, f125id[i]
      image = cube1[*, *, f125id[i]]
+     expoTime = infoList1[f125id[i]].exposureTime
      IF infoList1[f125id[i]].rollAngle EQ 101 THEN $
         gcntrd, image, 109., 166., xSec, ySec, 2.0 $ ;; search secondary center
      ELSE gcntrd, image, 126., 172., xsec, ysec, 2.0
      disSec = sqrt((xMesh - xSec)^2 + (yMesh - ySec)^2) ;; distance to secondary array
-     f125Flux[i] = total(image[where(disSec LE aperRadius)] - infoList1[f125id[i]].skylevel)
+                                ;f125Flux[i] =
+                                ;total(image[where(disSec LE
+                                ;aperRadius)] -
+                                ;infoList1[f125id[i]].skylevel)
+     aper, image * expoTime, xSec, ySec, flux, eflux, sky, skyerr, $
+           1, [3, 4, 5, 6, 7, 8, 9, 10], [10, 15], [-100, 1e7], /flux, $
+           setskyval = [infoList1[f125id[i]].skylevel, infoList1[f125id[i]].skysigma, 700]
+     stop
   ENDFOR
 
   FOR i = 0, N_ELEMENTS(f160id) - 1 DO BEGIN
