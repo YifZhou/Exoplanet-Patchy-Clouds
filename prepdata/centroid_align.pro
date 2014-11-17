@@ -58,7 +58,7 @@
 ; MODIFICATION HISTORY:
 ;
 ;-
-PRO crosscorr_test, saveFn
+PRO crosscorr_cen, saveFn
   dataDir = '../data/ABPIC-B/CR_removed/'
   fileList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
   nFile = N_ELEMENTS(fileList)
@@ -77,24 +77,34 @@ PRO crosscorr_test, saveFn
      fn = fn_splited[N_ELEMENTS(fn_splited) - 1]
      filter_name = strmid(fn, 19, 5)
      IF filter_name EQ 'F125W' THEN BEGIN 
-        corr = crosscorr(im01, im_i, pmax, dxy, range = 10)
-        dx = dxy[0]
-        dy = dxy[1]
-        xcen[i] = xy_cen01[0] + dx
-        ycen[i] = xy_cen01[1] + dy
+        cen = ccCenter(im01, im_i, xy_cen01)
+        xcen[i] = cen[0]
+        ycen[i] = cen[1]
      ENDIF ELSE BEGIN
-        corr = crosscorr(im02, im_i, pmax, dxy, range = 10)
-        dx = dxy[0]
-        dy = dxy[1]
-        xcen[i] = xy_cen02[0] + dx
-        ycen[i] = xy_cen02[1] + dy
+        cen = ccCenter(im02, im_i, xy_cen02)
+        xcen[i] = cen[0]
+        ycen[i] = cen[1]
      ENDELSE 
      fileList[i] = fn
   ENDFOR
   forprint, fileList, xcen, ycen, textout = saveFn,/nocomment , width = 120 ;;
 END
 
-PRO WCS_test, saveFn
+FUNCTION ccCenter, im0, im1, cen0
+  corr = crosscorr(im0, im1, pmax, dxy, range = 10)
+  cen10 = cen0 + dxy
+  xy_low0 = floor(cen0 - 20)
+  subim0 = im0[xy_low0[0]:xy_low0[0] + 41, xy_low0[1]:xy_low0[1] + 41]
+  xy_low1 = floor(cen10 - 20)
+  subim1 = im1[xy_low1[0]:xy_low1[0] + 41, xy_low1[1]:xy_low1[1] + 41]
+  corr = crosscorr(subim0, subim1, pmax, dxy1)
+  dxy2 = xy_low1 - xy_low0 + dxy1
+  print, dxy, dxy2
+  return, cen0 + dxy2
+END
+
+
+PRO WCS_cen, saveFn
   dataDir = '../data/ABPIC-B/CR_removed/'
   fileList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
   nFile = N_ELEMENTS(fileList)

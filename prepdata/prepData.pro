@@ -67,7 +67,7 @@ PRO prepData, target, shiftMethod, saveFN
   ycen = fltarr(nFile)
   cube = MAKE_ARRAY(256, 256, nFile, /DOUBLE) ;; list to save images
   infoList = replicate(infoStruct, nFile);; list to save header information
-  readcol, 'centroid_cc.dat', format = 'x,f,f', xcen, ycen, /SILENT
+  readcol, 'ccCentroid_Nov16_1.dat', format = 'x,f,f', xcen, ycen, /SILENT
   imageSz = 256
   overSampFactor = 50
   FOR i = 0, nFile -1 DO BEGIN
@@ -101,8 +101,6 @@ PRO prepData, target, shiftMethod, saveFN
      print,'i',' image finished'
   ENDFOR
   save, cube, infoList, filename = saveFN
-  ;;print out center to test
-
 end
 
 
