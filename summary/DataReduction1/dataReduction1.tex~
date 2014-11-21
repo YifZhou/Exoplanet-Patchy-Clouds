@@ -1,0 +1,156 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=letter, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+\synctex=1
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+%\usepackage[nolists, nomarkers]{endfloat}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs -
+                          % comment this line for an assignment with
+                          % lots of text
+\setlength\parskip{12pt}
+
+%----------------------------------------------------------------------------------------
+%   TITLE SECTION
+%   ----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%   TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{ 
+\normalfont \normalsize 
+\textsc{Exoplanet Patchy Cloud Project} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Note for last two weeks\\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Yifan Zhou} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+\section{Ramp effect}
+% \begin{quote}
+%   \begin{itemize}
+% \item 2 ways
+% \item check the paper
+%  \end{itemize}
+% \end{quote}
+
+\begin{itemize}
+\item  In \textsl{Wilkins et. al. 2013}\\
+    The ramp effect is neglectable when exposure level is below \textbf{30000} electrons per pixel.
+\item In \textsl{Deming et. al. 2013}\\
+    They expected ramp effect to be weakly detectable in their data
+    when their exposure level is about \textbf{40000} electrons per pixel.
+\end{itemize}
+
+ In our data, the maximum exposure level at the secondary image is $\sim$2000 e$^-$ per pixel, which is far below 30000 e$^-$ per pixel. Therefore the ramp effect in our case should be small enough.
+
+ \section{ PSF photometry}
+ % \begin{quote}
+ %   plot PSF photometry with aperture photometry
+ % \end{quote}
+
+ \subsection{Result}
+
+
+
+\subsection{ generate PSF}
+1. for the same filter and the same rolling angle, the center of the secondary is not exactly at the same position. Using mpfit2dpeak to measure the secondary centroid, the maximum difference in both x and y direction could be as large as 0.05 pixel (measured by cross correlation). *This effect would enlarge the  fwhm of the synthesis PSF.*
+
+-> align the image again when generating PSF
+- fshift (a linear interpolation) will slightly change the PSF -- enlarge the FWHM, this problem will be alleviate by oversampling with a cubic interpolation, but could not be eliminated
+- without second alignment with secondary object, synthetic PSF FWHM -- 1.93 pixels
+- align again with secondary object, synthetic PSF FWHM -- 2.00 pixels.
+
+
+
+2. *how to normalize the PSF?  
+now, I use the flux in 5 pixel to normalize
+
+3. Large chisq  
+- caused by underestimated of error?
+
+
+
+>aperture radius vs standard deviation
+>use aper.pro  to measure photometry and uncertainty
+
+Optimum aperture size is related to the estimation of background fluctuation. A difference of 1 count/pixel difference in background fluctuation could lead to 0.5 pixel change in optimum aperture radius. Aper.pro routine provides 2 ways to define sky fluctuation:
+1. ﻿﻿﻿﻿directly input sky level and fluctuation when calling the program. The sky value and sigma should be calculated before hand.
+2. input annulus radii of the sky region and let the program calculate it. The sky region here must be an annulus around the secondary object in this case.
+
+I choose to calculate the sky fluctuation separately rather than let aper.pro calculate.     
+
+1. if the annulus is too close to the secondary object, the flux of the secondary image could contaminate the sky and end up with a higher estimation of sky level and an inaccurate estimate of sky fluctuation.    
+2. The annulus radii cannot be large too. Because the slight change of PSF, the image of the primary cannot be removed completely. The residual of the primary image fluctuate largest at the center region as well as the diffraction spikes region.  When the annulus radii get slightly larger, the annulus would include these region. If the annulus radii get even larger to avoid these region, it would cause an under-estimate of the sky fluctuation because the area of this annulus is not affected by psf subtraction. 
+
+The optimum aperture radius turned out to be very small, it ranges from 2.8 to 3.5 pixels. which is only 1 pixel larger than fwhm of the image, which is 1.8 pixels.
+
+
+
+
+\section{Analyze light curve}
+>1. is the source varying
+>2. what is the amplitude in two colors
+
+According to aperture photometry, the peak to peak variation is about 2%
+>3. is the change periodic
+At least, it is difficult to find a period by eye.
+
+>4. are the changes in the filter correlated
+
+5. color magnitude diagram (Apai 2013) 
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
