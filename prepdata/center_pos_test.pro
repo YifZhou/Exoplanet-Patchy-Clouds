@@ -123,8 +123,8 @@ PRO center_pos_test2, method
   
   image = mrdfits('~/Documents/Exoplanet_Patchy_Project/data/ABPIC-B/CR_removed/orbit_07_dither_02_F160W.fits', 1, hd)
   ww = 256
-  OverSample = 10.
-  imageOverSamp = congrid(image, OverSample * ww, OverSample * ww, cubic = -0.5)
+  ;OverSample = 10.
+  ;imageOverSamp = congrid(image, OverSample * ww, OverSample * ww, cubic = -0.5)
   x0 = 114.212
   y0 = 169.284
   FOR i = 0, loop - 1 DO BEGIN
@@ -133,7 +133,7 @@ PRO center_pos_test2, method
      dy = step * randomn(seed)
      ;; imShiftedOverSamp = fshift(imageOverSamp, dx * OverSample, dy * OverSample)
      ;; imShifted = congrid(imShiftedOverSamp, ww, ww, cubic = -0.5)
-     imshifted = fshift(image, dx, dy)
+     imshifted = imageShift(image, dx, dy, overSamp = 30)
      image0 = image
      ;; nNoise = ceil(5 * randomu(seed))
      ;; FOR j = 1, nNoise DO BEGIN
@@ -169,10 +169,17 @@ PRO center_pos_test2, method
         END 
      ENDCASE     
   ENDFOR
-  forprint, dxList, dyList, xoff, yoff, textout = method + '_cenTest2.dat',/nocomment
+  forprint, dxList, dyList, xoff, yoff, textout = method + '_cenTest_Nov25.dat',/nocomment
 END
 
 
+FUNCTION imageShift, image, dx, dy, overSamp = overSamp
+  IF N_ELEMENTS(overSamp) EQ 0 THEN overSamp = 1
+  imsz = size(image)
+  im1 = congrid(image, imsz[1] * overSamp, imsz[2] * overSamp, cubic = -0.5)
+  im2 = fshift(im1, dx * overSamp, dy * overSamp)
+  return, congrid(im2, imsz[1], imsz[2], cubic = -0.5)
+END 
   
 
   
