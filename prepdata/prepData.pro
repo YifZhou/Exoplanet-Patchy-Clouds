@@ -59,7 +59,7 @@
 ;
 ;-
 PRO prepData, target, shiftMethod, saveFN
-  infoStruct = {filter:'', exposureTime:0., obsDate:'', obsTime:'', rollAngle:0.0, orbit:0, dither:0, xShift:0., yShift:0.}
+  infoStruct = {filter:'', exposureTime:0., obsDate:'', obsTime:'', rollAngle:0.0, orbit:0, dither:0, xCenter:0,yCenter:0}
   dataDir = STRJOIN(['/home/yzhou/Documents/Exoplanet_Patchy_Project/data', target, 'CR_removed'], '/')
   fitsFNList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
   nFile = N_ELEMENTS(fitsFNList)
@@ -98,6 +98,42 @@ PRO prepData, target, shiftMethod, saveFN
      infoList[i].xShift = dx
      infoList[i].yShift = dy
      cube[*,*, i] = im_i
+     print,'i',' image finished'
+  ENDFOR
+  save, cube, infoList, filename = saveFN
+end
+
+PRO prepData2, target, saveFN
+  ;; apply no shift to the image
+  infoStruct = {filter:'', exposureTime:0., obsDate:'', obsTime:'', rollAngle:0.0, orbit:0, dither:0, xCenter:0.,yCenter:0.}
+  dataDir = STRJOIN(['/home/yzhou/Documents/Exoplanet_Patchy_Project/data', target, 'CR_removed'], '/')
+  fitsFNList = FILE_SEARCH(STRJOIN([dataDir, '*.fits'], '/'))
+  nFile = N_ELEMENTS(fitsFNList)
+  xcen = fltarr(nFile)
+  ycen = fltarr(nFile)
+  cube = MAKE_ARRAY(256, 256, nFile, /DOUBLE) ;; list to save images
+  infoList = replicate(infoStruct, nFile);; list to save header information
+  readcol, 'ccCentroid_Nov16_1.dat', format = 'x,f,f', xcen, ycen, /SILENT
+  imageSz = 256
+  overSampFactor = 50
+  FOR i = 0, nFile -1 DO BEGIN
+     fn_splited = strsplit(fitsFNList[i], '/', /extract)
+     fileName0 = fn_splited[N_ELEMENTS(fn_splited) - 1]
+     orbit = fix(strmid(fileName0, 6, 2))
+     dither = fix(strmid(fileName0, 16, 2))
+     IF orbit MOD 2 EQ 0 THEN infoList[i].rollAngle = 129. ELSE infoList[i].rollAngle = 101. ;; ortib number determines rolling angle
+     
+     im0 = mrdfits(fitsFNList[i], 0, header0) ;; read primary header
+     im = mrdfits(fitsFNList[i], 1, header1)
+     infoList[i].filter = fxpar(header0, 'filter')
+     infoList[i].exposureTime = fxpar(header0, 'exptime')
+     infoList[i].obsDate = fxpar(header0, 'date-obs')
+     infoList[i].obsTime = fxpar(header0, 'time-obs')
+     infoList[i].orbit = orbit
+     infoList[i].dither = dither
+     infoList[i].xCenter = xcen[i]
+     infoList[i].yCenter = ycen[i]
+     cube[*,*, i] = im
      print,'i',' image finished'
   ENDFOR
   save, cube, infoList, filename = saveFN
