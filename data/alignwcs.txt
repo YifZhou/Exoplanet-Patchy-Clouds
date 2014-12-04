@@ -1,0 +1,15 @@
+;Computed offsets
+orbit_07_dither_01_F125W_1fits      0.0000      0.0000
+orbit_07_dither_03_F125W_1fits    -10.1503      0.0352
+orbit_07_dither_05_F125W_1fits      0.0064    -11.3597
+orbit_07_dither_07_F125W_1fits    -10.1440    -11.3244
+orbit_07_dither_09_F125W_1fits      0.0064    -11.3597
+orbit_07_dither_11_F125W_1fits    -10.1440    -11.3244
+orbit_07_dither_13_F125W_1fits    -10.1440    -11.3244
+orbit_07_dither_01_F125W_1fits      0.0000      0.0000
+orbit_07_dither_03_F125W_1fits    -10.1503      0.0352
+orbit_07_dither_05_F125W_1fits      0.0064    -11.3597
+orbit_07_dither_07_F125W_1fits    -10.1440    -11.3244
+orbit_07_dither_09_F125W_1fits      0.0064    -11.3597
+orbit_07_dither_11_F125W_1fits    -10.1440    -11.3244
+orbit_07_dither_13_F125W_1fits    -10.1440    -11.3244

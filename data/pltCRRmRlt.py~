@@ -1,0 +1,19 @@
+#! /usr/bin/env python
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
+from astropy.io import fits
+
+def plotCR(fits_file, savefig = True):
+    """
+    find cosmic ray and plot it
+    """
+    sigma_list = [np.std(fits_file[ext].data) for ext in range(2, len(fits_file))] # calculate the standard deviation of each residual image
+    sigma = np.min(sigma_list)
+    ## the pixels that have value greater than 5 sigma will be treated as CR
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.imshow(np.arcsinh(fits_file[1].data), cmap = 'gray')
+    for ext in range(2, len(fits_file)):
+        res_im = fits_file[ext].data
+        crx, cry = np.whe
