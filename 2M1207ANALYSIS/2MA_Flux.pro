@@ -1,6 +1,6 @@
 PRO Primary_Flux
   fn = '../data/2M1207B/'
-  readcol, fn + 'flt_file_list.dat', fileList, filter, obsTime, format = 'a, x, x, a, x, a, x, x'
+  readcol, fn + 'drz_file_list.dat', fileList, filter, obsTime, format = 'a, x, x, a, x, a, x, x'
   nFiles = N_elements(fileList)
   x = fltarr(nFiles)
   y = fltarr(nFiles)
@@ -15,5 +15,5 @@ PRO Primary_Flux
   ENDFOR
   obstime = ' ' + obstime
   filter = ' ' + filter
-  FORprint, fileList, flux, x, y, obstime, filter, textout = '2M1207A_flux_Dec4.dat', width = 160, /nocomment
+  FORprint, fileList, flux, x, y, obstime, filter, textout = '2M1207A_drz_flux_Dec8.dat', width = 160, /nocomment
 END

@@ -34,7 +34,7 @@ def getSubExposureNo(filter_list, expo_list):
     return sub_list
 
 if __name__ == '__main__':
-    aimDir = './2M1207A'
+    aimDir = './2M1207B'
     file_list = []
     header_list = []
     angle_list = []
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     date_list = []
     time_list = []
     exposureTime = []
-    for fits_file in sorted(glob.glob(os.path.join(aimDir, '*flt.fits'))):
+    for fits_file in sorted(glob.glob(os.path.join(aimDir, '*drz.fits'))):
         fits_content = fits.open(fits_file)
         file_list.append(fits_file.split('/')[-1])
         header = fits_content[0].header
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     exposureNo = getExposureNo(file_list)
     subExposureNo = getSubExposureNo(filter_list, exposureNo)
     fmt_str = '{0:<20} {1:<2d} {2:<2d} {3:<8} {4:<12} {5:<12} {6:<3.4f} {7:<3.4f}\n'
-    output = open(os.path.join(aimDir, 'flt_file_list.dat'), 'w')
+    output = open(os.path.join(aimDir, 'drz_file_list.dat'), 'w')
     for i in range(len(file_list)):
         output.write(fmt_str.format(file_list[i], exposureNo[i], subExposureNo[i], filter_list[i], date_list[i], time_list[i], angle_list[i], exposureTime[i]))
 
