@@ -1,0 +1,74 @@
+#! /usr/bin/env python
+from __future__ import division
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+#######Data file name, editable########
+F125WInfoFile = 'f125info.csv'
+F160WInfoFile = 'f160info.csv'
+F125WFluxFile = 'Flux125_Dec01.dat'
+F160WFluxFile = 'Flux160_Dec01.dat'
+figureName = 'CMD_Dec19.pdf'
+#######################################
+
+f125DF = pd.read_csv(F125WInfoFile)
+f160DF = pd.read_csv(F160WInfoFile)
+f125flux, f125err = np.loadtxt(F125WFluxFile, unpack = True)
+f160flux, f160err = np.loadtxt(F160WFluxFile, unpack = True)
+
+photFlam125 = 2.2484e-20
+photFlam160 = 1.9276e-20
+
+f125DF['flux'] = f125flux * photFlam125
+f125DF['error'] = f125err * photFlam125
+f160DF['flux'] = f160flux * photFlam160
+f160DF['error'] = f160err * photFlam160
+
+def plx2dis(plx):
+    """
+    in Dupuy 2012, parallax in marcsec
+    convert parallax to pc
+    """
+    return 1000/plx
+
+def mag2Mag(mag, dis):
+    """
+    convert magnitude to absolute magnitude
+    """
+    return mag - 5 * (np.log10(dis) - 1)
+
+def DeltaMag(flux, f0):
+    """
+    Calculate delta magnitude
+    """
+    return -2.5 * np.log10(flux/f0)
+
+if __name__ == '__main__':
+    MagTable = pd.read_csv('Dupuy2012_LT_Dwars_PhotTable.csv')
+    MagTable[['J2mag', 'H2mag', 'plx']] = MagTable[['J2mag', 'H2mag', 'plx']].astype(float)
+    MagTalbe['Distance'] = plx2dis(MagTable['plx'])
+    MagTable['J20mag'] = Mag2Mag(MagTable['J2mag'], MagTable['Distance'])
+    MagTable['H20mag'] = Mag2Mag(MagTable['H2mag'], MagTable['Distance'])
+    J0 = MagTable[MagTable['# Object name (LaTeX-able)'] == 'AB_Pic~b']['J20mag']
+    H0 = MagTable[MagTable['# Object name (LaTeX-able)'] == 'AB_Pic~b']['H20mag']
+    flux125corr = []
+    flux160corr = []
+    err125corr = []
+    err160corr = []
+    for orbit_i in range(7, 13):
+        flux125corr.append(f125DF[f125DF['orbit'] == orbit_i]['flux'][0:6])
+        err125corr.append(f125DF[f125DF['orbit'] == orbit_i]['error'][0:6])
+        flux160corr.append(f160DF[f160DF['orbit'] == orbit_i]['flux'])
+        err160corr.append(f160DF[f160DF['orbit'] == orbit_i]['error'])
+
+    JList = J0 + DeltaMag(flux125corr, flux125corr.mean())
+    HList = H0 + DeltaMag(flux160corr, flux160corr.mean())
+    fig = plt.figure(figsize = (6, 8))
+    ax = fig.add_subplot(111)
+    ax.plot(JList - HList, JList, '+', mew = 1.0)
+    ax.plot(magTable['J20mag'] - magTable['H20mag'], magTable['J20mag'], '.', mew = 0.8, color = '0.8', zorder = 0)
+    ax.invert_yaxis()
+    fig.tight_layout()
+    fig.savefig(figureName)
