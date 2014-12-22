@@ -63,10 +63,3 @@ if __name__ == '__main__':
 
     output.close()
     #write output
-
-
-    
-
-    
-    
-        
