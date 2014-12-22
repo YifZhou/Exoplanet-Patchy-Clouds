@@ -33,7 +33,7 @@ if __name__ == '__main__':
         fits_content = fits.open(fits_file)
         file_list.append(fits_file.split('/')[-1])
         header = fits_content[0].header
-        angle_list.append(header['PA_V3'])
+        angle_list.append(round(header['PA_V3']))
         filter_list.append(header['filter'])
         date_list.append(header['date-obs'])
         time_list.append(header['time-obs'])

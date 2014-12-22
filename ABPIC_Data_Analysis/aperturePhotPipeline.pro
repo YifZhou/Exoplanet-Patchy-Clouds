@@ -119,14 +119,14 @@ FUNCTION searchPSF, id0, satisfyID
   secCen1 = [95., 209.]
   secCen2 = [130., 223.]
   image0 = cube[*, *, id0]
-  IF infoList.posang[id0] < 110 THEN BEGIN
+  IF infoList.posang[id0] LE 110 THEN BEGIN
      x0 = secCen1[0] + (infoList.dither[id0] MOD 2) * 10.2
      y0 = secCen1[1] + (infoList.dither[id0]/2) * 10.2
      secCen = findPeak(image0, x0, y0, range = 5) 
      ENDIF ELSE BEGIN
         x0 = secCen2[0] + (infoList.dither[id0] MOD 2) * 10.2
         y0 = secCen2[1] + (infoList.dither[id0]/2) * 10.2
-        secCen = findPeak(image0, secCen2[0] + dx0, secCen2[1] + dy0, range = 5)
+        secCen = findPeak(image0, x0, y0, range = 5)
      ENDELSE
      
   disSecondary = sqrt((xMesh - secCen[0])^2 + (yMesh - secCen[1])^2)
@@ -143,7 +143,7 @@ FUNCTION searchPSF, id0, satisfyID
   FOR i = 0, nSatisfied - 1  DO BEGIN
      id_i = satisfyID[i]
      image_i = fshift(cube[*, *, id_i], -dx[id_i], -dy[id_i])
-     IF infoList.posang[id_i] < 110 THEN BEGIN
+     IF infoList.posang[id_i] le 110 THEN BEGIN
         x0 = secCen1[0] + (infoList.dither[id_i] MOD 2) * 10.2 -dx[id_i]
         y0 = secCen1[1] + (infoList.dither[id_i]/2) * 10.2 - dy[id_i]
         secCen_i = findPeak(image_i, x0, y0, range = 5) 
@@ -166,7 +166,7 @@ FUNCTION searchPSF, id0, satisfyID
      res_int = interpol(residual, c_fit, c_int,/spline)
      cList[i]= mean(c_int[where(res_int EQ min(res_int))])
      resList[i] = min(res_int)
-     sky, (image0 - cList[i] * image_i)[annulusEff_i0], mode, std
+     sky, (image0 - cList[i] * image_i)[annulusEff_i0], mode, std, /silent
      skylevelList[i] = mode
      skysigList[i] = std
   ENDFOR
@@ -198,17 +198,60 @@ PRO psf_subtraction, input_fn, output_fn
      angle_i = infoStruct.posang[i]
      filter_i = infoStruct.filter[i]
      satisfyID = where((infoStruct.filter EQ filter_i) AND (infoStruct.posang NE angle_i))
-     stop
      fitResult = searchPSF(i, satisfyID)
-     PSF_id = fitResult[0]
-     PSF_amplitude = fitResult[1]
-     skyLevel = fitResult[2]
-     skySigma = fitResult[3]
-     xCenter = fitResult[4]
-     yCenter = fitResult[5]
+     PSF_id[i] = fitResult[0]
+     PSF_amplitude[i] = fitResult[1]
+     skyLevel[i] = fitResult[2]
+     skySigma[i] = fitResult[3]
+     xCenter[i] = fitResult[4]
+     yCenter[i] = fitResult[5]
      cube1[*, *, i] = cube[*, *, i] - fitResult[1] * fshift(cube[*, *, fitResult[0]], -fitResult[6], -fitResult[7])
+     print, i, ' psf subtracted'
   ENDFOR
-  stop
-  save, cube1, infoList1, filename = output_fn
+  infoStruct1 = add_tag(infoStruct, 'xCenter', xCenter)
+  infoStruct1 = add_tag(infoStruct1, 'yCenter', yCenter)
+  infoStruct1 = add_tag(infoStruct1, 'PSF_id', PSF_id)
+  infoStruct1 = add_tag(infoStruct1, 'PSF_amplitute', PSF_amplitude)
+  infoStruct1 = add_tag(infoStruct1, 'sky_level', skyLevel)
+  infoStruct1 = add_tag(infoStruct1, 'sky_sigma', skySigma)
+  save, cube1, infoStruct1, filename = output_fn
 END
 
+PRO aperturePhot, inFn, aperRadius = aperRadius
+  IF N_ELEMENTS(aperRadius) EQ 0 THEN aperRadius = 5.0
+  restore, inFn
+  szCube = size(cube1)
+  nImages = szCube[3]
+  flux = fltarr(nImages)
+  fluxErr = fltarr(nImages)
+  f125id = where(infoStruct1.filter EQ 'F125W')
+  f160id = where(infoStruct1.filter EQ 'F160W')
+  aperList = [aperRadius]
+  FOR i = 0, nImages - 1 DO BEGIN
+     image = cube1[*, *, i]
+     expoTime = infoStruct1.exposure_time[i]
+     ;; IF infoList1[f125id[i]].rollAngle EQ 101 THEN $
+     ;;    gcntrd, image, 109., 166., xSec, ySec, 2.0 $ ;; search
+                ;;    secondary center
+     xsec = infoStruct1.xCenter[i]
+     ysec = infoStruct1.yCenter[i]
+     aper, image * expoTime, xSec, ySec, f, ef, sky, skyerr, $
+           1, aperList, [30, 50], [-100, 1e7], /flux, $
+           setskyval = [infoStruct1.sky_level[i], infoStruct1.sky_sigma[i] * expoTime, 7000],/silent
+     ;; print, 'sky error from aper:', skyerr/expoTime
+     ;; print, 'original skyerr:', infoList1[f125id[i]].skysigma
+     ;; print, 'optimized aperture radius:', aperList[where(eflux/flux EQ min(eflux/flux))]
+     ;; optId = where(eflux/flux EQ min(eflux/flux))
+     ;; aperStrList[f125id[i]].aper = aperList
+     ;; aperStrList[f125id[i]].flux = flux/expoTime
+     ;; aperStrList[f125id[i]].fluxerr = eflux/expoTime
+     ;; aperStrList[f125id[i]].aper0 = aperList[optId]
+     ;; aperStrList[f125id[i]].filter = 'F125W'
+     flux[i] = f[0]/expoTime
+     fluxErr[i] = ef[0]/expoTime
+  ENDFOR
+  infoStruct1 = add_tag(infoStruct1, 'flux', flux)
+  infoStruct1 = add_tag(infoStruct1, 'fluxerr', fluxerr)
+  forprint, flux, fluxerr, textout = 'aperphot_Dec21.dat'
+  save, infoStruct1, file = 'flux_Dec21.sav'
+END 
