@@ -62,20 +62,29 @@
 PRO aperturePhotPipeLine, infoFile
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
   dataDir = '../data/ABPIC-B/' ;; changable
-  saveFN = prepData(fileInfo, dataDir)
+  preparedFN = prepData(fileInfo, dataDir)
+  subtractedFN = psf_subtraction(preparedFN)
+  resultFN = aperturePhot(subtractedFN, aperRadius = 5)
+  resultCSVFN = strn(floor(systime(/julian))) + '_aperPhot.csv'
 END
 
 FUNCTION myReadCSV,fn, tags
+  ;; function for reading csv files
+  ;; change the names of tags
   strct = read_csv(fn)
   return, rename_tags(strct, ['FIELD1','FIELD2','FIELD3','FIELD4','FIELD5','FIELD6','FIELD7','FIELD8','FIELD9'], tags)
 END
 
 FUNCTION prepData, infoStruct, dataDir
   ;; apply no shift to the image
+  
+  ;; process F125 and F160 individually
   F125ID = where(infoStruct.filter EQ 'F125W')
   F160ID = where(infoStruct.filter EQ 'F160W')
+  ;; read the first images for two filters, as the reference images
   im125 = mrdfits(dataDir + infoStruct.filename[F125ID[0]], 1, hd)
   im160 = mrdfits(dataDir + infoStruct.filename[F160ID[0]], 1, hd)
+  
   nFile = N_ELEMENTS(infoStruct.filename)
   xoff = fltarr(nFile)
   yoff = fltarr(nFile)
@@ -88,21 +97,23 @@ FUNCTION prepData, infoStruct, dataDir
      xoff[i] = dxy[0]
      yoff[i] = dxy[1]
      cube[*,*, i] = im
-     print,'i',' image prepared'
+     print,'i',' image finished preparation'
   ENDFOR
   infoStruct = add_tag(infoStruct, 'xoff', xoff)
   infoStruct = add_tag(infoStruct, 'yoff', yoff)
-  saveFN = strn(floor(systime(/julian))) + '_prepared.sav'
+  saveFN = filename() + '_prepared.sav'
   save, cube, infoStruct, filename = saveFN
   return, saveFn
 END
 
 
 FUNCTION findPeak, im, x0, y0, range=range
+  ;; use Gaussian profile to fit the image to find the center of the
+  ;; unsaturated image
   IF N_ELEMENTS(range) EQ 0 THEN range = 10
   xlow = floor(x0 - range)
   ylow = floor(y0 - range)
-  yfit = mpfit2dpeak(im[xlow:xlow + 2*range, ylow:ylow+2*range], params, /moffat)
+  yfit = mpfit2dpeak(im[xlow:xlow + 2*range, ylow:ylow+2*range], params)
   return, [params[4] + xlow, params[5] + ylow]
 END
 
@@ -181,7 +192,7 @@ FUNCTION searchPSF, id0, satisfyID
 END
 
 
-PRO psf_subtraction, input_fn, output_fn
+FUNCTION psf_subtraction, input_fn
   COMMON preparedData, cube, infoStruct, nImages, xMesh, yMesh
   restore, input_fn ;; restore data from data preparation PROCEDURE
   cube1 = cube
@@ -206,7 +217,7 @@ PRO psf_subtraction, input_fn, output_fn
      xCenter[i] = fitResult[4]
      yCenter[i] = fitResult[5]
      cube1[*, *, i] = cube[*, *, i] - fitResult[1] * fshift(cube[*, *, fitResult[0]], -fitResult[6], -fitResult[7])
-     print, i, ' psf subtracted'
+     print, i, ' image finished psf subtraction'
   ENDFOR
   infoStruct1 = add_tag(infoStruct, 'xCenter', xCenter)
   infoStruct1 = add_tag(infoStruct1, 'yCenter', yCenter)
@@ -214,16 +225,20 @@ PRO psf_subtraction, input_fn, output_fn
   infoStruct1 = add_tag(infoStruct1, 'PSF_amplitute', PSF_amplitude)
   infoStruct1 = add_tag(infoStruct1, 'sky_level', skyLevel)
   infoStruct1 = add_tag(infoStruct1, 'sky_sigma', skySigma)
+  output_fn = filename() + '_subtracted.sav'
   save, cube1, infoStruct1, filename = output_fn
+  return, output_fn
 END
 
-PRO aperturePhot, inFn, aperRadius = aperRadius
+FUNCTION aperturePhot, inFn, aperRadius = aperRadius
   IF N_ELEMENTS(aperRadius) EQ 0 THEN aperRadius = 5.0
   restore, inFn
   szCube = size(cube1)
   nImages = szCube[3]
   flux = fltarr(nImages)
   fluxErr = fltarr(nImages)
+  xFWHM = fltarr(nImages)
+  yFWHM = fltarr(nImages)
   f125id = where(infoStruct1.filter EQ 'F125W')
   f160id = where(infoStruct1.filter EQ 'F160W')
   aperList = [aperRadius]
@@ -233,25 +248,38 @@ PRO aperturePhot, inFn, aperRadius = aperRadius
      ;; IF infoList1[f125id[i]].rollAngle EQ 101 THEN $
      ;;    gcntrd, image, 109., 166., xSec, ySec, 2.0 $ ;; search
                 ;;    secondary center
-     xsec = infoStruct1.xCenter[i]
-     ysec = infoStruct1.yCenter[i]
-     aper, image * expoTime, xSec, ySec, f, ef, sky, skyerr, $
+     x0 = infoStruct1.xCenter[i]
+     y0 = infoStruct1.yCenter[i]
+     range = 10
+     xlow = floor(x0 - range)
+     ylow = floor(y0 - range)
+     imageFit = mpfit2dpeak(image[xlow:xlow + 2*range, ylow:ylow+2*range], params)
+     infoStruct1.xCenter[i] = xlow + params[4]
+     infoStruct1.yCenter[i] = ylow + params[5]
+     xFWHM[i] = 2.3548 * params[2]
+     yFWHM[i] = 2.3548 * params[3]
+     aper, image * expoTime, infoStruct1.xCenter[i], infoStruct1.yCenter[i], f, ef, sky, skyerr, $
            1, aperList, [30, 50], [-100, 1e7], /flux, $
            setskyval = [infoStruct1.sky_level[i], infoStruct1.sky_sigma[i] * expoTime, 7000],/silent
-     ;; print, 'sky error from aper:', skyerr/expoTime
-     ;; print, 'original skyerr:', infoList1[f125id[i]].skysigma
-     ;; print, 'optimized aperture radius:', aperList[where(eflux/flux EQ min(eflux/flux))]
-     ;; optId = where(eflux/flux EQ min(eflux/flux))
-     ;; aperStrList[f125id[i]].aper = aperList
-     ;; aperStrList[f125id[i]].flux = flux/expoTime
-     ;; aperStrList[f125id[i]].fluxerr = eflux/expoTime
-     ;; aperStrList[f125id[i]].aper0 = aperList[optId]
-     ;; aperStrList[f125id[i]].filter = 'F125W'
+
      flux[i] = f[0]/expoTime
      fluxErr[i] = ef[0]/expoTime
+     print, i, ' image finished photometry'
   ENDFOR
   infoStruct1 = add_tag(infoStruct1, 'flux', flux)
   infoStruct1 = add_tag(infoStruct1, 'fluxerr', fluxerr)
-  forprint, flux, fluxerr, textout = 'aperphot_Dec21.dat'
-  save, infoStruct1, file = 'flux_Dec21.sav'
-END 
+  infoStruct1 = add_tag(infoStruct1, 'xFWHM', xFWHM)
+  infoStruct1 = add_tag(infoStruct1, 'yFWHM', yFWHM)
+  output_fn =  filename() + '_aperPhot.sav'
+  save, infoStruct1, file = output_fn
+  return, output_fn
+END
+
+FUNCTION filename
+  time = systime()
+  mm = strmid(time, 4, 3)
+  dd = string(uint(strmid(time, 8, 2)), format = '(I2.2)')
+  year = strmid(time, 20, 4)
+  fn = year + '_' + mm + '_' + dd
+  return, fn
+END
