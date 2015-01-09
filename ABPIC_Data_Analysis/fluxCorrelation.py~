@@ -1,0 +1,21 @@
+#! /usr/bin/env python
+
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+import pandas as pd
+
+if __name__ == '__main__':
+    dataFile = sys.argv[1]
+    target = sys.argv[2]
+    df = pd.read_csv(dataFile)
+    df['XC0'] = df['XCENTER'] - df['XOFF']
+    df['YC0'] = df['YCENTER'] - df['YOFF']
+    subdf125 = df[df['filter'] == 'F125W']
+    subdf160 = df[df['filter'] == 'F160W']
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    if target == 'x':
+        ax.set_title('Flux vs x')
+        ax.plot(subdf125['XC0'] - subdf125['XC0'].mean(), subdf125['FLUX']/subdf125['FLUX'].mean(), '+', label = 'F125W')
+        ax.plot(subdf160['XC0'] - subdf160['XC0'].mean(), subdf160['FLUX']/subdf160['FLUX'].mean(), 'x', label = 'F160W'') 

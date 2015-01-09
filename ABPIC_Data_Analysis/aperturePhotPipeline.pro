@@ -65,7 +65,8 @@ PRO aperturePhotPipeLine, infoFile
   preparedFN = prepData(fileInfo, dataDir)
   subtractedFN = psf_subtraction(preparedFN)
   resultFN = aperturePhot(subtractedFN, aperRadius = 5)
-  resultCSVFN = strn(floor(systime(/julian))) + '_aperPhot.csv'
+  resultCSVFN = strn(floor(systime(/julian))) + '_result.csv'
+  spawn, 'python sav2csv.py ' + resultFN + ' ' + resultCSVFN ;; convert .sav file to csv file for easier using.
 END
 
 FUNCTION myReadCSV,fn, tags
