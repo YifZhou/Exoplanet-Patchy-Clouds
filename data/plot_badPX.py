@@ -1,3 +1,8 @@
+import numpy as np
+import pandas as pd
+from astropy.io import fits
+import os
+
 def badPixelRemove(image, dq):
     """
     remove hot pixel or unstable response
