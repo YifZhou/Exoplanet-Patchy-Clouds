@@ -3,6 +3,7 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.optimize import leastsq, curve_fit
 
 
 #######Data file name, editable########
@@ -10,7 +11,7 @@ F125WInfoFile = 'f125info.csv'
 F160WInfoFile = 'f160info.csv'
 F125WFluxFile = 'Flux125_Dec01.dat'
 F160WFluxFile = 'Flux160_Dec01.dat'
-figureName = 'CMD_Dec19.pdf'
+figureName = 'CMD_Jan09.pdf'
 #######################################
 
 f125DF = pd.read_csv(F125WInfoFile)
@@ -58,10 +59,10 @@ if __name__ == '__main__':
     err125corr = []
     err160corr = []
     for orbit_i in range(7, 13):
-        flux125corr.append(f125DF[f125DF['orbit'] == orbit_i]['flux'][0:6])
-        err125corr.append(f125DF[f125DF['orbit'] == orbit_i]['error'][0:6])
-        flux160corr.append(f160DF[f160DF['orbit'] == orbit_i]['flux'])
-        err160corr.append(f160DF[f160DF['orbit'] == orbit_i]['error'])
+        flux125corr.append(f125DF[f125DF['orbit'] == orbit_i]['flux'].values[0:6])
+        err125corr.append(f125DF[f125DF['orbit'] == orbit_i]['error'].values[0:6])
+        flux160corr.append(f160DF[f160DF['orbit'] == orbit_i]['flux'].values)
+        err160corr.append(f160DF[f160DF['orbit'] == orbit_i]['error'].values)
 
     flux125corr = np.array(flux125corr).flatten()
     print flux125corr/flux125corr.mean()
@@ -82,6 +83,15 @@ if __name__ == '__main__':
 
     ax_abpic = fig.add_axes([0.2, 0.6, 0.32, 0.32])
     ax_abpic.plot(JList - HList, JList, '+', mew = 1.0)
+    ## linear fit
+    def fitfunc(x, m, b):
+        return m * x + b
+        
+    p, pcov = curve_fit(fitfunc, JList-HList, JList, p0 = [-5, 0], sigma = 2.5 * err125corr/flux125corr)
+    print p
+    x = np.linspace((JList-HList).min(), (JList-HList).max(), 5)
+    ax_abpic.plot(x, p[0] * x + p[1])
+    ax.arrow((J0-H0)[0], J0[0], -0.2, -0.2*p[0])
     ax_abpic.set_aspect('equal')
     # ax_abpic.plot(MagTable['J20mag'] - MagTable['H20mag'], MagTable['J20mag'], '.', mew = 0.8, color = '0.8', zorder = 0)
     ax_abpic.set_xlim([1.46, 1.52])

@@ -1,0 +1,2 @@
+import ds9
+d = ds9.ds9()
