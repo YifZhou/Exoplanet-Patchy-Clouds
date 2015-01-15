@@ -78,6 +78,7 @@ if __name__ == '__main__':
     ax.invert_yaxis()
     ax.set_xlabel('Color (J-H)')
     ax.set_ylabel('Absolute J Magnitude')
+    #ax.set_aspect('equal')
 
     ax_abpic = fig.add_axes([0.2, 0.6, 0.32, 0.32])
     ax_abpic.plot(JList - HList, JList, '+', mew = 1.0)
