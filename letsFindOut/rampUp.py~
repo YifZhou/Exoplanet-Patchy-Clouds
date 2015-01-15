@@ -1,0 +1,14 @@
+import numpy as np
+from astropy.io import fits
+
+if __name__ == '__main__':
+    fn = 'icdg10vcq_ima.fits'
+    fitsContent = fits.open(fn)
+    index = range(1,7)
+    center = [129, 222]
+    flux = []
+    for i in index:
+        im = fitsContent['sci', index].data
+        flux.append(np.sum(im[center[0] -5: center[0] + 5, center[1] -5: center[1] + 5]))
+        
+        
