@@ -61,7 +61,7 @@
 
 PRO aperturePhotPipeLine, infoFile, fileType
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
-  dataDir = '../data/ABPIC-B/' ;; changable
+  dataDir = '../data/2M1207B/' ;; changable
   IF fileType EQ 'flt' THEN preparedFN = prepData(fileInfo, dataDir) $
       ELSE IF fileType EQ 'ima' THEN preparedFN = prepImaData(fileInfo, dataDIR)
   subtractedFN = psf_subtraction(preparedFN)

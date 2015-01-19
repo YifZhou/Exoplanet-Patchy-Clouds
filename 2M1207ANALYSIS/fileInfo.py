@@ -1,8 +1,10 @@
 #! /usr/bin/env python
+
 """
 gather file info for one specific type of file
 columns are: file name, filter, observation Time, orbit, dither position
 """
+
 import glob
 from astropy.io import fits
 import os
@@ -17,7 +19,7 @@ def getTargetNo(file_list):
 
 if __name__ == '__main__':
     dataDir = '../data'
-    target = '2M1207-B'
+    target = '2M1207B'
     fileType = 'flt'
     file_list = []
     angle_list = []
@@ -60,6 +62,9 @@ if __name__ == '__main__':
             orbit0 = orbit_i
             exposureNo.append(exposure0)
 
-    fileInfo = pd.DataFrame([line for line in zip(file_list, filter_list, orbitNo, angle_list, ditherNo, exposureNo, date_list, time_list, exposureTime)],
-                            columns = ['file name', 'filter', 'orbit', 'Pos Angle', 'dither', 'exposure set', 'obs date', 'obs time', 'exposure time'])
+    fileInfo = pd.DataFrame([line for line in zip(file_list,
+                                                  filter_list, orbitNo, angle_list,
+                                                  ditherNo, exposureNo, date_list,
+                                                  time_list, exposureTime)], columns =
+                            ['file name', 'filter', 'orbit', 'Pos Angle', 'dither', 'exposure set', 'obs date', 'obs time', 'exposure time'])
     fileInfo.to_csv('{0}_{1}_fileInfo.csv'.format(target, fileType), index = False)
