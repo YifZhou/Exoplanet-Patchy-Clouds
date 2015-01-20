@@ -59,14 +59,15 @@
 ;
 ;-
 
-PRO aperturePhotPipeLine, infoFile, fileType
+PRO aperturePhotPipeLine, infoFile, fileType, aperRadius  = aperRadius
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
   dataDir = '../data/ABPIC-B/' ;; changable
   IF fileType EQ 'flt' THEN preparedFN = prepData(fileInfo, dataDir) $
       ELSE IF fileType EQ 'ima' THEN preparedFN = prepImaData(fileInfo, dataDIR)
   subtractedFN = psf_subtraction(preparedFN)
+  IF n_elements(aperRadius) EQ 0 THEN aperRadius = 5
   resultFN = aperturePhot(subtractedFN, aperRadius = 5)
-  resultCSVFN = strn(floor(systime(/julian))) + '_' + fileType + '_result.csv'
+  resultCSVFN = strn(floor(systime(/julian))) + '_' + fileType + '_aper=' + strn(aperRadius) + '_result.csv'
   spawn, 'python sav2csv.py ' + resultFN + ' ' + resultCSVFN ;; convert .sav file to csv file for easier using.
 END
 
@@ -309,7 +310,7 @@ FUNCTION aperturePhot, inFn, aperRadius = aperRadius
      yFWHM[i] = 2.3548 * params[3]
      aper, image * expoTime, infoStruct1.xCenter[i], infoStruct1.yCenter[i], f, ef, sky, skyerr, $
            1, aperList, [30, 50], [-100, 1e7], /flux, $
-           setskyval = [infoStruct1.sky_level[i], infoStruct1.sky_sigma[i] * expoTime, 7000],/silent
+           setskyval = [infoStruct1.sky_level[i] * expoTime, infoStruct1.sky_sigma[i] * expoTime, 7000],/silent,/nan
 
      flux[i] = f[0]/expoTime
      fluxErr[i] = ef[0]/expoTime

@@ -1,0 +1,25 @@
+#! /usr/bin/env python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+if __name__ == '__main__':
+    #fn = 'Jan_07_F125W_result.csv'
+    fn = 'Jan_07_F125W_result.csv'
+    DF = pd.read_csv(fn)
+    fig = plt.figure(figsize = (12,6))
+    ax_125 = fig.add_subplot(121)
+    ax_160 = fig.add_subplot(122)
+    DF125 = DF[DF['FILTER'] == 'F125W']
+    DF160 = DF[DF['FILTER'] == 'F160']
+    ax_125.plot(np.abs(DF125['XCENTER'] - np.around(DF125['XCENTER'])), DF125['XFWHM'], lw = 0, marker = 'x')
+    ax_125.plot(np.abs(DF125['YCENTER'] - np.around(DF125['YCENTER'])), DF125['YFWHM'], lw = 0, marker = '3')
+    ax_125.set_xlabel('$\Delta$ (pixels)')
+    ax_125.set_ylabel('FWHM')
+
+
+
+    plt.savefig('F125W_flux_vs_subpixel.pdf')
+            
+            
+            
