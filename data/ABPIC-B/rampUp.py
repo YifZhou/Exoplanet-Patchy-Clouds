@@ -9,8 +9,8 @@ if __name__ == '__main__':
     #index = range(1,7)
     index = range(1,3)
     flux = []
-    #center = [135, 227]
-    center = [101, 226]
+    center = [135, 227]
+    #center = [101, 226]
     fig, ax = plt.subplots()
     for fn in fnList:
         fitsContent = fits.open(fn)
