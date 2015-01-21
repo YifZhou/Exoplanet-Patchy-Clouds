@@ -1,0 +1,9 @@
+import ds9
+import sys
+
+if __name__ == '__main__':
+    fileName = sys.argv[1]
+    d = ds9.dsi()
+    d.set('file {0}'.format(fileName))
+    
+    
