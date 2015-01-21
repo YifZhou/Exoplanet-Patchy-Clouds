@@ -22,7 +22,10 @@ if __name__ == '__main__':
         badPixelMap = dq2Bad(dq, flag)
         x, y = np.where(badPixelMap)
         print len(x)
-        ax.plot(x, y, marker = '${0}$'.format(flag), linewidth = 0)
+        ax.plot(y, x, marker = '${0}$'.format(flag), linewidth = 0)
 
+    print dq[155, 183]
+
+    ax.plot(130, 223, marker = '*', linewidth = 0)
     plt.show()
     
