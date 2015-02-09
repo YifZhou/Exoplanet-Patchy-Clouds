@@ -1,0 +1,22 @@
+#! /usr/bin/env python
+"""
+investigate how CR affect _ima to _flt conversion
+"""
+import pandas as pd
+import matplotlib.pyplot as plt
+
+if __name__ == '__main__':
+    fltDF = pd.read_csv('2015_Jan_07_result.csv', parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    imaDF = pd.read_csv('ima_DataQuality.csv', parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    fig = plt.figure()
+    Diff = imaDF['FLUX']/fltDF['FLUX']
+    ax = fig.add_subplot(111)
+    ax.plot(fltDF.index, Diff[fltDF['FILTER'] == 'F125W'], '+', label = 'F125W')
+    ax.plot(fltDF.index, Diff[fltDF['FILTER'] == 'F160W'], 'x', label = 'F160W')
+    ax.set_xlabel('UT')
+    ax.set_ylabel('Flux$_{ima}$/Flux$_{flt}$')
+
+    axCR = ax.twinx()
+    axCR.bar(imaDF.index, imaDF['CR number'], alpha = 0.6, zorder = 0)
+    fig.autofmt_xdate()
+    plt.show()

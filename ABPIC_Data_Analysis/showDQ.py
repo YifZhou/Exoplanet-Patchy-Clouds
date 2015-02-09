@@ -33,9 +33,9 @@ def printCREff (DF):
     for index, row in DF.iterrows():
         dq = fits.open('../data/ABPIC-B/' + row['FILENAME'])['DQ', 1].data
         bady, badx = np.where(dq2Bad(dq, flag) != 0)
-        inCircle = np.where(np.sqrt((badx - row['XCENTER'])**2 + (bady - row['YCENTER'])**2) < 5)
+        inCircle = np.where(np.sqrt((badx - row['XCENTER'])**2 + (bady - row['YCENTER'])**2) < 3)
         print row['FILENAME'], badx[inCircle], bady[inCircle]
-        nBad.append(len(badx))
+        nBad.append(len(badx[inCircle]))
         
     return nBad
 
