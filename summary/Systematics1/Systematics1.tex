@@ -160,7 +160,23 @@ that downgrade the quality of photometry and need to be corrected.
 
 
 
-\subsection{Cosmic Rays in Up-the-Ramp Fitting}
+  \subsection{Cosmic Rays in Up-the-Ramp Fitting}
+  \begin{itemize}
+  \item In majority of \texttt{ima} files, there are several pixels in
+    companion image region that are flagged with 8192 (CR detected by
+    up-the-ramp fitting)
+    \item it is not clear yet number of pixels that have CR flag is
+      correlated with flux scattering
+    \item considering use the same PSF images for PSF subtraction.
+    \end{itemize}
+
+    \subsection{Jitter}
+    \begin{itemize}
+    \item 4 exposures have extremely large jitter value
+     \item RMS jitter values are about 0.001 arcsec (0.1 pixel)in both
+       axes
+     \item jitter values seem not to correlate with flux scattering
+    \end{itemize}
 \end{document}
 %%% Local Variables:
 %%% mode: latex
