@@ -6,7 +6,7 @@ PRO makeFLTPSF, infoFile
   dataDIR = '../data/ABPIC-B/'
   ID125 = where(fileInfo.filter EQ 'F125W')
   ID160 = where(fileInfo.filter EQ 'F160W')
-  PSF = {filter:'', rollAngle:0.0, dither:0, xOff:0, yOff:0, PSF:fltarr(256,256)}
+  PSF = {filter:'', rollAngle:0.0, dither:0, xOff:0.0, yOff:0.0, PSF:fltarr(256,256)}
   PSFList = replicate(PSF, 16)
   FILTER = ['F125W', 'F160W']
   angle = [101.0, 129.0]
@@ -46,7 +46,7 @@ PRO makeIMAPSF, infoFile
   dataDIR = '../data/ABPIC-B/'
   ID125 = where(fileInfo.filter EQ 'F125W')
   ID160 = where(fileInfo.filter EQ 'F160W')
-  PSF = {filter:'', rollAngle:0.0, dither:0, xOff:0, yOff:0, PSF:fltarr(266,266)}
+  PSF = {filter:'', rollAngle:0.0, dither:0, xOff:0.0, yOff:0.0, PSF:fltarr(266,266)}
   PSFList = replicate(PSF, 16)
   FILTER = ['F125W', 'F160W']
   angle = [101.0, 129.0]
