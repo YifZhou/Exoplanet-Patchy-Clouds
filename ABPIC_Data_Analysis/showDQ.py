@@ -47,7 +47,7 @@ def plotBadPixel (fnList, flags):
             
 
 if __name__ == '__main__':
-    outFn = sys.argv[1]    
+    # outFn = sys.argv[1]         
     DF = pd.read_csv('2015_Jan_16_ima_result.csv')
     #concernedFlag = [3, 5, 6, 7, 13, 14]
     concernedFlag = [8192]
@@ -57,8 +57,8 @@ if __name__ == '__main__':
     # printCRFlag(F125File, 6)
     # printCRFlag(F160File, 4)
     nBad = printCREff(DF)
-    DF['CR number'] = nBad
-    DF.to_csv(outFn)
+    # DF['CR number'] = nBad
+    # DF.to_csv(outFn)
     
 #     for fitsfn in F125File:
 #         fitsContent = fits.open('../data/ABPIC-B/' + fitsfn)
