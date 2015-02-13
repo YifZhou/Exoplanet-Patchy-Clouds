@@ -5,8 +5,11 @@ from os import path
 import numpy as np
 import matplotlib.pyplot as plt
 
-def deg2arcsec(deg):
-    return deg*206264
+"""
+plot the flux for one pixel as a function of the pointing shift
+and show the trend
+"""
+
 if __name__ == '__main__':
     orbit = 12
     filter = 'F160W'
