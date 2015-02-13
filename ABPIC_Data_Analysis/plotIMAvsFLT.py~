@@ -1,0 +1,8 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+if __name__ == '__main__':
+    ima = pd.read_csv('2015_Feb_10_ima_result.ima', parse_dates ={'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    flt = pd.read_csv(('2015_Feb_10_flt_result.ima', parse_dates ={'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime'))
+    plt.plot(ima.index, ima['FLUX']/flt['FLUX'])
+    plt.show()
