@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def deg2arcsec(deg):
     return deg*206264
 if __name__ == '__main__':
-    orbit = 12
+    orbit = 11
     filter = 'F160W'
     dataDIR = '../data/ABPIC-B'
     dim1 = 222
@@ -34,12 +34,13 @@ if __name__ == '__main__':
 
     dim1List = np.array(dim1List)
     dim2List = np.array(dim2List)
-    plt.plot(dim1List - dim1List[0], cvalue, '-o', label = 'x shift')
-    #plt.plot(subdf.index, dim1List - dim1List[0], '-+', label = 'y shift')
-    # plt.xlabel('UT')
-    # plt.ylabel('$\Delta$ (pixel)')
-    plt.xlabel('$\Delta$ (pixel)')
-    plt.ylabel('flux')
+    plt.close("all")
+    plt.plot(subdf.index, dim1List - dim1List[0], '-o', label = 'x shift')
+    plt.plot(subdf.index, dim2List - dim2List[0], '-+', label = 'y shift')
+    plt.plot(subdf.index, np.sqrt((dim1List - dim1List[0])**2 + (dim2List - dim2List[0])**2))
+    plt.xlabel('UT')
+    plt.ylabel('$\Delta$ (pixel)')
+    
     fig = plt.gcf()
     fig.autofmt_xdate()
     plt.show()
