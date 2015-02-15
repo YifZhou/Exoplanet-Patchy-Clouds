@@ -3,47 +3,54 @@
 check if there is significant ramp effect
 """
 import pandas as pd
-import sys
+import os
 import matplotlib.pyplot as plt
 from brewer2mpl import get_map
 from astropy.io import fits
 import numpy as np
 colors = get_map('Set1', 'Qualitative', 4).mpl_colors
 
-def plotCentralPixel (ax, DF, nPixel = 1):
-    """
-    plot central value, show if it has ramp effect
-    """
-    centralFlux = pd.Series(dtype = float, index = DF.index)
-    dither = DF['DITHER'].values[0]
-    for index, row in DF.iterrows():
-        fitsFile = fits.open('../data/ABPIC-B/' + row['FILENAME'])
-        yc, xc = round(row['XCENTER']), round(row['YCENTER'])
-        centralFlux[index] = np.sort(fitsFile['SCI', 1].data[xc-2: xc + 2, yc - 2: yc + 2].flat)[-1:-1-nPixel:-1].sum()
-    ax.plot(DF.index, centralFlux * DF['EXPOSURE_TIME'], marker = '.', color = colors[dither])
-    
+dim10 = 227
+dim20 = 134
+def centralValue(dim1, dim2, fn, side = 0):
+    im = fits.open(fn)['sci', 1].data
+    return np.sum(im[dim1 - side: dim1 + side + 1, dim2 - side: dim2 + side + 1])
+
 if __name__ == '__main__':
-    plotFn = sys.argv[1]
-    nPixel = int(sys.argv[2])
-    DF = pd.read_csv('2457042_ima_aper=5_result.csv', parse_dates = {'datetime': ['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    orbit = 12
+    filter = 'F160W'
+    dataDIR = '../data/ABPIC-B/'
+    df = pd.read_csv('2015_Feb_10_ima_aper=5_result.csv', parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    subdf = df[(df['FILTER'] == filter) & (df['ORBIT'] == orbit)]
+    count00 = []
+    countx0 = []
+    count0x = []
+    county0 = []
+    count0y = []
+    count3x3 = []
+    for fn in subdf['FILENAME']:
+        count00.append(centralValue(dim10, dim20, os.path.join(dataDIR, fn), side = 0))
+        countx0.append(centralValue(dim10, dim20 - 1, os.path.join(dataDIR, fn), side = 0))
+        count0x.append(centralValue(dim10, dim20 + 1, os.path.join(dataDIR, fn), side = 0))
+        county0.append(centralValue(dim10 - 1, dim20, os.path.join( dataDIR, fn), side = 0))
+        count0y.append(centralValue(dim10 + 1, dim20, os.path.join(dataDIR, fn), side = 0))
+        count3x3.append(centralValue(dim10, dim20, os.path.join(dataDIR, fn), side = 1))
+
+    count00 = np.array(count00)
+    count3x3 = np.array(count3x3)
+    countx0 = np.array(countx0)
+    count0x = np.array(count0x)
+    county0 = np.array(county0)
+    count0y = np.array(count0y)
     plt.close('all')
-    fig = plt.figure(figsize = (6,8))
-    ax125 = fig.add_subplot(211)
-    ax160 = fig.add_subplot(212)
-    for filt, ax, thres in zip(['F125W', 'F160W'], [ax125, ax160], [800, 1500]):
-        for orbit in range(6, 13):
-            for exposure in range(0, 13):
-                subFrame = DF[(DF['FILTER'] == filt) & (DF['ORBIT'] == orbit)
-                              & (DF['EXPOSURE_SET'] == exposure)]
-                if not subFrame.empty: plotCentralPixel(ax, subFrame, nPixel = nPixel)
-
-    for ax in [ax125, ax160]:
-        ax.set_ylabel('Counts (e$^-$)')
-        ax.set_xlabel('UT')
-
-    ax125.set_title('F125W, maximum {0} pixel(s)'.format(nPixel))
-    ax160.set_title('F160W, maximum {0} pixel(s)'.format(nPixel))
-    fig.autofmt_xdate()
-    fig.savefig(plotFn)
-    plt.show()
-    
+    plt.plot(subdf.index, count00/np.max(count00), label = 'original', linewidth = 3)
+    plt.plot(subdf.index, countx0/np.max(countx0), label = 'x-1, y')
+    plt.plot(subdf.index, count0x/np.max(count0x), label = 'x+1, y')
+    plt.plot(subdf.index, county0/np.max(county0), label = 'x, y-1')
+    plt.plot(subdf.index, count0y/np.max(count0y), label = 'x, y+1', linewidth = 3)
+    plt.plot(subdf.index, count3x3/np.max(count3x3), label = '3x3 square', color = 'k', linewidth = 3)
+    plt.gcf().autofmt_xdate()
+    plt.legend(loc = 'best')
+    plt.xlabel('UT')
+    plt.ylabel('Normalized Flux')
+    plt.savefig('CentralPixelTrend_orbit{0}_F160W.pdf'.format(orbit))

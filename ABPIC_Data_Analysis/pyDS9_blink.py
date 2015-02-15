@@ -55,11 +55,11 @@ if __name__ == '__main__':
         d.set('scale log 2')
         d.set('scale mode 99.5')
         d.set('scale limits 0 10000')
-        d.set('zoom 16')
+        d.set('zoom 4')
 
-    d.set('match frame wcs')
+    d.set('match frame physical')
     d.set('match scale')
     d.set('blink yes')
-    d.set('blink interval 1.0')
+    d.set('blink interval 1')
 
     
