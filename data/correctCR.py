@@ -64,7 +64,7 @@ class HSTFile:
         """
         save the corrected result to fits file
         """
-        pass
+        
         
 
 class ExposureSet:
@@ -86,13 +86,20 @@ class ExposureSet:
         self.orbit = orbit
         self.filterName = filterName
         self.peakPos = peakPos # dim0 is y, dim1 is x, position is in IMA file coordinate
+        self.dim0 = peakPos[0]
+        self.dim1 = peakPos[1]
         self.size = 5
+        self.dim00 = self.dim0 - size
+        self.dim10 = self.dim1 - size # define the lower left corner of the region of interest
+        
         self.HSTFileList = []
         for fn in self.fnList:
             self.HSTFileList.append(HSTFile(fn, self.peakPos, self.size))
-            
+
+        self.expTime = self.HSTFileList[0].expTime[-1] # the exposure time for individual file, used for caculating couting uncertainties
         self.isCorrected = np.zeros([2*size + 1, 2*size + 1, self.nFile], dtype = bool)
         self.correctedStack = np.zeros([2*size + 1, 2*size + 1, self.nFile])
+        self.problematicPixel = [] #save the coordinates of the pixels that have problematic correction problem
         
     def correct (self):
         """
@@ -103,11 +110,26 @@ class ExposureSet:
             self.isCorrected[:, :, i] = item.needCorrect
             self.correctStack[:, :, i] = item.fitCountArray
 
-    def testCorrection (self):
+    def testCorrection (self, sigmaThreshold = 5, doPlot = False, plotDIR = ""):
+        """test if the correction is correct
+        test method: assume that
+        in short time scale (within in a exposure set ~10 min), the
+        count rate of one pixel changes linearly.  Thus for every
+        corrected pixel, this routine do a linear fit within a
+        exposure set and exclude the pixel that is specified sigma
+        away (default is 5 sigma) from the lienar fit.
+
         """
-        test if the correction is correct
-        """
-        pass
+        dim0, dim1 = np.any(self.isCorrected, axis = 2) # the coordinate of the pixel that has calibration correction made
+        for dim0_i, dim1_i in zip(dim0, dim1):
+            count = self.expTime * self.correctStack[dim0, dim1, :]
+            def func(x, *p):
+                return x * p[0] + p[1]
+                
+            paras, pcov = curve_fit(func, np.arrange(len(count)), count, p0 = [1., count[0]], sigma = np.sqrt(np.abs(count)), absolute_sigma = True) # since exposures are equally sampled, use arrage(nsamp) as x index
+            diff = np.abs(paras[0] * np.arrange(len(count)) + paras[1] - count)/np.sqrt(np.abs(count))
+            
+        
 
     def saveFITS(self, direction):
         """
