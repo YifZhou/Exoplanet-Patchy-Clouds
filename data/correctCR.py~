@@ -1,0 +1,16 @@
+from astropy.io import fits
+import numpy as np
+
+class ImaFile:
+    """
+    ima file object, parameters:
+    filename:
+    nSamp
+    peakPos
+    countArray
+    dqarray
+    fitCountArray
+    """
+    
+
+    

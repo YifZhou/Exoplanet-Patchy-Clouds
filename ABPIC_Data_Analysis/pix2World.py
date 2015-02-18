@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def deg2arcsec(deg):
     return deg*206264
 if __name__ == '__main__':
-    orbit = 10
+    orbit = 12
     filter = 'F125W'
     dataDIR = '../data/ABPIC-B'
     dim1 = 230
@@ -39,10 +39,10 @@ if __name__ == '__main__':
     # plt.plot(subdf.index, dim2List - dim2List[0], '-+', label = 'y shift')
     # plt.plot(subdf.index, np.sqrt((dim1List - dim1List[0])**2 + (dim2List - dim2List[0])**2))
     #plt.plot(dim1List, subdf['YCENTER'])
-    plt.plot(subdf['YOFF'], dim1List)
-    plt.xlabel('UT')
-    plt.ylabel('$\Delta$ (pixel)')
+    plt.plot(dim1List - dim1List[0], subdf['YOFF'] - subdf['YOFF'].values[0],  'o')
+    plt.xlabel('$\Delta_{y, wcs}$')
+    plt.ylabel('$\Delta_{y, fit}$')
     
     fig = plt.gcf()
     fig.autofmt_xdate()
-    plt.show()
+    plt.savefig('GaussianYvsWCSY_orbit_{0}.pdf'.format(orbit))

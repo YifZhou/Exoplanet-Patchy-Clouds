@@ -15,7 +15,7 @@ dim20 = 134
 def centralValue(dim1, dim2, fn, side = 0):
     im = fits.open(fn)['sci', 1].data
     return np.sum(im[dim1 - side: dim1 + side + 1, dim2 - side: dim2 + side + 1])
-
+    
 if __name__ == '__main__':
     orbit = 12
     filter = 'F160W'
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     county0 = np.array(county0)
     count0y = np.array(count0y)
     plt.close('all')
-    plt.plot(subdf.index, count00/np.max(count00), label = 'original', linewidth = 3)
+    plt.plot(subdf.index, count00/np.max(count00), label = 'Peak Pixel', linewidth = 3)
     plt.plot(subdf.index, countx0/np.max(countx0), label = 'x-1, y')
     plt.plot(subdf.index, count0x/np.max(count0x), label = 'x+1, y')
     plt.plot(subdf.index, county0/np.max(county0), label = 'x, y-1')
@@ -53,4 +53,5 @@ if __name__ == '__main__':
     plt.legend(loc = 'best')
     plt.xlabel('UT')
     plt.ylabel('Normalized Flux')
+    plt.title('Orbit {0}'.format(orbit))
     plt.savefig('CentralPixelTrend_orbit{0}_F160W.pdf'.format(orbit))
