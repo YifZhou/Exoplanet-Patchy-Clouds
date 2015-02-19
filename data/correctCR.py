@@ -128,8 +128,10 @@ class ExposureSet:
                 
             paras, pcov = curve_fit(func, np.arrange(len(count)), count, p0 = [1., count[0]], sigma = np.sqrt(np.abs(count)), absolute_sigma = True) # since exposures are equally sampled, use arrage(nsamp) as x index
             diff = np.abs(paras[0] * np.arrange(len(count)) + paras[1] - count)/np.sqrt(np.abs(count))
-            
-        
+            problematicIndex = np.where(diff > sigmaThreshold)
+            self.problematicPixel += [(dim0_i, dim1_i, pid) for pid in problematicIndex]
+            for pid in problematicIndex:
+                print 'exposure {0} has problematics correction at ({1}, {2})'.format(self.fnList[pid], dim0_i +self. dim00, dim1_i + self.dim10)
 
     def saveFITS(self, direction):
         """
