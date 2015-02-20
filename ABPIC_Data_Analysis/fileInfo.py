@@ -8,6 +8,7 @@ from astropy.io import fits
 import os
 import pandas as pd
 import numpy as np
+from math import floor
 
 def getTargetNo(file_list):
     """
@@ -15,7 +16,7 @@ def getTargetNo(file_list):
     """
     return [int(item[4:6]) for item in file_list]
 
-def createInfoFile(dataDir, target, fileType, saveDir = '.'):
+def createInfoFile(dataDir, fileType, saveDir = '.'):
     # dataDir = '../data'
     # target = '2M1207-B'
     # fileType = 'flt'
@@ -29,7 +30,7 @@ def createInfoFile(dataDir, target, fileType, saveDir = '.'):
     ditherNo = []
     exposureNo = []
     
-    for fits_file in sorted(glob.glob(os.path.join(dataDir, target, '*{0}.fits'.format(fileType)))):
+    for fits_file in sorted(glob.glob(os.path.join(dataDir, '*{0}.fits'.format(fileType)))):
         fits_content = fits.open(fits_file)
         file_list.append(fits_file.split('/')[-1])
         header = fits_content[0].header
@@ -62,7 +63,7 @@ def createInfoFile(dataDir, target, fileType, saveDir = '.'):
 
     fileInfo = pd.DataFrame([line for line in zip(file_list, filter_list, orbitNo, angle_list, ditherNo, exposureNo, date_list, time_list, exposureTime)],
                             columns = ['file name', 'filter', 'orbit', 'Pos Angle', 'dither', 'exposure set', 'obs date', 'obs time', 'exposure time'])
-    fileInfo.to_csv('{0}_{1}_fileInfo.csv'.format(target, fileType), index = False)
+    fileInfo.to_csv('ABPIC-B_{0}_fileInfo.csv'.format(fileType), index = False)
 
 def createInfoFileFromResult(infoFn, resultFn, outfn):
     """
@@ -79,4 +80,4 @@ def createInfoFileFromResult(infoFn, resultFn, outfn):
     infoDF.to_csv(outfn, index = False)
     
 if __name__ == '__main__':
-    createInfoFileFromResult('ABPIC-B_ima_fileInfo.csv', '2015_Feb_10_ima_aper=5_result.csv', 'ABPIC-B_info4calibration.csv')
+    createInfoFile('../data/ABPIC-B_myfits/', 'myfits')

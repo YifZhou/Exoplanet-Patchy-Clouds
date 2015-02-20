@@ -61,14 +61,17 @@
 
 PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
-  dataDir = '../data/ABPIC-B/' ;; changable
+  dataDir = '../data/ABPIC-B_myfits/' ;; changable
   IF fileType EQ 'flt' THEN BEGIN
      preparedFN = prepData(fileInfo, dataDir)
      PSF_fn = 'flt_PSF.sav'
   ENDIF ELSE IF fileType EQ 'ima' THEN BEGIN
      preparedFN = prepImaData(fileInfo, dataDIR)
      PSF_fn = 'ima_PSF.sav'
-  ENDIF  
+  ENDIF ELSE IF fileType EQ 'myfits' THEN BEGIN
+     preparedFN = prepData(fileInfo, dataDIR)
+     PSF_fn = 'myfits_PSF.sav'
+  ENDIF 
   subtractedFN = psf_subtraction(preparedFN, PSF_fn)
   IF n_elements(aperRadius) EQ 0 THEN aperRadius = 5
   resultFN = aperturePhot(subtractedFN, aperRadius = 5)
@@ -80,7 +83,7 @@ FUNCTION myReadCSV,fn, tags
   ;; function for reading csv files
   ;; change the names of tags
   strct = read_csv(fn)
-  return, rename_tags(strct, ['FIELD1','FIELD2','FIELD3','FIELD4','FIELD5','FIELD6','FIELD7','FIELD8','FIELD9'], tags)
+  return, rename_tags(strct, ['FIELD01','FIELD02','FIELD03','FIELD04','FIELD05','FIELD06','FIELD07','FIELD08','FIELD09'], tags)
 END
 
 FUNCTION prepData, infoStruct, dataDir
