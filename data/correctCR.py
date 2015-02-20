@@ -16,11 +16,11 @@ class HSTFile:
     fitCountArray
     side
     """
-    def __init__ (self, fileID, peakPos, size):
+    def __init__ (self, fileID, dataDIR, peakPos, size):
         """
         initialize ImaFile Object
         """
-        self.dataDIR = '/Users/ZhouYf/Documents/Exoplanet-Patchy-Clouds/data/ABPIC-B'
+        self.dataDIR = dataDIR#'/Users/ZhouYf/Documents/Exoplanet-Patchy-Clouds/data/ABPIC-B'
         self.fileID = fileID
         self.fltFileName = self.fileID + '_flt.fits'
         self.imaFileName = self.fileID + '_ima.fits'
@@ -63,14 +63,14 @@ class HSTFile:
             self.fitCountArray[dim0, dim1] = paras[0]
         self.isCorrected = True
 
-    def to_fits (self, direction, decrator = 'myfits'):
+    def to_fits (self, direction, decorator = 'myfits'):
         """
         save the corrected result to fits file
         """
         fltFile = fits.open(path.join(self.dataDIR, self.fltFileName))
         fltFile['sci'].data[self.dim0 - 5 - self.size: self.dim0 - 5 + self.size + 1,
                             self.dim1 - 5 - self.size: self.dim1 - 5 + self.size + 1]
-        fltFile.writeto(path.join(direction, self.fileID + '_' + decrator + '.fits'))
+        fltFile.writeto(path.join(direction, self.fileID + '_' + decorator + '.fits'))
         fltFile.close()
 
 class ExposureSet:
@@ -83,11 +83,12 @@ class ExposureSet:
     expousre number
     filter
     """
-    def __init__ (self, fnList, peakPos, orbit, nExpo, filterName, size = 5):
+    def __init__ (self, fnList, dataDIR, peakPos, orbit, nExpo, filterName, size = 5):
         """
         initialize Exopusre set object
         """
         self.fnList = fnList
+        self.dataDIR = dataDIR
         self.nFile = len(fnList)
         self.orbit = orbit
         self.nExpo = nExpo # exposure number
@@ -101,7 +102,7 @@ class ExposureSet:
         
         self.HSTFileList = []
         for fn in self.fnList:
-            self.HSTFileList.append(HSTFile(fn, self.peakPos, self.size))
+            self.HSTFileList.append(HSTFile(fn, self.dataDIR, self.peakPos, self.size))
 
         self.expTime = self.HSTFileList[0].expTime[-1] # the exposure time for individual file, used for caculating couting uncertainties
         self.isCorrected = np.zeros([2*size + 1, 2*size + 1, self.nFile], dtype = bool)
@@ -146,12 +147,12 @@ class ExposureSet:
                     # plot the result for checking
                     plt.close('all')
                     fig, ax = plt.subplots()
-                    ax.errorbar(np.arange(len(count)), count, yerr = np.sqrt(np.abs(count)),linewdith = 0 , fmt = '.')
+                    ax.errorbar(np.arange(len(count)), count, yerr = np.sqrt(np.abs(count)),linewidth = 0 , fmt = '.')
                     ax.plot(np.arange(len(count)), np.arange(len(count)) * paras[0] + paras[1])
                     ax.set_xlabel('Exposure Number')
-                    ax.set_ylabe('Count (e$^-$)')
+                    ax.set_ylabel('Count (e$^-$)')
                     ax.set_title('m = {0}, b = {1}'.format(paras[0], paras[1]))
-                    plt.savefig(path.join(plotDIR, 'Orbit_{0}_Expo_{1}_x_{2}_y_{3}.pdf'.format(self.orbit, self.nExpo, self.dim1_i, self.dim0_i)))
+                    plt.savefig(path.join(plotDIR, 'Orbit_{0}_Expo_{1}_x_{2}_y_{3}.pdf'.format(self.orbit, self.nExpo, self.dim10 + dim1_i, self.dim00 + dim0_i)))
                     # save filename orbit_i_expo_j_x_xxx_y_yyy.pdf
     
 
@@ -159,17 +160,18 @@ class ExposureSet:
         """
         save the correction into fits file
         """    
-        for item in enumerate(self.HSTFileList):
+        for item in self.HSTFileList:
             item.to_fits(direction, decorator = 'myfits')
 
 if __name__ == '__main__':
     df = pd.read_csv('ABPIC-B_imaInfo4Calibration.csv')
+    dataDIR = './ABPIC-B/'
     for orbit in range(10, 13):
         for nExpo in range(13):
             plotDIR = path.join('./ABPIC-B_myfits','orbit_{0}_expo_{1}'.format(orbit,nExpo))
-            if ~path.exists(plotDIR): mkdir(plotDIR)
+            if not path.exists(plotDIR): mkdir(plotDIR)
             subdf = df[(df['orbit'] == orbit) & (df['exposure set'] == nExpo)]
-            exp = ExposureSet(subdf['file ID'].values,[subdf['YCENTER'].values[0], subdf['XCENTER'].values[0]] , orbit, nExpo, subdf['filter'].values[0])
+            exp = ExposureSet(subdf['file ID'].values, dataDIR,[subdf['YCENTER'].values[0], subdf['XCENTER'].values[0]] , orbit, nExpo, subdf['filter'].values[0])
             exp.correct()
             exp.testCorrection(doPlot = True, plotDIR = plotDIR)
             exp.saveFITS('./ABPIC-B_myfits')
