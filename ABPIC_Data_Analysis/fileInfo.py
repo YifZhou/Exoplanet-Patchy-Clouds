@@ -7,7 +7,7 @@ import glob
 from astropy.io import fits
 import os
 import pandas as pd
-from math import floor
+import numpy as np
 
 def getTargetNo(file_list):
     """
@@ -15,10 +15,10 @@ def getTargetNo(file_list):
     """
     return [int(item[4:6]) for item in file_list]
 
-if __name__ == '__main__':
-    dataDir = '../data'
-    target = '2M1207-B'
-    fileType = 'flt'
+def createInfoFile(dataDir, target, fileType, saveDir = '.'):
+    # dataDir = '../data'
+    # target = '2M1207-B'
+    # fileType = 'flt'
     file_list = []
     angle_list = []
     filter_list = []
@@ -63,3 +63,20 @@ if __name__ == '__main__':
     fileInfo = pd.DataFrame([line for line in zip(file_list, filter_list, orbitNo, angle_list, ditherNo, exposureNo, date_list, time_list, exposureTime)],
                             columns = ['file name', 'filter', 'orbit', 'Pos Angle', 'dither', 'exposure set', 'obs date', 'obs time', 'exposure time'])
     fileInfo.to_csv('{0}_{1}_fileInfo.csv'.format(target, fileType), index = False)
+
+def createInfoFileFromResult(infoFn, resultFn, outfn):
+    """
+    create infofile for data recalibration pipeline
+    add xc and yc column for original data frame
+    change filename into file indentifier
+    """
+    infoDF = pd.read_csv(infoFn)
+    resultDF = pd.read_csv(resultFn)
+    infoDF['XCENTER'] = np.round(resultDF['XCENTER'])
+    infoDF['YCENTER'] = np.round(resultDF['YCENTER'])
+    infoDF = infoDF.rename(columns = {'file name': "file ID"})
+    infoDF['file ID'] = [filename.split('_')[0] for filename in infoDF['file ID']]
+    infoDF.to_csv(outfn, index = False)
+    
+if __name__ == '__main__':
+    createInfoFileFromResult('ABPIC-B_ima_fileInfo.csv', '2015_Feb_10_ima_aper=5_result.csv', 'ABPIC-B_info4calibration.csv')

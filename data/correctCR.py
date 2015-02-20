@@ -1,7 +1,9 @@
 from astropy.io import fits
 import numpy as np
-from os import path
+from os import path, mkdir
 from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+import pandas as pd
 
 class HSTFile:
     """
@@ -19,8 +21,9 @@ class HSTFile:
         initialize ImaFile Object
         """
         self.dataDIR = '/Users/ZhouYf/Documents/Exoplanet-Patchy-Clouds/data/ABPIC-B'
-        self.fltFileName = fileID + '_flt.fits'
-        self.imaFileName = fileID + '_ima.fits'
+        self.fileID = fileID
+        self.fltFileName = self.fileID + '_flt.fits'
+        self.imaFileName = self.fileID + '_ima.fits'
         self.dim0 = round(peakPos[0]) 
         self.dim1 = round(peakPos[1]) # dim0 is y, dim1 is x, position is in IMA file coordinate
         self.size = size
@@ -64,8 +67,11 @@ class HSTFile:
         """
         save the corrected result to fits file
         """
-        
-        
+        fltFile = fits.open(path.join(self.dataDIR, self.fltFileName))
+        fltFile['sci'].data[self.dim0 - 5 - self.size: self.dim0 - 5 + self.size + 1,
+                            self.dim1 - 5 - self.size: self.dim1 - 5 + self.size + 1]
+        fltFile.writeto(path.join(direction, self.fileID + '_' + decrator + '.fits'))
+        fltFile.close()
 
 class ExposureSet:
     """
@@ -77,13 +83,14 @@ class ExposureSet:
     expousre number
     filter
     """
-    def __init__ (self, fnList, peakPos, orbit, filterName, size = 5):
+    def __init__ (self, fnList, peakPos, orbit, nExpo, filterName, size = 5):
         """
         initialize Exopusre set object
         """
         self.fnList = fnList
         self.nFile = len(fnList)
         self.orbit = orbit
+        self.nExpo = nExpo # exposure number
         self.filterName = filterName
         self.peakPos = peakPos # dim0 is y, dim1 is x, position is in IMA file coordinate
         self.dim0 = peakPos[0]
@@ -108,9 +115,11 @@ class ExposureSet:
         for i, item in enumerate(self.HSTFileList):
             item.correct()
             self.isCorrected[:, :, i] = item.needCorrect
-            self.correctStack[:, :, i] = item.fitCountArray
+            self.correctedStack[:, :, i] = item.fitCountArray
 
-    def testCorrection (self, sigmaThreshold = 5, doPlot = False, plotDIR = ""):
+        print 'Orbit {0}, Exposure {1} finished re-calibration'.format(self.orbit, self.nExpo)
+
+    def testCorrection (self, sigmaThreshold = 3, doPlot = False, plotDIR = "."):
         """test if the correction is correct
         test method: assume that
         in short time scale (within in a exposure set ~10 min), the
@@ -120,18 +129,31 @@ class ExposureSet:
         away (default is 5 sigma) from the lienar fit.
 
         """
-        dim0, dim1 = np.any(self.isCorrected, axis = 2) # the coordinate of the pixel that has calibration correction made
+        self.problematicPixel[:] = []
+        dim0, dim1 = np.where(np.any(self.isCorrected, axis = 2)) # the coordinate of the pixel that has calibration correction made
         for dim0_i, dim1_i in zip(dim0, dim1):
-            count = self.expTime * self.correctStack[dim0, dim1, :]
+            count = self.expTime * self.correctedStack[dim0_i, dim1_i, :]
             def func(x, *p):
                 return x * p[0] + p[1]
                 
-            paras, pcov = curve_fit(func, np.arrange(len(count)), count, p0 = [1., count[0]], sigma = np.sqrt(np.abs(count)), absolute_sigma = True) # since exposures are equally sampled, use arrage(nsamp) as x index
-            diff = np.abs(paras[0] * np.arrange(len(count)) + paras[1] - count)/np.sqrt(np.abs(count))
-            problematicIndex = np.where(diff > sigmaThreshold)
+            paras, pcov = curve_fit(func, np.arange(len(count)), count, p0 = [1., count[0]], sigma = np.sqrt(np.abs(count)), absolute_sigma = True) # since exposures are equally sampled, use arange(nsamp) as x index
+            diff = np.abs(paras[0] * np.arange(len(count)) + paras[1] - count)/np.sqrt(np.abs(count))
+            problematicIndex = np.where(diff > sigmaThreshold)[0]
             self.problematicPixel += [(dim0_i, dim1_i, pid) for pid in problematicIndex]
             for pid in problematicIndex:
                 print 'exposure {0} has problematics correction at ({1}, {2})'.format(self.fnList[pid], dim0_i +self. dim00, dim1_i + self.dim10)
+                if doPlot:
+                    # plot the result for checking
+                    plt.close('all')
+                    fig, ax = plt.subplots()
+                    ax.errorbar(np.arange(len(count)), count, yerr = np.sqrt(np.abs(count)),linewdith = 0 , fmt = '.')
+                    ax.plot(np.arange(len(count)), np.arange(len(count)) * paras[0] + paras[1])
+                    ax.set_xlabel('Exposure Number')
+                    ax.set_ylabe('Count (e$^-$)')
+                    ax.set_title('m = {0}, b = {1}'.format(paras[0], paras[1]))
+                    plt.savefig(path.join(plotDIR, 'Orbit_{0}_Expo_{1}_x_{2}_y_{3}.pdf'.format(self.orbit, self.nExpo, self.dim1_i, self.dim0_i)))
+                    # save filename orbit_i_expo_j_x_xxx_y_yyy.pdf
+    
 
     def saveFITS(self, direction):
         """
@@ -141,5 +163,13 @@ class ExposureSet:
             item.to_fits(direction, decorator = 'myfits')
 
 if __name__ == '__main__':
-    test = HSTFile('icdg10vaq', [227, 134], 6)        
-    test.correct()
+    df = pd.read_csv('ABPIC-B_imaInfo4Calibration.csv')
+    for orbit in range(10, 13):
+        for nExpo in range(13):
+            plotDIR = path.join('./ABPIC-B_myfits','orbit_{0}_expo_{1}'.format(orbit,nExpo))
+            if ~path.exists(plotDIR): mkdir(plotDIR)
+            subdf = df[(df['orbit'] == orbit) & (df['exposure set'] == nExpo)]
+            exp = ExposureSet(subdf['file ID'].values,[subdf['YCENTER'].values[0], subdf['XCENTER'].values[0]] , orbit, nExpo, subdf['filter'].values[0])
+            exp.correct()
+            exp.testCorrection(doPlot = True, plotDIR = plotDIR)
+            exp.saveFITS('./ABPIC-B_myfits')
