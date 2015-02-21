@@ -39,7 +39,7 @@ if __name__ == '__main__':
         count = np.zeros(nSamp -1)
         sampTime = np.zeros(nSamp - 1)
         # count[0] = ima['sci', nSamp].data[dim1, dim2]
-        # sampTime[0] = 0 # zeroth read
+        # sampTime[0] = 0 # zeroth readp
         print 'Value', 'Flag'
         for i, samp_i in enumerate(range(nSamp - 1, 0, -1)): #last samp is the first readout
             sampTime[i] = ima['sci', samp_i].header['samptime']
