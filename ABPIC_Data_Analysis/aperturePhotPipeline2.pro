@@ -58,21 +58,24 @@
 ; MODIFICATION HISTORY:
 ;
 ;-
-
-PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius
+PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtract = Subtract
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
+  IF N_elements(Subtract) EQ 0 THEN subtract = 1
   dataDir = '../data/ABPIC-B_myfits/' ;; changable
+  ;; read the first images for two filters, as the reference images
+     im125 = mrdfits('../data/ABPIC-B/icdg07p3q_flt.fits', 1, hd)
+     im160 = mrdfits('../data/ABPIC-B/icdg07p7q_flt.fits', 1, hd) ;; define cross correlation reference image
   IF fileType EQ 'flt' THEN BEGIN
-     preparedFN = prepData(fileInfo, dataDir)
+     preparedFN = prepData(fileInfo, dataDir, im125, im160)
      PSF_fn = 'flt_PSF.sav'
   ENDIF ELSE IF fileType EQ 'ima' THEN BEGIN
-     preparedFN = prepImaData(fileInfo, dataDIR)
+     preparedFN = prepImaData(fileInfo, dataDIR, im125, im160)
      PSF_fn = 'ima_PSF.sav'
   ENDIF ELSE IF fileType EQ 'myfits' THEN BEGIN
-     preparedFN = prepData(fileInfo, dataDIR)
+     preparedFN = prepData(fileInfo, dataDIR, im125, im160)
      PSF_fn = 'myfits_PSF.sav'
   ENDIF 
-  subtractedFN = psf_subtraction(preparedFN, PSF_fn)
+  subtractedFN = psf_subtraction(preparedFN, PSF_fn, Subtract)
   IF n_elements(aperRadius) EQ 0 THEN aperRadius = 5
   resultFN = aperturePhot(subtractedFN, aperRadius = 5)
   resultCSVFN = filename() + '_' + fileType + '_aper=' + strn(aperRadius) + '_result.csv'
@@ -86,16 +89,12 @@ FUNCTION myReadCSV,fn, tags
   return, rename_tags(strct, ['FIELD01','FIELD02','FIELD03','FIELD04','FIELD05','FIELD06','FIELD07','FIELD08','FIELD09'], tags)
 END
 
-FUNCTION prepData, infoStruct, dataDir
+FUNCTION prepData, infoStruct, dataDir, im125, im160
   ;; apply no shift to the image
-  
-  ;; process F125 and F160 individually
+      ;; process F125 and F160 individually
   F125ID = where(infoStruct.filter EQ 'F125W')
   F160ID = where(infoStruct.filter EQ 'F160W')
-  ;; read the first images for two filters, as the reference images
-  im125 = mrdfits(dataDir + infoStruct.filename[F125ID[0]], 1, hd)
-  im160 = mrdfits(dataDir + infoStruct.filename[F160ID[0]], 1, hd)
-  
+
   nFile = N_ELEMENTS(infoStruct.filename)
   xoff = fltarr(nFile)
   yoff = fltarr(nFile)
@@ -239,7 +238,7 @@ FUNCTION searchPSF, id0, satisfyID
 END
 
 
-FUNCTION psf_subtraction, input_fn, PSF_fn
+FUNCTION psf_subtraction, input_fn, PSF_fn, Subtract
   COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
   restore, input_fn ;; restore data from data preparation PROCEDURE
   restore, PSF_fn
@@ -264,7 +263,8 @@ FUNCTION psf_subtraction, input_fn, PSF_fn
      skySigma[i] = fitResult[3]
      xCenter[i] = fitResult[4]
      yCenter[i] = fitResult[5]
-     cube1[*, *, i] = cube[*, *, i] - fitResult[1] * fshift(PSFLIST[fitResult[0]].PSF, -fitResult[6], -fitResult[7])
+     IF Subtract NE 0 THEN cube1[*, *, i] = cube[*, *, i] - fitResult[1] * fshift(PSFLIST[fitResult[0]].PSF, -fitResult[6], -fitResult[7]) $
+                                       ELSE cube1[*,*,i] = cube[*,*,i]
      print, i, ' image finished psf subtraction'
   ENDFOR
   infoStruct1 = add_tag(infoStruct, 'xCenter', xCenter)

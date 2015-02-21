@@ -1,0 +1,1615 @@
+IDL Version 8.2.3 (linux x86_64 m64). (c) 2013, Exelis Visual Information Solutions, Inc.
+Installation number: 208437-1.
+Licensed for use by: Steward Observatory
+
+IDL> .run "/home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro"
+
+PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtract = 1
+                                                                                     ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 61
+
+  resultFN = aperturePhot(subtractedFN, aperRadius = 5)
+                                                    ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 79
+
+  resultCSVFN = filename() + '_' + fileType + '_aper=' + strn(aperRadius) + '_result.csv'
+                          ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 80
+% 3 Compilation error(s) in module $MAIN$.
+
+FUNCTION myReadCSV,fn, tags
+                           ^
+% Procedure header must appear first and only once: MYREADCSV
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 84
+
+  return, rename_tags(strct, ['FIELD01','FIELD02','FIELD03','FIELD04','FIELD05','FIELD06','FIELD07','FIELD08','FIELD09'], tags)
+                                                                                                                               ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 88
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION prepData, infoStruct, dataDir, im125, im160
+                                                    ^
+% Procedure header must appear first and only once: PREPDATA
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 91
+
+  saveFN = filename() + '_prepared.sav'
+                     ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 113
+
+  return, saveFn
+                ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 115
+% 3 Compilation error(s) in module $MAIN$.
+
+FUNCTION prepImaData, infoStruct, dataDir
+                                         ^
+% Procedure header must appear first and only once: PREPIMADATA
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 118
+
+  saveFN = filename() + '_prepared.sav'
+                     ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 148
+
+  return, saveFn
+                ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 150
+% 3 Compilation error(s) in module $MAIN$.
+
+FUNCTION readImaFile, filename, subReadID
+                                         ^
+% Procedure header must appear first and only once: READIMAFILE
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 153
+
+  return, im/N_elements(subReadID)
+                                  ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 158
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION findPeak, im, x0, y0, range=range
+                                          ^
+% Procedure header must appear first and only once: FINDPEAK
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 162
+
+  return, [params[4] + xlow, params[5] + ylow]
+                                              ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 169
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION searchPSF, id0, satisfyID
+                                  ^
+% Procedure header must appear first and only once: SEARCHPSF
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 172
+
+  COMMON preparedData, cube, PSFLIST, infoList, nImages, xMesh, yMesh
+                                                                     ^
+% CUBE is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 174
+
+  return, [psf_id, amp, skylevel, skysig, secCen[0], secCen[1], xshift, yshift] ; return psf id and c0
+                                                                                 ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 236
+% 3 Compilation error(s) in module $MAIN$.
+
+FUNCTION psf_subtraction, input_fn, PSF_fn, Subtract = 1
+                                                        ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 240
+
+  COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
+                                                                       ^
+% CUBE is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 241
+
+  COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
+                                                                       ^
+% INFOSTRUCT is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 241
+
+  output_fn = filename() + '_subtracted.sav'
+                        ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 275
+
+  return, output_fn
+                   ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 277
+% 5 Compilation error(s) in module $MAIN$.
+
+FUNCTION aperturePhot, inFn, aperRadius = aperRadius
+                                                    ^
+% Procedure header must appear first and only once: APERTUREPHOT
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 280
+
+  output_fn =  filename() + '_aperPhot.sav'
+                         ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 320
+
+  return, output_fn
+                   ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 322
+% 3 Compilation error(s) in module $MAIN$.
+
+FUNCTION filename
+                 ^
+% Procedure header must appear first and only once: FILENAME
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 325
+
+  return, fn
+            ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 331
+% 2 Compilation error(s) in module $MAIN$.
+IDL> .run "/home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro"
+
+PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtract = 1
+                                                                                     ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 61
+% 1 Compilation error(s) in module $MAIN$.
+
+FUNCTION myReadCSV,fn, tags
+                           ^
+% Procedure header must appear first and only once: MYREADCSV
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 84
+
+  return, rename_tags(strct, ['FIELD01','FIELD02','FIELD03','FIELD04','FIELD05','FIELD06','FIELD07','FIELD08','FIELD09'], tags)
+                                                                                                                               ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 88
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION prepData, infoStruct, dataDir, im125, im160
+                                                    ^
+% Procedure header must appear first and only once: PREPDATA
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 91
+
+  return, saveFn
+                ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 115
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION prepImaData, infoStruct, dataDir
+                                         ^
+% Procedure header must appear first and only once: PREPIMADATA
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 118
+
+  return, saveFn
+                ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 150
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION readImaFile, filename, subReadID
+                                         ^
+% Procedure header must appear first and only once: READIMAFILE
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 153
+
+  return, im/N_elements(subReadID)
+                                  ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 158
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION findPeak, im, x0, y0, range=range
+                                          ^
+% Procedure header must appear first and only once: FINDPEAK
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 162
+
+  return, [params[4] + xlow, params[5] + ylow]
+                                              ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 169
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION searchPSF, id0, satisfyID
+                                  ^
+% Procedure header must appear first and only once: SEARCHPSF
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 172
+
+  COMMON preparedData, cube, PSFLIST, infoList, nImages, xMesh, yMesh
+                                                                     ^
+% CUBE is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 174
+
+  return, [psf_id, amp, skylevel, skysig, secCen[0], secCen[1], xshift, yshift] ; return psf id and c0
+                                                                                 ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 236
+% 3 Compilation error(s) in module $MAIN$.
+
+FUNCTION psf_subtraction, input_fn, PSF_fn, Subtract = 1
+                                                        ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 240
+
+  COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
+                                                                       ^
+% CUBE is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 241
+
+  COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
+                                                                       ^
+% INFOSTRUCT is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 241
+
+  return, output_fn
+                   ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 277
+% 4 Compilation error(s) in module $MAIN$.
+
+FUNCTION aperturePhot, inFn, aperRadius = aperRadius
+                                                    ^
+% Procedure header must appear first and only once: APERTUREPHOT
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 280
+
+  return, output_fn
+                   ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 322
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION filename
+                 ^
+% Procedure header must appear first and only once: FILENAME
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 325
+
+  return, fn
+            ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 331
+% 2 Compilation error(s) in module $MAIN$.
+IDL> .run "/home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro"
+% Compiled module: APERTUREPHOTPIPELINE2.
+% Compiled module: MYREADCSV.
+% Compiled module: PREPDATA.
+% Compiled module: PREPIMADATA.
+% Compiled module: READIMAFILE.
+% Compiled module: FINDPEAK.
+% Compiled module: SEARCHPSF.
+
+FUNCTION psf_subtraction, input_fn, PSF_fn, Subtract = 1
+                                                        ^
+% Syntax error.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 240
+
+  COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
+                                                                       ^
+% CUBE is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 241
+
+  COMMON preparedData, cube, PSFLIST, infoStruct, nImages, xMesh, yMesh
+                                                                       ^
+% INFOSTRUCT is already defined with a conflicting definition.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 241
+
+  return, output_fn
+                   ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 277
+% 4 Compilation error(s) in module $MAIN$.
+
+FUNCTION aperturePhot, inFn, aperRadius = aperRadius
+                                                    ^
+% Procedure header must appear first and only once: APERTUREPHOT
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 280
+
+  return, output_fn
+                   ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 322
+% 2 Compilation error(s) in module $MAIN$.
+
+FUNCTION filename
+                 ^
+% Procedure header must appear first and only once: FILENAME
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 325
+
+  return, fn
+            ^
+% Return statement in procedures can't have values.
+  At: /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro, Line 331
+% 2 Compilation error(s) in module $MAIN$.
+IDL> .run "/home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro"
+% Compiled module: APERTUREPHOTPIPELINE2.
+% Compiled module: MYREADCSV.
+% Compiled module: PREPDATA.
+% Compiled module: PREPIMADATA.
+% Compiled module: READIMAFILE.
+% Compiled module: FINDPEAK.
+% Compiled module: SEARCHPSF.
+% Compiled module: PSF_SUBTRACTION.
+% Compiled module: APERTUREPHOT.
+% Compiled module: FILENAME.
+IDL> .run "/home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro"
+% Compiled module: APERTUREPHOTPIPELINE2.
+% Compiled module: MYREADCSV.
+% Compiled module: PREPDATA.
+% Compiled module: PREPIMADATA.
+% Compiled module: READIMAFILE.
+% Compiled module: FINDPEAK.
+% Compiled module: SEARCHPSF.
+% Compiled module: PSF_SUBTRACTION.
+% Compiled module: APERTUREPHOT.
+% Compiled module: FILENAME.
+IDL> aperturePhotPipeLine2, 'ABPIC-B_myfits_fileInfo.csv', 'myfits', aperRadius = 5, subtract = 0
+% Compiled module: RENAME_TAGS.
+% Compiled module: MRDFITS.
+% Compiled module: FXPOSIT.
+% Compiled module: FXMOVE.
+% Compiled module: MRD_HREAD.
+% Compiled module: FXPAR.
+% Compiled module: GETTOK.
+% Compiled module: VALID_NUM.
+% Compiled module: MRD_SKIP.
+MRDFITS: Image array (256,256)  Type=Real*4
+MRDFITS: Image array (256,256)  Type=Real*4
+MRDFITS: Image array (256,256)  Type=Real*4
+% Compiled module: CROSSCORR.
+% Compiled module: MPFIT2DPEAK.
+% Compiled module: MPFIT.
+% Compiled module: MPFIT2DFUN.
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+% Compiled module: ADD_TAG.
+% Compiled module: COMBINE_STRUCTS.
+% Compiled module: COPY_STRUCT.
+% PSF_SUBTRACTION: Incorrect number of arguments.
+% Execution halted at: APERTUREPHOTPIPELINE2   77
+   /home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/apertur
+  ePhotPipeline2.pro
+%                      $MAIN$          
+IDL> .run "/home/yzhou/Documents/Exoplanet_Patchy_Project/ABPIC_Data_Analysis/aperturePhotPipeline2.pro"
+% Procedure was compiled while active: APERTUREPHOTPIPELINE2. Returning.
+% Compiled module: APERTUREPHOTPIPELINE2.
+% Compiled module: MYREADCSV.
+% Compiled module: PREPDATA.
+% Compiled module: PREPIMADATA.
+% Compiled module: READIMAFILE.
+% Compiled module: FINDPEAK.
+% Compiled module: SEARCHPSF.
+% Compiled module: PSF_SUBTRACTION.
+% Compiled module: APERTUREPHOT.
+% Compiled module: FILENAME.
+IDL> aperturePhotPipeLine2, 'ABPIC-B_myfits_fileInfo.csv', 'myfits', aperRadius = 5, subtract = 0
+MRDFITS: Image array (256,256)  Type=Real*4
+MRDFITS: Image array (256,256)  Type=Real*4
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+MRDFITS: Image array (256,256)  Type=Real*4
+i image finished preparation
+% Compiled module: MESHGRID.
+% Compiled module: CGSETDIFFERENCE.
+% Compiled module: FSHIFT.
+% Compiled module: SKY.
+% Compiled module: MMM.
+         469 bad pixels excluded
+% Compiled module: INTERPOL.
+       0 image finished psf subtraction
+         461 bad pixels excluded
+       1 image finished psf subtraction
+         462 bad pixels excluded
+       2 image finished psf subtraction
+         458 bad pixels excluded
+       3 image finished psf subtraction
+         407 bad pixels excluded
+       4 image finished psf subtraction
+         402 bad pixels excluded
+       5 image finished psf subtraction
+         407 bad pixels excluded
+       6 image finished psf subtraction
+         403 bad pixels excluded
+       7 image finished psf subtraction
+         418 bad pixels excluded
+       8 image finished psf subtraction
+         473 bad pixels excluded
+       9 image finished psf subtraction
+         465 bad pixels excluded
+      10 image finished psf subtraction
+         452 bad pixels excluded
+      11 image finished psf subtraction
+         454 bad pixels excluded
+      12 image finished psf subtraction
+         409 bad pixels excluded
+      13 image finished psf subtraction
+         409 bad pixels excluded
+      14 image finished psf subtraction
+         420 bad pixels excluded
+      15 image finished psf subtraction
+         437 bad pixels excluded
+      16 image finished psf subtraction
+         414 bad pixels excluded
+      17 image finished psf subtraction
+         490 bad pixels excluded
+      18 image finished psf subtraction
+         456 bad pixels excluded
+      19 image finished psf subtraction
+         452 bad pixels excluded
+      20 image finished psf subtraction
+         460 bad pixels excluded
+      21 image finished psf subtraction
+         425 bad pixels excluded
+      22 image finished psf subtraction
+         403 bad pixels excluded
+      23 image finished psf subtraction
+         413 bad pixels excluded
+      24 image finished psf subtraction
+         431 bad pixels excluded
+      25 image finished psf subtraction
+         423 bad pixels excluded
+      26 image finished psf subtraction
+         471 bad pixels excluded
+      27 image finished psf subtraction
+         474 bad pixels excluded
+      28 image finished psf subtraction
+         477 bad pixels excluded
+      29 image finished psf subtraction
+         461 bad pixels excluded
+      30 image finished psf subtraction
+         425 bad pixels excluded
+      31 image finished psf subtraction
+         409 bad pixels excluded
+      32 image finished psf subtraction
+         417 bad pixels excluded
+      33 image finished psf subtraction
+         417 bad pixels excluded
+      34 image finished psf subtraction
+         411 bad pixels excluded
+      35 image finished psf subtraction
+         459 bad pixels excluded
+      36 image finished psf subtraction
+         465 bad pixels excluded
+      37 image finished psf subtraction
+         471 bad pixels excluded
+      38 image finished psf subtraction
+         476 bad pixels excluded
+      39 image finished psf subtraction
+         424 bad pixels excluded
+      40 image finished psf subtraction
+         426 bad pixels excluded
+      41 image finished psf subtraction
+         414 bad pixels excluded
+      42 image finished psf subtraction
+         417 bad pixels excluded
+      43 image finished psf subtraction
+         428 bad pixels excluded
+      44 image finished psf subtraction
+         451 bad pixels excluded
+      45 image finished psf subtraction
+         484 bad pixels excluded
+      46 image finished psf subtraction
+         475 bad pixels excluded
+      47 image finished psf subtraction
+         490 bad pixels excluded
+      48 image finished psf subtraction
+         419 bad pixels excluded
+      49 image finished psf subtraction
+         425 bad pixels excluded
+      50 image finished psf subtraction
+         409 bad pixels excluded
+      51 image finished psf subtraction
+         416 bad pixels excluded
+      52 image finished psf subtraction
+         420 bad pixels excluded
+      53 image finished psf subtraction
+         468 bad pixels excluded
+      54 image finished psf subtraction
+         460 bad pixels excluded
+      55 image finished psf subtraction
+         468 bad pixels excluded
+      56 image finished psf subtraction
+         470 bad pixels excluded
+      57 image finished psf subtraction
+         394 bad pixels excluded
+      58 image finished psf subtraction
+         397 bad pixels excluded
+      59 image finished psf subtraction
+         396 bad pixels excluded
+      60 image finished psf subtraction
+         395 bad pixels excluded
+      61 image finished psf subtraction
+         286 bad pixels excluded
+      62 image finished psf subtraction
+         276 bad pixels excluded
+      63 image finished psf subtraction
+         290 bad pixels excluded
+      64 image finished psf subtraction
+         273 bad pixels excluded
+      65 image finished psf subtraction
+         287 bad pixels excluded
+      66 image finished psf subtraction
+         391 bad pixels excluded
+      67 image finished psf subtraction
+         407 bad pixels excluded
+      68 image finished psf subtraction
+         390 bad pixels excluded
+      69 image finished psf subtraction
+         377 bad pixels excluded
+      70 image finished psf subtraction
+         286 bad pixels excluded
+      71 image finished psf subtraction
+         296 bad pixels excluded
+      72 image finished psf subtraction
+         287 bad pixels excluded
+      73 image finished psf subtraction
+         281 bad pixels excluded
+      74 image finished psf subtraction
+         295 bad pixels excluded
+      75 image finished psf subtraction
+         374 bad pixels excluded
+      76 image finished psf subtraction
+         402 bad pixels excluded
+      77 image finished psf subtraction
+         383 bad pixels excluded
+      78 image finished psf subtraction
+         389 bad pixels excluded
+      79 image finished psf subtraction
+         284 bad pixels excluded
+      80 image finished psf subtraction
+         290 bad pixels excluded
+      81 image finished psf subtraction
+         289 bad pixels excluded
+      82 image finished psf subtraction
+         278 bad pixels excluded
+      83 image finished psf subtraction
+         302 bad pixels excluded
+      84 image finished psf subtraction
+         394 bad pixels excluded
+      85 image finished psf subtraction
+         384 bad pixels excluded
+      86 image finished psf subtraction
+         389 bad pixels excluded
+      87 image finished psf subtraction
+         407 bad pixels excluded
+      88 image finished psf subtraction
+         287 bad pixels excluded
+      89 image finished psf subtraction
+         293 bad pixels excluded
+      90 image finished psf subtraction
+         288 bad pixels excluded
+      91 image finished psf subtraction
+         295 bad pixels excluded
+      92 image finished psf subtraction
+         302 bad pixels excluded
+      93 image finished psf subtraction
+         387 bad pixels excluded
+      94 image finished psf subtraction
+         386 bad pixels excluded
+      95 image finished psf subtraction
+         395 bad pixels excluded
+      96 image finished psf subtraction
+         396 bad pixels excluded
+      97 image finished psf subtraction
+         286 bad pixels excluded
+      98 image finished psf subtraction
+         294 bad pixels excluded
+      99 image finished psf subtraction
+         300 bad pixels excluded
+     100 image finished psf subtraction
+         304 bad pixels excluded
+     101 image finished psf subtraction
+         291 bad pixels excluded
+     102 image finished psf subtraction
+         382 bad pixels excluded
+     103 image finished psf subtraction
+         401 bad pixels excluded
+     104 image finished psf subtraction
+         395 bad pixels excluded
+     105 image finished psf subtraction
+         403 bad pixels excluded
+     106 image finished psf subtraction
+         300 bad pixels excluded
+     107 image finished psf subtraction
+         302 bad pixels excluded
+     108 image finished psf subtraction
+         298 bad pixels excluded
+     109 image finished psf subtraction
+         296 bad pixels excluded
+     110 image finished psf subtraction
+         275 bad pixels excluded
+     111 image finished psf subtraction
+         410 bad pixels excluded
+     112 image finished psf subtraction
+         399 bad pixels excluded
+     113 image finished psf subtraction
+         401 bad pixels excluded
+     114 image finished psf subtraction
+         411 bad pixels excluded
+     115 image finished psf subtraction
+         444 bad pixels excluded
+     116 image finished psf subtraction
+         470 bad pixels excluded
+     117 image finished psf subtraction
+         452 bad pixels excluded
+     118 image finished psf subtraction
+         461 bad pixels excluded
+     119 image finished psf subtraction
+         392 bad pixels excluded
+     120 image finished psf subtraction
+         402 bad pixels excluded
+     121 image finished psf subtraction
+         408 bad pixels excluded
+     122 image finished psf subtraction
+         395 bad pixels excluded
+     123 image finished psf subtraction
+         409 bad pixels excluded
+     124 image finished psf subtraction
+         459 bad pixels excluded
+     125 image finished psf subtraction
+         453 bad pixels excluded
+     126 image finished psf subtraction
+         466 bad pixels excluded
+     127 image finished psf subtraction
+         466 bad pixels excluded
+     128 image finished psf subtraction
+         411 bad pixels excluded
+     129 image finished psf subtraction
+         424 bad pixels excluded
+     130 image finished psf subtraction
+         421 bad pixels excluded
+     131 image finished psf subtraction
+         408 bad pixels excluded
+     132 image finished psf subtraction
+         420 bad pixels excluded
+     133 image finished psf subtraction
+         450 bad pixels excluded
+     134 image finished psf subtraction
+         454 bad pixels excluded
+     135 image finished psf subtraction
+         458 bad pixels excluded
+     136 image finished psf subtraction
+         469 bad pixels excluded
+     137 image finished psf subtraction
+         414 bad pixels excluded
+     138 image finished psf subtraction
+         408 bad pixels excluded
+     139 image finished psf subtraction
+         416 bad pixels excluded
+     140 image finished psf subtraction
+         411 bad pixels excluded
+     141 image finished psf subtraction
+         401 bad pixels excluded
+     142 image finished psf subtraction
+         463 bad pixels excluded
+     143 image finished psf subtraction
+         449 bad pixels excluded
+     144 image finished psf subtraction
+         476 bad pixels excluded
+     145 image finished psf subtraction
+         478 bad pixels excluded
+     146 image finished psf subtraction
+         399 bad pixels excluded
+     147 image finished psf subtraction
+         411 bad pixels excluded
+     148 image finished psf subtraction
+         403 bad pixels excluded
+     149 image finished psf subtraction
+         394 bad pixels excluded
+     150 image finished psf subtraction
+         422 bad pixels excluded
+     151 image finished psf subtraction
+         456 bad pixels excluded
+     152 image finished psf subtraction
+         462 bad pixels excluded
+     153 image finished psf subtraction
+         465 bad pixels excluded
+     154 image finished psf subtraction
+         459 bad pixels excluded
+     155 image finished psf subtraction
+         408 bad pixels excluded
+     156 image finished psf subtraction
+         424 bad pixels excluded
+     157 image finished psf subtraction
+         414 bad pixels excluded
+     158 image finished psf subtraction
+         420 bad pixels excluded
+     159 image finished psf subtraction
+         408 bad pixels excluded
+     160 image finished psf subtraction
+         477 bad pixels excluded
+     161 image finished psf subtraction
+         495 bad pixels excluded
+     162 image finished psf subtraction
+         467 bad pixels excluded
+     163 image finished psf subtraction
+         465 bad pixels excluded
+     164 image finished psf subtraction
+         416 bad pixels excluded
+     165 image finished psf subtraction
+         429 bad pixels excluded
+     166 image finished psf subtraction
+         430 bad pixels excluded
+     167 image finished psf subtraction
+         429 bad pixels excluded
+     168 image finished psf subtraction
+         424 bad pixels excluded
+     169 image finished psf subtraction
+         467 bad pixels excluded
+     170 image finished psf subtraction
+         460 bad pixels excluded
+     171 image finished psf subtraction
+         483 bad pixels excluded
+     172 image finished psf subtraction
+         458 bad pixels excluded
+     173 image finished psf subtraction
+% Compiled module: APER.
+       0 image finished photometry
+       1 image finished photometry
+       2 image finished photometry
+       3 image finished photometry
+       4 image finished photometry
+       5 image finished photometry
+       6 image finished photometry
+       7 image finished photometry
+       8 image finished photometry
+       9 image finished photometry
+      10 image finished photometry
+      11 image finished photometry
+      12 image finished photometry
+      13 image finished photometry
+      14 image finished photometry
+      15 image finished photometry
+      16 image finished photometry
+      17 image finished photometry
+      18 image finished photometry
+      19 image finished photometry
+      20 image finished photometry
+      21 image finished photometry
+      22 image finished photometry
+      23 image finished photometry
+      24 image finished photometry
+      25 image finished photometry
+      26 image finished photometry
+      27 image finished photometry
+      28 image finished photometry
+      29 image finished photometry
+      30 image finished photometry
+      31 image finished photometry
+      32 image finished photometry
+      33 image finished photometry
+      34 image finished photometry
+      35 image finished photometry
+      36 image finished photometry
+      37 image finished photometry
+      38 image finished photometry
+      39 image finished photometry
+      40 image finished photometry
+      41 image finished photometry
+      42 image finished photometry
+      43 image finished photometry
+      44 image finished photometry
+      45 image finished photometry
+      46 image finished photometry
+      47 image finished photometry
+      48 image finished photometry
+      49 image finished photometry
+      50 image finished photometry
+      51 image finished photometry
+      52 image finished photometry
+      53 image finished photometry
+      54 image finished photometry
+      55 image finished photometry
+      56 image finished photometry
+      57 image finished photometry
+      58 image finished photometry
+      59 image finished photometry
+      60 image finished photometry
+      61 image finished photometry
+      62 image finished photometry
+      63 image finished photometry
+      64 image finished photometry
+      65 image finished photometry
+      66 image finished photometry
+      67 image finished photometry
+      68 image finished photometry
+      69 image finished photometry
+      70 image finished photometry
+      71 image finished photometry
+      72 image finished photometry
+      73 image finished photometry
+      74 image finished photometry
+      75 image finished photometry
+      76 image finished photometry
+      77 image finished photometry
+      78 image finished photometry
+      79 image finished photometry
+      80 image finished photometry
+      81 image finished photometry
+      82 image finished photometry
+      83 image finished photometry
+      84 image finished photometry
+      85 image finished photometry
+      86 image finished photometry
+      87 image finished photometry
+      88 image finished photometry
+      89 image finished photometry
+      90 image finished photometry
+      91 image finished photometry
+      92 image finished photometry
+      93 image finished photometry
+      94 image finished photometry
+      95 image finished photometry
+      96 image finished photometry
+      97 image finished photometry
+      98 image finished photometry
+      99 image finished photometry
+     100 image finished photometry
+     101 image finished photometry
+     102 image finished photometry
+     103 image finished photometry
+     104 image finished photometry
+     105 image finished photometry
+     106 image finished photometry
+     107 image finished photometry
+     108 image finished photometry
+     109 image finished photometry
+     110 image finished photometry
+     111 image finished photometry
+     112 image finished photometry
+     113 image finished photometry
+     114 image finished photometry
+     115 image finished photometry
+     116 image finished photometry
+     117 image finished photometry
+     118 image finished photometry
+     119 image finished photometry
+     120 image finished photometry
+     121 image finished photometry
+     122 image finished photometry
+     123 image finished photometry
+     124 image finished photometry
+     125 image finished photometry
+     126 image finished photometry
+     127 image finished photometry
+     128 image finished photometry
+     129 image finished photometry
+     130 image finished photometry
+     131 image finished photometry
+     132 image finished photometry
+     133 image finished photometry
+     134 image finished photometry
+     135 image finished photometry
+     136 image finished photometry
+     137 image finished photometry
+     138 image finished photometry
+     139 image finished photometry
+     140 image finished photometry
+     141 image finished photometry
+     142 image finished photometry
+     143 image finished photometry
+     144 image finished photometry
+     145 image finished photometry
+     146 image finished photometry
+     147 image finished photometry
+     148 image finished photometry
+     149 image finished photometry
+     150 image finished photometry
+     151 image finished photometry
+     152 image finished photometry
+     153 image finished photometry
+     154 image finished photometry
+     155 image finished photometry
+     156 image finished photometry
+     157 image finished photometry
+     158 image finished photometry
+     159 image finished photometry
+     160 image finished photometry
+     161 image finished photometry
+     162 image finished photometry
+     163 image finished photometry
+     164 image finished photometry
+     165 image finished photometry
+     166 image finished photometry
+     167 image finished photometry
+     168 image finished photometry
+     169 image finished photometry
+     170 image finished photometry
+     171 image finished photometry
+     172 image finished photometry
+     173 image finished photometry
+% Compiled module: STRN.
+IDL> aperturePhotPipeLine2, 'ABPIC-B_myfits_fileInfo.csv', 'myfits', aperRadius = 3, subtract = 0
