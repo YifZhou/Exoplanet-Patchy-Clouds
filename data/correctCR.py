@@ -69,7 +69,7 @@ class HSTFile:
         """
         fltFile = fits.open(path.join(self.dataDIR, self.fltFileName))
         fltFile['sci'].data[self.dim0 - 5 - self.size: self.dim0 - 5 + self.size + 1,
-                            self.dim1 - 5 - self.size: self.dim1 - 5 + self.size + 1]
+                            self.dim1 - 5 - self.size: self.dim1 - 5 + self.size + 1] = self.fitCountArray
         fltFile.writeto(path.join(direction, self.fileID + '_' + decorator + '.fits'))
         fltFile.close()
 
