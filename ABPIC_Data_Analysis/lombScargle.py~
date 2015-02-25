@@ -1,0 +1,11 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+from scipy.signal import lombscargle #lomb scargle method
+import sys
+
+if __name__ == '__main__':
+    df = pd.read_csv(sys.argv[1], parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    df125 = df[df['FILTER'] == 'F125W']
+    for orbit in [10, 11, 12]:
+        df125[df125['ORBIT'] == orbit]['Normed Flux'] = df125[df125['ORBIT'] == orbit]['FLUX']/df125[df125['ORBIT'] == orbit]['FLUX'].mean()
+
