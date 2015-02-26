@@ -14,8 +14,10 @@ if __name__ == '__main__':
     ax160.set_title('F160W')
 
     for ax, band, expt in zip([ax125, ax160], ['F125W', 'F160W'], [30., 15.]):
-        ax.errorbar(fltdf[fltdf['FILTER'] == band].index, fltdf[fltdf['FILTER'] == band]['FLUX'], yerr = np.sqrt(fltdf[fltdf['FILTER'] == band]['FLUX'])/np.sqrt(expt), fmt = 'o', label = 'flt')
-        ax.errorbar(mydf[mydf['FILTER'] == band].index, mydf[mydf['FILTER'] == band]['FLUX'], yerr = np.sqrt(mydf[fltdf['FILTER'] == band]['FLUX'])/np.sqrt(expt), fmt = 's', label = 'corrected')
+        meanflt = fltdf[fltdf['FILTER'] == band]['FLUX'].mean(axis = -1)
+        meanmy = mydf[fltdf['FILTER'] == band]['FLUX'].mean(axis = -1)
+        ax.errorbar(fltdf[fltdf['FILTER'] == band].index, fltdf[fltdf['FILTER'] == band]['FLUX']/meanflt, yerr = np.sqrt(fltdf[fltdf['FILTER'] == band]['FLUX'])/np.sqrt(expt)/meanflt, fmt = 'o', label = 'flt')
+        ax.errorbar(mydf[mydf['FILTER'] == band].index, mydf[mydf['FILTER'] == band]['FLUX']/meanmy, yerr = np.sqrt(mydf[fltdf['FILTER'] == band]['FLUX'])/np.sqrt(expt)/meanmy, fmt = 's', label = 'corrected')
 
     for ax in [ax125, ax160]:
         ax.set_xlabel('UT')

@@ -61,7 +61,7 @@
 PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtract = Subtract
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
   IF N_elements(Subtract) EQ 0 THEN subtract = 1
-  dataDir = '../data/ABPIC-B_myfits/' ;; changable
+  dataDir = '../data/ABPIC-B/' ;; changable
   ;; read the first images for two filters, as the reference images
      im125 = mrdfits('../data/ABPIC-B/icdg07p3q_flt.fits', 1, hd)
      im160 = mrdfits('../data/ABPIC-B/icdg07p7q_flt.fits', 1, hd) ;; define cross correlation reference image
@@ -86,7 +86,7 @@ FUNCTION myReadCSV,fn, tags
   ;; function for reading csv files
   ;; change the names of tags
   strct = read_csv(fn)
-  return, rename_tags(strct, ['FIELD01','FIELD02','FIELD03','FIELD04','FIELD05','FIELD06','FIELD07','FIELD08','FIELD09'], tags)
+  return, rename_tags(strct, ['FIELD1','FIELD2','FIELD3','FIELD4','FIELD5','FIELD6','FIELD7','FIELD8','FIELD9'], tags)
 END
 
 FUNCTION prepData, infoStruct, dataDir, im125, im160
@@ -99,20 +99,23 @@ FUNCTION prepData, infoStruct, dataDir, im125, im160
   xoff = fltarr(nFile)
   yoff = fltarr(nFile)
   cube = MAKE_ARRAY(256, 256, nFile, /DOUBLE) ;; list to save images
+  errorCube = MAKE_ARRAY(256, 256, nFile, /Double) ;; save the err array
   imageSz = 256
   FOR i = 0, nFile -1 DO BEGIN
      im = mrdfits(dataDir + infoStruct.filename[i], 1, header1)
+     err = mrdfits(dataDir + infoStruct.filename[i], 2, errhd) ;; read the error array
      IF infoStruct.filter[i] EQ 'F125W' THEN im0 = im125 ELSE im0 = im160
      corr = crosscorr(im0, im, pmax, dxy, range = 10)
      xoff[i] = dxy[0]
      yoff[i] = dxy[1]
      cube[*,*, i] = im
+     errorCube[*, *, i] = err
      print,'i',' image finished preparation'
   ENDFOR
   infoStruct = add_tag(infoStruct, 'xoff', xoff)
   infoStruct = add_tag(infoStruct, 'yoff', yoff)
   saveFN = filename() + '_prepared.sav'
-  save, cube, infoStruct, filename = saveFN
+  save, cube, errorCube,infoStruct, filename = saveFN
   return, saveFn
 END
 
@@ -274,7 +277,7 @@ FUNCTION psf_subtraction, input_fn, PSF_fn, Subtract
   infoStruct1 = add_tag(infoStruct1, 'sky_level', skyLevel)
   infoStruct1 = add_tag(infoStruct1, 'sky_sigma', skySigma)
   output_fn = filename() + '_subtracted.sav'
-  save, cube1, infoStruct1, filename = output_fn
+  save, cube1, errorCube, infoStruct1, filename = output_fn
   return, output_fn
 END
 
@@ -311,7 +314,12 @@ FUNCTION aperturePhot, inFn, aperRadius = aperRadius
            setskyval = [infoStruct1.sky_level[i] * expoTime, infoStruct1.sky_sigma[i] * expoTime, 7000],/silent,/nan
 
      flux[i] = f[0]/expoTime
-     fluxErr[i] = ef[0]/expoTime
+     ;;fluxErr[i] = ef[0]/expoTime
+     ;; calculate error using error Array
+     meshgrid, 256, 256, xx, yy
+     dist = sqrt((xx - infoStruct1.xCenter[i])^2 + (yy - infoStruct1.yCenter[i])^2)
+     effID = where(dist LE aperRadius)
+     fluxErr[i] = sqrt(total(((errorCube[*, *, i])[effID])^2))
      print, i, ' image finished photometry'
   ENDFOR
   infoStruct1 = add_tag(infoStruct1, 'flux', flux)
