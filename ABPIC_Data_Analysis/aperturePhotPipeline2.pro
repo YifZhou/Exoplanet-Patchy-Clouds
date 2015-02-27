@@ -61,7 +61,7 @@
 PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtract = Subtract
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
   IF N_elements(Subtract) EQ 0 THEN subtract = 1
-  dataDir = '../data/ABPIC-B/' ;; changable
+  dataDir = '../data/ABPIC-B_myfits/' ;; changable
   ;; read the first images for two filters, as the reference images
      im125 = mrdfits('../data/ABPIC-B/icdg07p3q_flt.fits', 1, hd)
      im160 = mrdfits('../data/ABPIC-B/icdg07p7q_flt.fits', 1, hd) ;; define cross correlation reference image

@@ -56,7 +56,8 @@ class HSTFile:
             self.countArray[:, :, samp_i] = imaFile['sci', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1] *\
                                             imaFile['sci', self.nSamp - 1 - samp_i].header['samptime'] # convert countrate into count
             self.dqArray[:, :, samp_i] = imaFile['dq', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1]
-            self.errArray[:, :, samp_i] = imaFile['err', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1]
+            self.errArray[:, :, samp_i] = imaFile['err', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1]*\
+                                            imaFile['sci', self.nSamp - 1 - samp_i].header['samptime']
 
         self.isSaturated = (self.dqArray / 256 % 2).astype(bool)
         self.isCosmicRay = (self.dqArray / 8192 % 2).astype(bool)
@@ -66,7 +67,7 @@ class HSTFile:
         self.fltCountArray = fltFile['sci'].data[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
                                                  self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # for flt file coordiate, each dimension needs to be subtracted by 5
         self.fitCountArray = self.fltCountArray.copy()
-        self.chisqArray = self.ones([2*size + 1, 2*size + 1]) # array to save the chisq result
+        self.chisqArray = np.ones([2*size + 1, 2*size + 1]) # array to save the chisq result
         self.zeroValue = np.zeros(self.fltCountArray.shape)
         fltFile.close()
         self.isCorrected = False
@@ -83,10 +84,10 @@ class HSTFile:
         for dim0, dim1 in coords:
             effIndex = np.where(~self.isSaturated[dim0, dim1, :]) # exclude saturated data
             x = self.expTime[effIndex]
-            y = self.countArray[dim0, dim1, :] * x
-            dy = self.countArray[dim0, dim1, :] * x
+            y = self.countArray[dim0][dim1][effIndex] 
+            dy = self.errArray[dim0][dim1][effIndex] 
             b, m, sigb, sigm, chisq = linearFit(x, y, dy)
-            if (chisq > chisqTh) and len(x) > 4: #at least 4 points needed for cosmic ray identification, only identify cosmic ray hit at the beginning or the end of the exposure
+            if ((chisq > chisqTh) and len(x) > 4) or (chisq > 20 and len(x) > 3): #at least 4 points needed for cosmic ray identification, only identify cosmic ray hit at the beginning or the end of the exposure, or some crazy stuff happend
                 b0, m0, chisq0 = b, m, chisq
                 b1, m1, sigb1, sigm1, chisq1 = linearFit(x[0:-1], y[0:-1], dy[0:-1])
                 b2, m2, sigb2, sigm2, chisq2 = linearFit(x[1:], y[1:], dy[1:])
@@ -96,7 +97,7 @@ class HSTFile:
             
             self.fitCountArray[dim0, dim1] = m
             self.zeroValue[dim0, dim1] = b
-            self.chisqArray = chisq
+            self.chisqArray[dim0, dim1] = chisq
         # for dim0, dim1 in coords:
         #     def func(x, *p):
         #         return x * p[0] + p[1]
@@ -257,13 +258,13 @@ class ExposureSet:
 if __name__ == '__main__':
     df = pd.read_csv('ABPIC-B_imaInfo4Calibration.csv')
     dataDIR = './ABPIC-B/'
-    for orbit in range(10, 13):
+    for orbit in range(7, 13):
         for nExpo in range(13):
             plotDIR = path.join('./ABPIC-B_myfits','orbit_{0}_expo_{1}'.format(orbit,nExpo))
             if not path.exists(plotDIR): mkdir(plotDIR)
             subdf = df[(df['orbit'] == orbit) & (df['exposure set'] == nExpo)]
             exp = ExposureSet(subdf['file ID'].values, dataDIR,[subdf['YCENTER'].values[0], subdf['XCENTER'].values[0]] , orbit, nExpo, subdf['filter'].values[0])
-            exp.correct(correctAll = True, chisqTh = 5)
+            exp.correct(correctAll = True, chisqTh = 2.5)
             exp.testCorrection2(chisqTh = 3, doPlot = True, plotDIR = plotDIR)
             exp.saveFITS('./ABPIC-B_myfits')
             exp.savePickle('./ABPIC-B_myfits')
