@@ -7,6 +7,22 @@ import pandas as pd
 import pickle
 from brewer2mpl import get_map
 
+def linearFit(x, y, dy):
+    """
+    my own linear fit routine, since there is no good scipy or numpy linearFit routine written up
+    """
+    Y = np.mat(y).T
+    A = np.mat([np.ones(len(x)), x]).T
+    C = np.mat(np.diagflat(dy**2))
+    mat1 = (A.T*C**(-1)*A)**(-1)
+    mat2 = A.T*C**(-1)*Y
+    b, m = mat1 * mat2
+    b = b.flat[0]
+    m = m.flat[0]
+    sigb, sigm = np.sqrt(np.diag(mat1))
+    chisq = 1./(len(x) - 2) * ((y - m * x - b)**2/dy**2).sum(axis = -1)
+    return b, m, sigb, sigm, chisq
+
 class HSTFile:
     """
     ima file object, parameters:
@@ -32,6 +48,7 @@ class HSTFile:
         imaFile = fits.open(path.join(self.dataDIR, self.imaFileName))
         self.nSamp = imaFile['primary'].header['nsamp']
         self.countArray = np.zeros([2*size + 1, 2*size + 1, self.nSamp - 1])
+        self.errArray = np.zeros([2*size + 1, 2*size + 1, self.nSamp - 1])
         self.dqArray = np.zeros([2*size + 1, 2*size + 1, self.nSamp - 1], dtype = np.int32)
         self.expTime = np.zeros(self.nSamp - 1) #exlucde zeroth read
         for samp_i in range(self.nSamp - 1): # in _ima file, data stored in a backward way, in this object, change it back
@@ -39,6 +56,7 @@ class HSTFile:
             self.countArray[:, :, samp_i] = imaFile['sci', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1] *\
                                             imaFile['sci', self.nSamp - 1 - samp_i].header['samptime'] # convert countrate into count
             self.dqArray[:, :, samp_i] = imaFile['dq', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1]
+            self.errArray[:, :, samp_i] = imaFile['err', self.nSamp - 1 - samp_i].data[self.dim0 - self.size : self.dim0 + self.size + 1, self.dim1 - self.size : self.dim1 + self.size + 1]
 
         self.isSaturated = (self.dqArray / 256 % 2).astype(bool)
         self.isCosmicRay = (self.dqArray / 8192 % 2).astype(bool)
@@ -48,11 +66,12 @@ class HSTFile:
         self.fltCountArray = fltFile['sci'].data[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
                                                  self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # for flt file coordiate, each dimension needs to be subtracted by 5
         self.fitCountArray = self.fltCountArray.copy()
+        self.chisqArray = self.ones([2*size + 1, 2*size + 1]) # array to save the chisq result
         self.zeroValue = np.zeros(self.fltCountArray.shape)
         fltFile.close()
         self.isCorrected = False
 
-    def correct (self, correctAll = False):
+    def correct (self, correctAll = False, chisqTh = 5):
         """
         linear fit
          ignoring cosmic ray flag, but exclude the saturated pixels
@@ -60,15 +79,31 @@ class HSTFile:
         badDim0, badDim1 = np.where(self.needCorrect)
         coords = zip(badDim0, badDim1)
         if correctAll: coords = [(dim0, dim1) for dim0 in range(2*self.size + 1) for dim1 in range(2*self.size + 1)]
-            
-        
+
         for dim0, dim1 in coords:
-            def func(x, *p):
-                return x * p[0] + p[1]
             effIndex = np.where(~self.isSaturated[dim0, dim1, :]) # exclude saturated data
-            paras, pcov = curve_fit(func, self.expTime[effIndex], self.countArray[dim0, dim1, :][effIndex], p0 = [self.countArray[dim0, dim1, -1]/self.expTime[-1], 0], sigma = np.sqrt(np.abs(self.countArray[dim0, dim1, :][effIndex])), absolute_sigma = True)
-            self.fitCountArray[dim0, dim1] = paras[0]
-            self.zeroValue[dim0, dim1] = paras[1]
+            x = self.expTime[effIndex]
+            y = self.countArray[dim0, dim1, :] * x
+            dy = self.countArray[dim0, dim1, :] * x
+            b, m, sigb, sigm, chisq = linearFit(x, y, dy)
+            if (chisq > chisqTh) and len(x) > 4: #at least 4 points needed for cosmic ray identification, only identify cosmic ray hit at the beginning or the end of the exposure
+                b0, m0, chisq0 = b, m, chisq
+                b1, m1, sigb1, sigm1, chisq1 = linearFit(x[0:-1], y[0:-1], dy[0:-1])
+                b2, m2, sigb2, sigm2, chisq2 = linearFit(x[1:], y[1:], dy[1:])
+                chisq = np.array([chisq0, chisq1, chisq2]).min(axis = -1)
+                b = np.array([b0, b1, b2])[np.where(np.array([chisq0, chisq1, chisq2]) == chisq)]
+                m = np.array([m0, m1, m2])[np.where(np.array([chisq0, chisq1, chisq2]) == chisq)] #choose the result from the fit that has the least chisq value
+            
+            self.fitCountArray[dim0, dim1] = m
+            self.zeroValue[dim0, dim1] = b
+            self.chisqArray = chisq
+        # for dim0, dim1 in coords:
+        #     def func(x, *p):
+        #         return x * p[0] + p[1]
+        #     effIndex = np.where(~self.isSaturated[dim0, dim1, :]) # exclude saturated data
+        #     paras, pcov = curve_fit(func, self.expTime[effIndex], self.countArray[dim0, dim1, :][effIndex], p0 = [self.countArray[dim0, dim1, -1]/self.expTime[-1], 0], sigma = np.sqrt(np.abs(self.countArray[dim0, dim1, :][effIndex])), absolute_sigma = True)
+        #     self.fitCountArray[dim0, dim1] = paras[0]
+        #     self.zeroValue[dim0, dim1] = paras[1]
         self.isCorrected = True
 
     def to_fits (self, direction, decorator = 'myfits'):
@@ -132,12 +167,12 @@ class ExposureSet:
         self.correctedStack = np.zeros([2*size + 1, 2*size + 1, self.nFile])
         self.problematicPixel = [] #save the coordinates of the pixels that have problematic correction problem
         
-    def correct (self, correctAll = False):
+    def correct (self, correctAll = False, chisqTh = 5):
         """
         do correction for all HST File Object
         """
         for i, item in enumerate(self.HSTFileList):
-            item.correct(correctAll = correctAll)
+            item.correct(correctAll = correctAll, chisqTh = chisqTh)
             self.isCorrected[:, :, i] = item.needCorrect
             self.correctedStack[:, :, i] = item.fitCountArray
 
@@ -170,7 +205,25 @@ class ExposureSet:
             if doPlot:
                 self.plotPixel(dim0_i, dim1_i)
 
-    def plotPixel (self, dim0, dim1):
+    def testCorrection2 (self, chisqTh = 5, doPlot = False, plotDIR = "."):
+        """test if the correction is correct
+        plot out the pixel that has a bad up the ramp fit,
+        the quality of the fit is defined by chisq valeu
+        """
+        self.problematicPixel[:] = []
+        chisqList = np.ones(len(self.HSTFileList))
+        dim0, dim1 = np.where(np.any(self.isCorrected, axis = 2)) # the coordinate of the pixel that has calibration correction made
+        for dim0_i, dim1_i in zip(dim0, dim1):
+            for i in range(len(chisqList)): chisqList[i] = self.HSTFileList[i].chisqArray[dim0_i, dim1_i]
+            problematicIndex = np.where(chisqList > chisqTh)[0]
+            self.problematicPixel += [(dim0_i, dim1_i, pid) for pid in problematicIndex]
+            for pid in problematicIndex:
+                print 'exposure {0} has problematics correction at ({1}, {2})'.format(self.fnList[pid], dim0_i +self. dim00, dim1_i + self.dim10)
+                
+            if doPlot:
+                self.plotPixel(dim0_i, dim1_i, chisqList)
+
+    def plotPixel (self, dim0, dim1, chisqList):
         """
         plot the up-the-ramp fit for a problematic pixel
         """
@@ -179,7 +232,7 @@ class ExposureSet:
         fig, ax = plt.subplots()
         for exp_id, exposure in enumerate(self.HSTFileList):
             ax.errorbar(exposure.expTime, exposure.countArray[dim0, dim1, :], yerr = np.sqrt(np.abs(exposure.countArray[dim0, dim1, :])),linewidth = 0 , fmt = 'o', color = colors[exp_id])
-            ax.plot(exposure.expTime, exposure.expTime * exposure.fitCountArray[dim0, dim1] + exposure.zeroValue[dim0, dim1], color = colors[exp_id], label = 'exp {0}'.format(exp_id))
+            ax.plot(exposure.expTime, exposure.expTime * exposure.fitCountArray[dim0, dim1] + exposure.zeroValue[dim0, dim1], color = colors[exp_id], label = 'exp {0}, chisq = {1}'.format(exp_id, chisqList[exp_id]))
         
         ax.set_xlabel('Time (s)')
         ax.set_ylabel('Count (e$^-$)')
@@ -210,7 +263,7 @@ if __name__ == '__main__':
             if not path.exists(plotDIR): mkdir(plotDIR)
             subdf = df[(df['orbit'] == orbit) & (df['exposure set'] == nExpo)]
             exp = ExposureSet(subdf['file ID'].values, dataDIR,[subdf['YCENTER'].values[0], subdf['XCENTER'].values[0]] , orbit, nExpo, subdf['filter'].values[0])
-            exp.correct(correctAll = True)
-            exp.testCorrection(sigmaThreshold = 2, doPlot = True, plotDIR = plotDIR)
+            exp.correct(correctAll = True, chisqTh = 5)
+            exp.testCorrection2(chisqTh = 3, doPlot = True, plotDIR = plotDIR)
             exp.saveFITS('./ABPIC-B_myfits')
             exp.savePickle('./ABPIC-B_myfits')
