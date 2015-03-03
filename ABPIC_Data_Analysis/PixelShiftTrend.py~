@@ -1,0 +1,8 @@
+#! /usr/bin/env python
+
+import matplotlib.pyplot as plt
+import sys, glob
+sys.path.append('../python_src')
+from ExposureSet import ExposureSet
+
+if __
