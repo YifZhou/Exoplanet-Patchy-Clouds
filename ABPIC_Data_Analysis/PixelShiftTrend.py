@@ -32,7 +32,7 @@ def plotTrend (dataStack, xCenter, side = 2, output = None):#2side+1 x 2side+1 p
         plt.savefig(output)
             
 if __name__ == '__main__':
-    infoDF = pd.read_csv('2015_Feb_27_myfits_aper=5_result.csv')
+    infoDF = pd.read_csv('Orbit10to12HeaderPointing.csv')
     dataDIR = '../data/ABPIC-B_myfits/'
     pixelCount125 = np.zeros((11, 11, 28, 3))
     pixelCount160 = np.zeros((11, 11, 30, 3))
@@ -54,14 +54,14 @@ if __name__ == '__main__':
     ###### do the plot######
     for orbit in [10, 11, 12]:
         for direction in ['X', 'Y']:
-            outfn = 'PixelTrend_{0}_{1}_Gaussian{2}.pdf'.format('F125W',orbit, direction)
-            plotTrend(pixelCount125[:,:,:,orbit-10]*expTime, infoDF[(infoDF['FILTER'] == 'F125W') & (infoDF['ORBIT'] == orbit)][direction +'CENTER'].values, side = 3, output = outfn)
+            outfn = 'PixelTrend_{0}_{1}_Header{2}.pdf'.format('F125W',orbit, direction)
+            plotTrend(pixelCount125[:,:,:,orbit-10]*expTime, infoDF[(infoDF['FILTER'] == 'F125W') & (infoDF['ORBIT'] == orbit)]['HEADER' + direction].values, side = 2, output = outfn)
             print outfn, 'plotted'
 
     for orbit in [10, 11, 12]:
         for direction in ['X', 'Y']:
-            outfn = 'PixelTrend_{0}_{1}_Gaussian{2}.pdf'.format('F160W',orbit, direction)
-            plotTrend(pixelCount160[:,:,:,orbit-10]*expTime, infoDF[(infoDF['FILTER'] == 'F160W') & (infoDF['ORBIT'] == orbit)][direction +'CENTER'].values, side = 2, output = outfn)
+            outfn = 'PixelTrend_{0}_{1}_Header{2}.pdf'.format('F160W',orbit, direction)
+            plotTrend(pixelCount160[:,:,:,orbit-10]*expTime, infoDF[(infoDF['FILTER'] == 'F160W') & (infoDF['ORBIT'] == orbit)]['HEADER' + direction].values, side = 2, output = outfn)
             print outfn, 'plotted'
 
     
