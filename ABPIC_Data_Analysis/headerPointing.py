@@ -28,4 +28,4 @@ if __name__ == '__main__':
 
     subdf['HEADERX'] = dim2List
     subdf['HEADERY'] = dim1List
-    subdf.to_csv('Orbit10to12HeaderPointing.csv', index = False)
+    subdf.to_csv('Orbit10to12HeaderPointing.csv')
