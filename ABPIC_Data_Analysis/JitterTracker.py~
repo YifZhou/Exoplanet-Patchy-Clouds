@@ -1,0 +1,8 @@
+from astropy.io import fits
+import glob
+
+if __name__ == '__main__':
+    dataDIR = '../data/ABPIC-B/'
+    jitFileList = glob.glob(dataDIR + '*jit')
+    jitFileList.sort()
+    
