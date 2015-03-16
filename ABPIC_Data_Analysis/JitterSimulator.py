@@ -30,13 +30,15 @@ class CCD:
     """
     simulate a HST CCD
     """
-    def __init__(self, size, nSamp, p2pDiff = 0.05):
+    def __init__(self, size, nSamp, p2pDiff = 0.05, fluctuate = 0):
         self.size = size
         self.nSamp = nSamp
         intraPixDim1 = np.sin(np.pi/nSamp * np.arange(nSamp))
         intraPixDim2 = intraPixDim1[:, np.newaxis]
         pixel = np.ones([nSamp, nSamp]) * (1 - p2pDiff) + intraPixDim1 * intraPixDim2 * p2pDiff
-        self.supCCD = np.tile(pixel, [size, size]) #CCD with fine Structure
+        fluctuate = (np.ones([size, size]) + fluctuate*np.random.randn(size, size)).repeat(nSamp, axis = 0).repeat(nSamp, axis = 1)
+        
+        self.supCCD = np.tile(pixel, [size, size]) * np.abs(fluctuate)#CCD with fine Structure
         self.supRecord = np.zeros([size*nSamp, size*nSamp]) #super sampled result
         self.expTime = 0
 
@@ -48,17 +50,19 @@ class CCD:
         self.record = np.zeros([self.size, self.size])
         self.supRecord = np.zeros([self.size*self.nSamp, self.size*self.nSamp]) #super sampled result
 
-    def exposure(self, jit, fwhm, amp = 1.0, time = 3.0):
+    def exposure(self, jit, fwhm, jit0 = [0,0], amp = 1.0, time = 3.0):
         """
         one exposure, add one gaussian
         jitV2 : jit[0]
         jitV3 : jit[1]
+        jitx0 : jit0[0]
+        jity0 : jit0[0]
         """
         plateScale = 0.13 #arcsec/pixel
-        jitX = (jit[1] * np.cos(45) - jit[0] * np.sin(45))/plateScale
-        jitY = (jit[1] * np.cos(45) + jit[0] * np.sin(45))/plateScale
+        jitX = (jit[1] * np.cos(45) - jit[0] * np.sin(45))/plateScale + jit0[0]
+        jitY = (jit[1] * np.cos(45) + jit[0] * np.sin(45))/plateScale + jit0[1]
 
-        center = [self.size*self.nSamp/2. + jitY*nSamp, self.size*self.nSamp/2. + jitX*nSamp]
+        center = [self.size*self.nSamp/2. + jitX*nSamp, self.size*self.nSamp/2. + jitY*nSamp]
         #print [c/nSamp for c in center]
         self.supRecord += self.supCCD * Gaussian2d(self.size*self.nSamp, fwhm*self.nSamp, center) * amp * time
         self.expTime += time
@@ -86,21 +90,27 @@ def plotTrend (dataStack, xCenter, side = 2, output = None):#2side+1 x 2side+1 p
             axes[i, j].plot(np.sort(delta), np.sort(delta)*m + b)
             axes[i, j].annotate('x={0},y={1}'.format(dim1 - c, dim0 - c), xy = (0.2, 0.8), xycoords = 'axes fraction')
             axes[i, j].xaxis.set_major_locator(plt.MaxNLocator(4))
+            axes[i, j].set_ylim([0.5, 1.5])
 
+            
     if output is None:
-        plt.show()
+        pass
     else:
         plt.savefig(output)
         
 if __name__ == '__main__':
     size = 11
     nSamp = 50
-    wfc3 = CCD(size, nSamp, 0.1)
+    wfc3 = CCD(size, nSamp, 0.1, fluctuate = 0.1)
     df = pd.read_csv('jitter_info.csv', parse_dates = 'time', index_col = 'time')
+    expoDF = pd.read_csv('2015_Feb_27_myfits_aper=5_result.csv')
     orbit = 10
     filterName = 'F125W'
     fwhm = 1.10
     subdf = df[(df['orbit'] == orbit) & (df['filter'] == filterName)]
+    subExpoDF = expoDF[(expoDF['ORBIT'] == orbit) & (expoDF['FILTER'] == filterName)]
+    jitx0 = subExpoDF['XCENTER'].values - np.round(subExpoDF['XCENTER'].values[0])
+    jity0 = subExpoDF['YCENTER'].values - np.round(subExpoDF['YCENTER'].values[0])
     fnList = list(set(subdf['file name'].values))
     fnList.sort()
     expStack = np.zeros((size, size, len(fnList)))
@@ -111,14 +121,18 @@ if __name__ == '__main__':
         time[i] = fndf.index.values[0]
         for jitV2, jitV3 in zip(fndf['jitter V2'].values, fndf['jitter V3'].values):
             if np.isnan(jitV2) or np.isnan(jitV3): continue
-            wfc3.exposure([jitV2, jitV3], fwhm)
+            wfc3.exposure([jitV2, jitV3], fwhm, jit0 = [jitx0[i], jity0[i]])
 
 
         expStack[:,:, i] = wfc3.read()
-        lc[i] = wfc3.read().sum()
+        lc[i] = expStack[:,:, i].sum()
         wfc3.reset()
 
-    plotTrend(expStack, time/(1e9*60), output = 'Simulatated_pixel_trend.pdf')
-
-
-
+    plotTrend(expStack, time/(1e9*60))
+    fig2 = plt.figure(2)
+    ax2 = fig2.add_subplot(111)
+    ax2.plot(time, lc/lc.mean())
+    ax2.set_xlabel('time (min)')
+    ax2.set_ylabel('normalized flux')
+    ax2.set_ylim([0.98, 1.02])
+    plt.show()
