@@ -1,5 +1,4 @@
 
-
 PRO makeFLTPSF, infoFile
   ;; generate PSF file FOR flt.fits file
   fileInfo = myReadCSV(infoFile, ['FILENAME', 'FILTER', 'ORBIT', 'POSANG', 'DITHER', 'EXPOSURE_SET','OBS_DATE','OBS_TIME','EXPOSURE_TIME', 'XOFF', 'YOFF'])

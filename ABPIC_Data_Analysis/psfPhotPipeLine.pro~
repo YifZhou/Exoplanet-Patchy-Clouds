@@ -1,0 +1,86 @@
+;; use tinytim psf to do the photometry
+
+
+
+FUNCTION makePSF, fn, dx, dy
+  im = mrdfits(fn)
+  im = fshift(im[1:270, 1:270], dx*10, dy*10)
+  diffusion = [[0.0007, 0.025,  0.0007],$
+               [0.0250, 0.897,  0.0250],$
+               [0.0007, 0.025,  0.0007]]
+  im0 = convol(rebin(im, 27, 27), diffusion) ;;covolve with the diffusion kernel
+  return, im0/total(im0) ;;normalize the psf
+END
+
+FUNCTION PSFPhot, inFn, ROIRadius
+  IF N_ELEMENTS(aperRadius) EQ 0 THEN aperRadius = 5.0
+  restore, inFn
+  szCube = size(cube1)
+  nImages = szCube[3]
+  flux = fltarr(nImages)
+  fluxErr = fltarr(nImages)
+  xFWHM = fltarr(nImages)
+  yFWHM = fltarr(nImages)
+  FOR i = 0, nImages - 1 DO BEGIN
+     image = cube1[*, *, i]
+     expoTime = infoStruct1.exposure_time[i]
+     ;; IF infoList1[f125id[i]].rollAngle EQ 101 THEN $
+     ;;    gcntrd, image, 109., 166., xSec, ySec, 2.0 $ ;; search
+                ;;    secondary center
+     x0 = infoStruct1.xCenter[i]
+     y0 = infoStruct1.yCenter[i]
+     range = 5
+     xlow = floor(x0 - range)
+     ylow = floor(y0 - range)
+     imageFit = mpfit2dpeak(image[xlow:xlow + 2*range, ylow:ylow+2*range], params)
+     infoStruct1.xCenter[i] = xlow + params[4]
+     infoStruct1.yCenter[i] = ylow + params[5]
+     xFWHM[i] = 2.3548 * params[2]
+     yFWHM[i] = 2.3548 * params[3]
+     IF infoStruct1.filter[i] EQ 'F125W' THEN BEGIN
+        IF infoStruct1.rollAngle[i] EQ 129.0 THEN psffn = 'F125W00.fits'$
+        ELSE psffn = 'F125W01.fits'
+     ENDIF ELSE BEGIN
+        IF infoStruct1.rollAngle[i] EQ 129.0 THEN psffn = 'F160W00.fits'$
+        ELSE psffn = 'F160W01.fits'
+     ENDELSE
+     dx = infoStruct1.xCenter[i] - round(infoStruct1.xCenter[i])
+     dy = infoStruct1.yCenter[i] - round(infoStruct1.yCenter[i])
+     psf = makePSF(psffn, dx, dy)
+     im_roi = image[round(infoStruct1.xCenter[i]) - ROIRadius: round(infoStruct1.xCenter[i]) + ROIRadius, round(infoStruct1.yCenter[i]) - ROIRadius: round(infoStruct1.yCenter[i]) + ROIRadius]
+     psf_roi = psf[13 -ROIRadius: 13+ROIRadius, 13 -ROIRadius: 13+ROIRadius]
+     err_roi = errCube[round(infoStruct1.xCenter[i]) - ROIRadius: round(infoStruct1.xCenter[i]) + ROIRadius, round(infoStruct1.yCenter[i]) - ROIRadius: round(infoStruct1.yCenter[i]) + ROIRadius, i]
+  ENDFOR
+  infoStruct1 = add_tag(infoStruct1, 'flux', flux)
+  infoStruct1 = add_tag(infoStruct1, 'fluxerr', fluxerr)
+  infoStruct1 = add_tag(infoStruct1, 'xFWHM', xFWHM)
+  infoStruct1 = add_tag(infoStruct1, 'yFWHM', yFWHM)
+  output_fn =  filename() + '_aperPhot.sav'
+  save, infoStruct1, file = output_fn
+  return, output_fn
+END
+
+FUNCTION fitPSF, im, psf, err
+  COMMON PSFsurf, psf
+  PSFsz = size(psf)
+  meshgrid, findgen(PSFsz[1]), findgen(PSFsz[2]), xx, yy
+  fitParams = MPFIT2dFUN('PSFfunc', xx, yy, im, err, [1000, 0])
+  flux = fitParams[0]/expoTime
+  chisq = mychisq(immasked, psf, sigma, fitparams)
+  return, [flux, chisq]
+END
+
+FUNCTION PSFfunc, x, y, params
+  COMMON PSFsurf, psf
+  zmod = psf[x, y] * params[0] + params[1]
+  return, zmod
+END
+
+FUNCTION filename
+  time = systime()
+  mm = strmid(time, 4, 3)
+  dd = string(uint(strmid(time, 8, 2)), format = '(I2.2)')
+  year = strmid(time, 20, 4)
+  fn = year + '_' + mm + '_' + dd
+  return, fn
+END

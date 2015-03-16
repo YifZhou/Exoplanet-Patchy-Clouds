@@ -83,25 +83,25 @@ def plotJitter(df, orbit, filterName, save = False):
     V2 = (subdf['jitter V2']).values
     V3 = (subdf['jitter V3']).values
     time = (subdf.index.values - subdf.index.values[0])/1.e9 #in seconds
-    ax.plot(V2, V3, color = '0.7', linewidth = 0.6)
-    ax.scatter(V2[::-1], V3[::-1], c = time[::-1], marker = '.', s = 50, cmap = 'gray', zorder = 5, lw = 1)
-    ax.set_xlabel('V2 Jitter (arcsec)')
-    ax.set_ylabel('V3 Jitter (arcsec)')
-    # ax.set_xlim([-0.01, 0.01])
-    # ax.set_ylim([-0.01, 0.01])
+    ax.plot(V2/0.13, V3/0.13, color = '0.7', linewidth = 0.6)
+    ax.scatter(V2[::-1]/0.13, V3[::-1]/0.13, c = time[::-1], marker = '.', s = 50, cmap = 'gray', zorder = 5, lw = 1)
+    ax.set_xlabel('V2 Jitter (pixel)')
+    ax.set_ylabel('V3 Jitter (pixel)')
+    ax.set_xlim([-0.1, 0.1])
+    ax.set_ylim([-0.1, 0.1])
     ax.set_aspect('equal')
 
 
     axV2 = fig.add_subplot(222)
-    axV2.plot(time, V2)
+    axV2.plot(time, V2/0.13)
     axV2.set_xlabel('time (s)')
-    axV2.set_ylabel('Jitter (arcsec)')
+    axV2.set_ylabel('Jitter (pixel)')
     axV2.set_title('V2 Jitter')
 
     axV3 = fig.add_subplot(224, sharex = axV2)
-    axV3.plot(time, V3)
+    axV3.plot(time, V3/0.13)
     axV3.set_xlabel('time (s)')
-    axV3.set_ylabel('Jitter (arcsec)')
+    axV3.set_ylabel('Jitter (pixel)')
     axV3.set_title('V3 Jitter')
     fig.suptitle('Orbit: {0}, Filter: {1}'.format(orbit, filterName))
     fig.tight_layout()
@@ -114,5 +114,5 @@ def plotJitter(df, orbit, filterName, save = False):
         
 if __name__ == '__main__':
     #getJitInfo('jitter_info.csv')
-    # df = pd.read_csv('jitter_info.csv', parse_dates = 'time', index_col = 'time')
-    
+    df = pd.read_csv('jitter_info.csv', parse_dates = 'time', index_col = 'time')
+    plotJitter(df, 10, 'F125W')

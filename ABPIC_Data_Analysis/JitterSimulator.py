@@ -1,5 +1,9 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import sys
+sys.path.append('../python_src')
+from linearFit import linearFit
 
 def Gaussian2d(size, fwhm = 3, center=None):
     """ Make a square gaussian kernel.
@@ -66,6 +70,27 @@ class CCD:
         """
         return self.supRecord.reshape((self.size, self.nSamp, self.size, self.nSamp)).sum(axis = 3).sum(axis = 1)/self.expTime
 
+
+def plotTrend (dataStack, xCenter, side = 2, output = None):#2side+1 x 2side+1 pixels subimage
+    plt.close('all')
+    fig, axes = plt.subplots(ncols = 2*side + 1, nrows = 2*side + 1, sharex = True, sharey = True, figsize = (24, 20))
+    fig.subplots_adjust(hspace = 0, wspace = 0)
+    subIMShape = dataStack.shape
+    c = subIMShape[0]//2
+    delta = xCenter - xCenter[0]
+    for i, dim0 in enumerate(range(c-side, c+side+1)):
+        for j, dim1 in enumerate(range(c-side, c+side+1)):
+            y = dataStack[dim0, dim1, :]/dataStack[dim0, dim1, :].mean()
+            b, m, db, dm, chisq = linearFit(delta, y)
+            axes[i, j].plot(delta, y, linewidth = 0, marker = '.', label = '({0}, {1})')
+            axes[i, j].plot(np.sort(delta), np.sort(delta)*m + b)
+            axes[i, j].annotate('x={0},y={1}'.format(dim1 - c, dim0 - c), xy = (0.2, 0.8), xycoords = 'axes fraction')
+            axes[i, j].xaxis.set_major_locator(plt.MaxNLocator(4))
+
+    if output is None:
+        plt.show()
+    else:
+        plt.savefig(output)
         
 if __name__ == '__main__':
     size = 11
@@ -80,8 +105,10 @@ if __name__ == '__main__':
     fnList.sort()
     expStack = np.zeros((size, size, len(fnList)))
     lc = np.zeros(len(fnList))
+    time = np.zeros(len(fnList))
     for i, fn in enumerate(fnList):
         fndf = subdf[subdf['file name'] == fn]
+        time[i] = fndf.index.values[0]
         for jitV2, jitV3 in zip(fndf['jitter V2'].values, fndf['jitter V3'].values):
             if np.isnan(jitV2) or np.isnan(jitV3): continue
             wfc3.exposure([jitV2, jitV3], fwhm)
@@ -90,5 +117,8 @@ if __name__ == '__main__':
         expStack[:,:, i] = wfc3.read()
         lc[i] = wfc3.read().sum()
         wfc3.reset()
-        
+
+    plotTrend(expStack, time/(1e9*60), output = 'Simulatated_pixel_trend.pdf')
+
+
 

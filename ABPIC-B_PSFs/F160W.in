@@ -7,8 +7,8 @@ WFC3_IR  # Camera
 30  # Camera ID number
 F160W  # Filter
 Blackbody(1600.000000K)  # Spectrum file
-10.000000  # Major axis jitter in mas (-1 = no jitter)
-10.000000  # Minor axis jitter in mas
+20.000000  # Major axis jitter in mas (-1 = no jitter)
+20.000000  # Minor axis jitter in mas
 0.000000  # Angle of jitter major axis in deg from +X axis
 2  # Number of positions
 508 601  # Position 1
