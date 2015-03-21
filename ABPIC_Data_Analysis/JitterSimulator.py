@@ -59,8 +59,8 @@ class CCD:
         jity0 : jit0[0]
         """
         plateScale = 0.13 #arcsec/pixel
-        jitX = (jit[1] * np.cos(45) - jit[0] * np.sin(45))/plateScale + jit0[0]
-        jitY = (jit[1] * np.cos(45) + jit[0] * np.sin(45))/plateScale + jit0[1]
+        jitX = -(jit[1] * np.cos(45) - jit[0] * np.sin(45))/plateScale + jit0[0]
+        jitY = -(jit[1] * np.cos(45) + jit[0] * np.sin(45))/plateScale + jit0[1]
 
         center = [self.size*self.nSamp/2. + jitX*nSamp, self.size*self.nSamp/2. + jitY*nSamp]
         #print [c/nSamp for c in center]
@@ -104,8 +104,8 @@ if __name__ == '__main__':
     wfc3 = CCD(size, nSamp, 0.1, fluctuate = 0.1)
     df = pd.read_csv('jitter_info.csv', parse_dates = 'time', index_col = 'time')
     expoDF = pd.read_csv('2015_Feb_27_myfits_aper=5_result.csv')
-    orbit = 10
-    filterName = 'F125W'
+    orbit = 11
+    filterName = 'F160W'
     fwhm = 1.10
     subdf = df[(df['orbit'] == orbit) & (df['filter'] == filterName)]
     subExpoDF = expoDF[(expoDF['ORBIT'] == orbit) & (expoDF['FILTER'] == filterName)]
