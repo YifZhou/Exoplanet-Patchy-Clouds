@@ -1,0 +1,14 @@
+import pickle
+import pandas as pd
+import glob
+
+"""
+new photometry method, do the up the ramp fit after sum up all pixel values in one read out
+"""
+
+if __name__ == '__main__':
+    pklList = glob.glob('../data/ABPIC-B_myfits/icdg*pkl')
+    pklList.sort()
+    for fn in pklList:
+        hst = pickle.load(open(fn, 'rb'))
+        

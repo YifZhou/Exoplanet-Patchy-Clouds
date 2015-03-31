@@ -62,7 +62,7 @@
 PRO aperturePhotPipeLine, infoFile, fileType, aperRadius  = aperRadius
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
   dataDir = '../data/ABPIC-B/' ;; changable
-  IF fileType EQ 'flt' THEN preparedFN = prepData(fileInfo, dataDir) $
+  IF (fileType EQ 'flt') OR (fileType EQ 'drz') THEN preparedFN = prepData(fileInfo, dataDir) $
       ELSE IF fileType EQ 'ima' THEN preparedFN = prepImaData(fileInfo, dataDIR)
   subtractedFN = psf_subtraction(preparedFN)
   IF n_elements(aperRadius) EQ 0 THEN aperRadius = 5
@@ -85,16 +85,27 @@ FUNCTION prepData, infoStruct, dataDir
   F125ID = where(infoStruct.filter EQ 'F125W')
   F160ID = where(infoStruct.filter EQ 'F160W')
   ;; read the first images for two filters, as the reference images
-  im125 = mrdfits(dataDir + infoStruct.filename[F125ID[0]], 1, hd)
-  im160 = mrdfits(dataDir + infoStruct.filename[F160ID[0]], 1, hd)
+  im1250 = mrdfits(dataDir + infoStruct.filename[F125ID[0]], 1, hd)
+  im1600 = mrdfits(dataDir + infoStruct.filename[F160ID[0]], 1, hd)
   
   nFile = N_ELEMENTS(infoStruct.filename)
+  imSize = size(im125)
+  xSize = 256 ;; make sure that xsize is even
+  ySize = 256 ;; make sure again
   xoff = fltarr(nFile)
   yoff = fltarr(nFile)
-  cube = MAKE_ARRAY(256, 256, nFile, /DOUBLE) ;; list to save images
-  imageSz = 256
+  im125 = fltarr(256, 256)
+  im160 = fltarr(256, 256)
+  im125[*,0:241] = im1250[7:262,*]
+  im125[*,242:255] = im125[*, 0:13]
+  im160[*,0:241] = im1600[7:262,*]
+  im160[*,242:255] = im160[*, 0:13]
+  cube = MAKE_ARRAY(xSize, ySize, nFile, /DOUBLE) ;; list to save images
   FOR i = 0, nFile -1 DO BEGIN
-     im = mrdfits(dataDir + infoStruct.filename[i], 1, header1)
+     im0 = mrdfits(dataDir + infoStruct.filename[i], 1, header1)
+     im = fltarr(256, 256)
+     im[*,0:241] = im0[7:262,*]
+     im[*,242:255] = im[*, 0:13]
      IF infoStruct.filter[i] EQ 'F125W' THEN im0 = im125 ELSE im0 = im160
      corr = crosscorr(im0, im, pmax, dxy, range = 10)
      xoff[i] = dxy[0]
@@ -169,16 +180,18 @@ FUNCTION searchPSF, id0, satisfyID
   dx = infoList.xoff - infoList.xoff[id0]
   dy = infoList.yoff - infoList.yoff[id0]
   imSize = (size(cube))[1] ;; ima file is 266*266
-  primaryCen = [114.212, 169.284] + (imSize - 256)/2.
-  
+  ;; primaryCen = [114.212, 169.284] + (imSize - 256)/2.;;for flt and ima
+  primaryCen = [114.1, 159.9]
   dx_frac = (abs(dx - round(dx)))[satisfyID]
   dy_frac = (abs(dy - round(dy)))[satisfyID]  ;; only consider satisfied
   satisfyID = satisfyID[(sort(dx_frac^2 + dy_frac^2))[0:4]] ;; choose PSF that has the smallest fractional shift
   nSatisfied = N_ELEMENTS(satisfyID)
 
   disPrimary = sqrt((xMesh - (primaryCen[0] + infoList.xoff[id0]))^2 + (yMesh - (primaryCen[1] + infoList.yoff[id0]))^2)
-  secCen1 = [95., 209.] + (imSize - 256)/2.
-  secCen2 = [130., 223.] + (imSize - 256)/2.
+  ;; secCen1 = [95., 209.] + (imSize - 256)/2.
+  ;; secCen2 = [130., 223.] + (imSize - 256)/2. ;;for flt and ima
+  secCen1 = [93.8, 196.3]
+  secCen2 = [130.3, 209.7]
   image0 = cube[*, *, id0]
   IF infoList.posang[id0] LE 110 THEN BEGIN
      x0 = secCen1[0] + (infoList.dither[id0] MOD 2) * 10.2

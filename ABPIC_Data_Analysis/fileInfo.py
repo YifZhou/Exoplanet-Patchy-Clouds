@@ -80,4 +80,4 @@ def createInfoFileFromResult(infoFn, resultFn, outfn):
     infoDF.to_csv(outfn, index = False)
     
 if __name__ == '__main__':
-    createInfoFile('../data/ABPIC-B_myfits/', 'myfits')
+    createInfoFile('../data/ABPIC-B/', 'drz')

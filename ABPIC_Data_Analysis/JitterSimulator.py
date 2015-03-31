@@ -62,7 +62,7 @@ class CCD:
         jitX = -(jit[1] * np.cos(45) - jit[0] * np.sin(45))/plateScale + jit0[0]
         jitY = -(jit[1] * np.cos(45) + jit[0] * np.sin(45))/plateScale + jit0[1]
 
-        center = [self.size*self.nSamp/2. + jitX*nSamp, self.size*self.nSamp/2. + jitY*nSamp]
+        center = [self.size*self.nSamp/2. + jitX*self.nSamp, self.size*self.nSamp/2. + jitY*self.nSamp]
         #print [c/nSamp for c in center]
         self.supRecord += self.supCCD * Gaussian2d(self.size*self.nSamp, fwhm*self.nSamp, center) * amp * time
         self.expTime += time
@@ -104,8 +104,8 @@ if __name__ == '__main__':
     wfc3 = CCD(size, nSamp, 0.1, fluctuate = 0.1)
     df = pd.read_csv('jitter_info.csv', parse_dates = 'time', index_col = 'time')
     expoDF = pd.read_csv('2015_Feb_27_myfits_aper=5_result.csv')
-    orbit = 11
-    filterName = 'F160W'
+    orbit = 10
+    filterName = 'F125W'
     fwhm = 1.10
     subdf = df[(df['orbit'] == orbit) & (df['filter'] == filterName)]
     subExpoDF = expoDF[(expoDF['ORBIT'] == orbit) & (expoDF['FILTER'] == filterName)]
