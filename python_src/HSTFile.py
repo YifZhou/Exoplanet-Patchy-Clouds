@@ -44,8 +44,14 @@ class HSTFile:
         self.needCorrect = np.any(self.isCosmicRay, axis = 2) + np.any(self.isSaturated, axis = 2)
         imaFile.close()
         fltFile = fits.open(path.join(self.dataDIR, self.fltFileName))
+        pam = fits.getdata('../data/pam.fits') #pixel area map
         self.fltCountArray = fltFile['sci'].data[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
                                                  self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # for flt file coordiate, each dimension needs to be subtracted by 5
+        pamArray = pam[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
+                            self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # same for pixel area map
+        for samp_i in range(self.nSamp - 1):
+            self.countArray[:, :, samp_i] = self.countArray[:, :, samp_i] * pamArray
+        self.fltCountArray = self.fltCountArray * pamArray
         self.fitCountArray = self.fltCountArray.copy()
         self.chisqArray = np.ones([2*size + 1, 2*size + 1]) # array to save the chisq result
         self.zeroValue = np.zeros(self.fltCountArray.shape)

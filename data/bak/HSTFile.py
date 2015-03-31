@@ -1,12 +1,7 @@
 import numpy as np
-from os import path, mkdir
-from scipy.optimize import curve_fit
-import matplotlib.pyplot as plt
-import pandas as pd
 import pickle
-from brewer2mpl import get_map
-from HSTFile import HSTFile
-from ExposureSet import ExposureSet
+from astropy.io import fits
+
 
 class HSTFile:
     """
