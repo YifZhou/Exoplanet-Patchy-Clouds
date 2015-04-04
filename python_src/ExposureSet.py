@@ -52,7 +52,17 @@ class ExposureSet:
             self.correctedStack[:, :, i] = item.fitCountArray
 
         print 'Orbit {0}, Exposure {1} finished re-calibration'.format(self.orbit, self.nExpo)
+            
 
+    def noUpTheRamp(self):
+        """
+        do not do up the ramp fit, just use the last non-saturated readout
+        """
+        for i, item in enumerate(self.HSTFileList):
+            item.noUpTheRamp()
+            self.correctedStack[:,:,i] = item.fitCountArray
+
+        print 'Orbit {0}, Exposure {1} finished re-calibration'.format(self.orbit, self.nExpo)
     def testCorrection (self, sigmaThreshold = 3, doPlot = False, plotDIR = "."):
         """test if the correction is correct
         test method: assume that
@@ -115,19 +125,19 @@ class ExposureSet:
         ax.legend(loc = 'best')
         plt.savefig(path.join(plotDIR, 'Orbit_{0}_Expo_{1}_x_{2}_y_{3}.pdf'.format(self.orbit, self.nExpo, self.dim10 + dim1, self.dim00 + dim0)))
 
-    def saveFITS(self, direction):
+    def saveFITS(self, direction, decorator = 'myfits'):
         """
         save the correction into fits file
         """    
         for item in self.HSTFileList:
-            item.to_fits(direction, decorator = 'myfits')
+            item.to_fits(direction, decorator = decorator)
 
-    def savePickle (self, direction):
+    def savePickle (self, direction, decorator = 'myfits'):
         """
         save ima object into pickle file
         """
         for item in self.HSTFileList:
-            item.save(direction, decorator = 'myfits')
+            item.save(direction, decorator = decorator)
 
     def save (self, direction, decorator = 'expSet'):
         """

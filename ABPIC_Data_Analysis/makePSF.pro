@@ -2,7 +2,7 @@
 PRO makeFLTPSF, infoFile
   ;; generate PSF file FOR flt.fits file
   fileInfo = myReadCSV(infoFile, ['FILENAME', 'FILTER', 'ORBIT', 'POSANG', 'DITHER', 'EXPOSURE_SET','OBS_DATE','OBS_TIME','EXPOSURE_TIME', 'XOFF', 'YOFF'])
-  dataDIR = '../data/ABPIC-B_myfits/'
+  dataDIR = '../data/ABPIC-B_noramp/'
   ID125 = where(fileInfo.filter EQ 'F125W')
   ID160 = where(fileInfo.filter EQ 'F160W')
   PSF = {filter:'', rollAngle:0.0, dither:0, xOff:0.0, yOff:0.0, PSF:fltarr(256,256)}
@@ -35,7 +35,7 @@ PRO makeFLTPSF, infoFile
            PSFList[i*2 + j].PSF = median(PSFcube, dimension = 3, /even)
         ENDFOR
      ENDFOR
-  save, PSFList, filename = 'myfits_PSF.sav'
+  save, PSFList, filename = 'noramp_PSF.sav'
 END
 
 PRO makeIMAPSF, infoFile

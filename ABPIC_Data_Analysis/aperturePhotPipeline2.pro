@@ -61,7 +61,7 @@
 PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtract = Subtract
   fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
   IF N_elements(Subtract) EQ 0 THEN subtract = 1
-  dataDir = '../data/ABPIC-B_myfits/' ;; changable
+  dataDir = '../data/ABPIC-B_noramp/' ;; changable
   ;; read the first images for two filters, as the reference images
      im125 = mrdfits('../data/ABPIC-B/icdg07p3q_flt.fits', 1, hd)
      im160 = mrdfits('../data/ABPIC-B/icdg07p7q_flt.fits', 1, hd) ;; define cross correlation reference image
@@ -71,9 +71,12 @@ PRO aperturePhotPipeLine2, infoFile, fileType, aperRadius  = aperRadius, subtrac
   ENDIF ELSE IF fileType EQ 'ima' THEN BEGIN
      preparedFN = prepImaData(fileInfo, dataDIR, im125, im160)
      PSF_fn = 'ima_PSF.sav'
-  ENDIF ELSE IF fileType EQ 'myfits' THEN BEGIN
+  ENDIF ELSE IF (fileType EQ 'myfits')  THEN BEGIN
      preparedFN = prepData(fileInfo, dataDIR, im125, im160)
      PSF_fn = 'myfits_PSF.sav'
+  ENDIF ELSE IF (fileType EQ 'noramp') THEN BEGIN
+     preparedFN = prepData(fileInfo, dataDIR, im125, im160)
+     PSF_fn = 'noramp_PSF.sav'
   ENDIF 
   subtractedFN = psf_subtraction(preparedFN, PSF_fn, Subtract)
   IF n_elements(aperRadius) EQ 0 THEN aperRadius = 5
@@ -205,7 +208,7 @@ FUNCTION searchPSF, id0, satisfyID
   annulusPri = where((disPrimary GE 30) AND (disPrimary LE 60))
   annulusSec = where(disSecondary LE 15)
   annulusEff = cgsetdifference(annulusPri, annulusSec)
-  c_fit = 0.99 + 0.002*findgen(11)
+  c_fit = 0.95 + 0.02*findgen(11)
   c_int = congrid(c_fit, 200,/interp)
   residual = fltarr(N_ELEMENTS(c_fit))
   image_i = fshift(PSFList[PSF_id].PSF, -dx[ID_i], -dy[ID_i])

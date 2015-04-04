@@ -53,13 +53,13 @@ class CCD:
         jitV2 : jit[0]
         jitV3 : jit[1]
         jitx0 : jit0[0]
-        jity0 : jit0[0]
+        jity0 : jit0[1]
         """
         plateScale = 0.13 #arcsec/pixel
-        jitX = -(jit[1] * np.cos(45) - jit[0] * np.sin(45))/plateScale + jit0[0]
-        jitY = -(jit[1] * np.cos(45) + jit[0] * np.sin(45))/plateScale + jit0[1]
+        jitX = -(jit[1] * np.cos(np.pi/4) - jit[0] * np.sin(np.pi/4))/plateScale + jit0[0]
+        jitY = -(jit[1] * np.cos(np.pi/4) + jit[0] * np.sin(np.pi/4))/plateScale + jit0[1]
 
-        center = [self.size*self.nSamp/2. + jitX*nSamp, self.size*self.nSamp/2. + jitY*nSamp]
+        center = [self.size*self.nSamp/2. + jitX*self.nSamp, self.size*self.nSamp/2. + jitY*self.nSamp]
         #print [c/nSamp for c in center]
         self.supRecord += self.supCCD * Gaussian2d(self.size*self.nSamp, fwhm*self.nSamp, center) * amp * time
         self.expTime += time
@@ -70,6 +70,9 @@ class CCD:
         rebin the data
         """
         return self.supRecord.reshape((self.size, self.nSamp, self.size, self.nSamp)).sum(axis = 3).sum(axis = 1)/self.expTime
+
+    def sample(self):
+        return self.supRecord.reshape((self.size, self.nSamp, self.size, self.nSamp)).sum(axis = 3).sum(axis = 1)
 
 
 def plotTrend (dataStack, xCenter, side = 2, output = None):#2side+1 x 2side+1 pixels subimage

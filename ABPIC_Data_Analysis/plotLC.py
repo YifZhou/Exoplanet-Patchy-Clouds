@@ -4,7 +4,16 @@ import sys
 import numpy as np
 if __name__ == '__main__':
     fn = sys.argv[1]
+
+
     df = pd.read_csv(fn, parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    try:
+        cosmicRayFN = sys.argv[2]
+        cosmicRayDF = pd.read_csv(cosmicRayFN, parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+        df['FLUX'][np.where(np.isnan(cosmicRayDF['FLUX']))[0]] = np.nan
+        print len(np.where(np.isnan(cosmicRayDF['FLUX']))[0]), len(df)
+    except IndexError:
+        pass
     """
     normalize not only by filter, but by rolling angle
     """
@@ -21,6 +30,7 @@ if __name__ == '__main__':
     subdf['Time'] = subdf['Time'] - subdf['Time'].values[0]
     ax.errorbar(subdf[subdf['FILTER'] == 'F125W']['Time'], subdf[subdf['FILTER'] == 'F125W']['FLUX0'], yerr = subdf[subdf['FILTER'] == 'F125W']['FLUX0'] * subdf[subdf['FILTER'] == 'F125W']['ERR0'], fmt = '.', label = 'F125W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F125W']['FLUX0'].std() * 100))
     ax.errorbar(subdf[subdf['FILTER'] == 'F160W']['Time'], subdf[subdf['FILTER'] == 'F160W']['FLUX0'] + 0.03, yerr = subdf[subdf['FILTER'] == 'F160W']['FLUX0'] * subdf[subdf['FILTER'] == 'F160W']['ERR0'], fmt = '.', label = 'F160W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F160W']['FLUX0'].std() * 100))
+    print subdf[subdf['FILTER'] == 'F125W']['ERR0'].mean(), subdf[subdf['FILTER'] == 'F160W']['ERR0'].mean()
     ax.axhline(y = 1.0, linestyle = '--', color = '0.2', linewidth = 0.8)
     ax.axhline(y = 1.03, linestyle = '--', color = '0.2', linewidth = 0.8)
     ax.legend(loc = 'upper right')

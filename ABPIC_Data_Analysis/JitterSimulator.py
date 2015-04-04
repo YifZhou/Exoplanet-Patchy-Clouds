@@ -74,6 +74,9 @@ class CCD:
         """
         return self.supRecord.reshape((self.size, self.nSamp, self.size, self.nSamp)).sum(axis = 3).sum(axis = 1)/self.expTime
 
+    def sample(self):
+        return self.supRecord.reshape((self.size, self.nSamp, self.size, self.nSamp)).sum(axis = 3).sum(axis = 1)
+
 
 def plotTrend (dataStack, xCenter, side = 2, output = None):#2side+1 x 2side+1 pixels subimage
     plt.close('all')

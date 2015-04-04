@@ -86,6 +86,9 @@ class HSTFile:
             self.chisqArray[dim0, dim1] = chisq
         self.isCorrected = True
 
+    def noUpTheRamp(self):
+        nSampEff = self.nSamp - int(np.any(self.isSaturated[:, :, -1]))
+        self.fitCountArray = self.countArray[:,:,nSampEff - 2]/self.expTime[nSampEff - 2]
     def linearFit(self, x, y, dy):
         """
         my own linear fit routine, since there is no good scipy or numpy linearFit routine written up
