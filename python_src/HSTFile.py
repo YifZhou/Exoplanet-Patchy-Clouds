@@ -45,12 +45,15 @@ class HSTFile:
         imaFile.close()
         fltFile = fits.open(path.join(self.dataDIR, self.fltFileName))
         pam = fits.getdata('../data/pam.fits') #pixel area map
+        newflat = fits.getdata('../data/new_sub_flat.fits')
         self.fltCountArray = fltFile['sci'].data[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
                                                  self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # for flt file coordiate, each dimension needs to be subtracted by 5
         pamArray = pam[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
-                            self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # same for pixel area map
+                       self.dim1 - 5 - size: self.dim1 - 5 + size + 1] # same for pixel area map
+        newFlatArray = newflat[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
+                       self.dim1 - 5 - size: self.dim1 - 5 + size + 1]
         for samp_i in range(self.nSamp - 1):
-            self.countArray[:, :, samp_i] = self.countArray[:, :, samp_i] * pamArray
+            self.countArray[:, :, samp_i] = self.countArray[:, :, samp_i] * pamArray/newFlatArray
         self.fltCountArray = self.fltCountArray * pamArray
         self.fitCountArray = self.fltCountArray.copy()
         self.chisqArray = np.ones([2*size + 1, 2*size + 1]) # array to save the chisq result
@@ -89,6 +92,7 @@ class HSTFile:
     def noUpTheRamp(self):
         nSampEff = self.nSamp - int(np.any(self.isSaturated[:, :, -1]))
         self.fitCountArray = self.countArray[:,:,nSampEff - 2]/self.expTime[nSampEff - 2]
+    
     def linearFit(self, x, y, dy):
         """
         my own linear fit routine, since there is no good scipy or numpy linearFit routine written up

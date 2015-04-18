@@ -26,7 +26,7 @@ if __name__ == '__main__':
     df['ERR0'] = df['FLUXERR']/df['FLUX']
     df['Time'] = np.float32(df.index.values - df.index.values[0])/(60 * 60 * 1e9) #time in ns
 
-    subdf = df[df['ORBIT'] >= 10]
+    subdf = df[df['ORBIT'] >= 7]
     subdf['Time'] = subdf['Time'] - subdf['Time'].values[0]
     ax.errorbar(subdf[subdf['FILTER'] == 'F125W']['Time'], subdf[subdf['FILTER'] == 'F125W']['FLUX0'], yerr = subdf[subdf['FILTER'] == 'F125W']['FLUX0'] * subdf[subdf['FILTER'] == 'F125W']['ERR0'], fmt = '.', label = 'F125W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F125W']['FLUX0'].std() * 100))
     ax.errorbar(subdf[subdf['FILTER'] == 'F160W']['Time'], subdf[subdf['FILTER'] == 'F160W']['FLUX0'] + 0.03, yerr = subdf[subdf['FILTER'] == 'F160W']['FLUX0'] * subdf[subdf['FILTER'] == 'F160W']['ERR0'], fmt = '.', label = 'F160W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F160W']['FLUX0'].std() * 100))
