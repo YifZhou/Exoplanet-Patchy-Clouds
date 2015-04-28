@@ -1,0 +1,20 @@
+PRO collectPSF, infoFile, output
+  fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'posang', 'dither', 'exposure_set','obs_date','obs_time','exposure_time'])
+  ;;get the dither pattern,
+  ;; dither = 0: (0, 0)
+  ;; dither = 1: (1, 0)
+  ;; dither = 2: (0, 1)
+  ;; dither = 3: (1, 1)
+  fileInfo = add_tag(fileInfo, 'ditherX', dither MOD 2)
+  fileInfo = add_tag(fileInfo, 'ditherY', dither/2)
+  
+  ;;primary and the bright background star positon on dither = 0 image
+  ;;at two different roll angle
+  primaryPos1 = [145.0, 172.7]
+  bkStarPos1 = [194.9, 134.4]
+  primaryPos2 = [141.7, 159.1]
+  bkStarPos2 = [172.5, 100.9]
+
+  stop
+END
+

@@ -1,0 +1,29 @@
+PRO pseudoLOCI, PSFList
+  imageFN = 'PSFCUBE_F125W.sav'
+  restore, imageFN
+  i = 0
+  image_i = image125[i].image
+  satisfiedPSF = where(PSF125.rollAngle NE image125[i].rollAngle)
+  mask_i = maskoutdq(image125[i].dq)
+  PSFList = make_array(51, 51, n_elements(satisfiedPSF), /float, value = 0) ;; array for save displacement
+  
+  FOR j=0, n_elements(satisfiedPSF) - 1 DO BEGIN
+     mask_j = maskoutdq(PSF125[j].dq)
+     mask = make_mask(mask_i * mask_j, [29, 22, 0, 5])
+     dxy_ij = normxcorr2(image_i, PSF125[j].image, weight=mask)     
+     print, dxy_ij
+     PSFList[*, *, j] = fshift(PSF125[j].image, -dxy_ij[0], -dxy_ij[1])
+  ENDFOR
+  
+END
+
+  
+
+FUNCTION maskoutdq, dq, flatList=flaglist
+  IF N_elements(flagList) EQ 0 THEN flatList = [8, 32, 512]
+  mask = dq-dq+1 ;;initialize mask
+  FOR i=0,n_elements(flagList)-1 DO BEGIN
+     mask = mask * (1- dq/flatList[i]/2)
+  ENDFOR
+  return, mask
+END
