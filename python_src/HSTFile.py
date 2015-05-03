@@ -14,7 +14,7 @@ class HSTFile:
     fitCountArray
     side
     """
-    def __init__ (self, fileID, dataDIR, peakPos, size):
+    def __init__ (self, fileID, dataDIR, peakPos, size, useNewFlat = 0):
         """
         initialize ImaFile Object
         """
@@ -53,7 +53,10 @@ class HSTFile:
         newFlatArray = newflat[self.dim0 - 5 - size: self.dim0 - 5 + size + 1,
                        self.dim1 - 5 - size: self.dim1 - 5 + size + 1]
         for samp_i in range(self.nSamp - 1):
-            self.countArray[:, :, samp_i] = self.countArray[:, :, samp_i] * pamArray/newFlatArray
+            if useNewFlat:
+                self.countArray[:, :, samp_i] = self.countArray[:, :, samp_i] * pamArray/newFlatArray
+            else:
+                self.countArray[:, :, samp_i] = self.countArray[:, :, samp_i] * pamArray
         self.fltCountArray = self.fltCountArray * pamArray
         self.fitCountArray = self.fltCountArray.copy()
         self.chisqArray = np.ones([2*size + 1, 2*size + 1]) # array to save the chisq result

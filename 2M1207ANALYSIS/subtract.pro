@@ -9,17 +9,17 @@ PRO subtract, im, center1, center2, subim1, subim2, maskVar, nSamp = nSamp
   mask = make_mask(fltarr(256, 256) + 1, maskVar)
   subMask = mask[c1[0]-20:c1[0]+19, c1[1]-20:c1[1]+19]
   ;; interpolation
-  subim1 = congrid(subIm1, 40*nSamp, 40*nSamp, cubic = -0.5, /MINUS_ONE)
-  subim2 = congrid(subIm2, 40*nSamp, 40*nSamp, cubic = -0.5, /MINUS_ONE)
+  subim1_int = congrid(subIm1, 40*nSamp, 40*nSamp, cubic = -0.5, /MINUS_ONE)
+  subim2_int = congrid(subIm2, 40*nSamp, 40*nSamp, cubic = -0.5, /MINUS_ONE)
   subMask = congrid(subMask, 40*nSamp, 40*nSamp, /minus_one)
   c1 = findpeak(subim1, 40*nSamp/2, 40*nSamp/2, range = 3*nSamp)
   c2 = findpeak(subim2, 40*nSamp/2, 40*nSamp/2, range = 3*nSamp)
   corr = crosscorr(subim1, subim2 * c1[2]/c2[2], pmax, dxy, range = 5)
   dxy3 = normxcorr2(subim1, subim2, weight=submask)
   dc = c2 - c1
-  print, dxy
+  print, dxy/10
   print, dc
-  print, dxy3
+  print, dxy3/10
   print, c1
   print, c2
 ;  subim2 = fshift(subim2, -dxy[0], -dxy[1])
