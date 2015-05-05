@@ -16,7 +16,7 @@ class ExposureSet:
     expousre number
     filter
     """
-    def __init__ (self, fnList, dataDIR, peakPos, orbit, nExpo, filterName, size = 5, useNewFlat = 0):
+    def __init__ (self, fnList, dataDIR, peakPos, orbit, nExpo, filterName, size = 5, useNewFlat = False):
         """
         initialize Exopusre set object
         """
@@ -35,7 +35,7 @@ class ExposureSet:
         
         self.HSTFileList = []
         for fn in self.fnList:
-            self.HSTFileList.append(HSTFile(fn, self.dataDIR, self.peakPos, self.size, useNewFlat = useNewFlat))
+            self.HSTFileList.append(HSTFile(fn, self.dataDIR, self.peakPos, self.size, useNewFlat))
 
         self.expTime = self.HSTFileList[0].expTime[-1] # the exposure time for individual file, used for caculating couting uncertainties
         self.isCorrected = np.zeros([2*size + 1, 2*size + 1, self.nFile], dtype = bool)

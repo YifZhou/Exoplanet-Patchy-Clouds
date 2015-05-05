@@ -1,0 +1,28 @@
+# /usr/bin/env python
+import pandas as pd
+import matplotlib.pyplot as plt
+from os import path
+from astropy.io import fits
+import numpy as np
+
+if __name__ == '__main__':
+    dataDIR = '../data/2M1207B/'
+    aimDIR = './stackImage'
+    df = pd.read_csv('2M1207B_flt_fileInfo.csv', parse_dates = {'datetime':['obs date', 'obs time']}, index_col = 'datetime')
+    dither = 0
+    subdf = df[df['dither'] == dither]
+    image0 = fits.getdata(path.join(dataDIR, subdf['file name'].values[0]), 'sci')
+    for i in range(len(subdf)):
+        image_i = fits.getdata(path.join(dataDIR,subdf['file name'].values[i]), 'sci') - image0
+        plt.close('all')
+        plt.imshow(np.arcsinh(image_i), vmin = 0, vmax = 5.5, cmap = 'hot')
+        plt.savefig(path.join(aimDIR, subdf['file name'].values[i].rstrip('.fits') + '_dither_{0}'.format(dither) + '.pdf'))
+
+
+
+
+
+
+
+
+

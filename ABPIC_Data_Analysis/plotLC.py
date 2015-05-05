@@ -27,18 +27,21 @@ if __name__ == '__main__':
     df['ERR0'] = df['FLUXERR']/df['FLUX']
     df['Time'] = np.float32(df.index.values - df.index.values[0])/(60 * 60 * 1e9) #time in ns
 
-    subdf = df[(df['ORBIT'] >= 7)]
+    subdf = df[(df['ORBIT'] >= 7) & (df['CONTAMINATED'] == 0)]
+    #subdf = df[(df['ORBIT'] >= 7)]
     subdf['Time'] = subdf['Time'] - subdf['Time'].values[0]
-    ax.errorbar(subdf[subdf['FILTER'] == 'F125W']['Time'], subdf[subdf['FILTER'] == 'F125W']['FLUX0'], yerr = subdf[subdf['FILTER'] == 'F125W']['FLUX0'] * subdf[subdf['FILTER'] == 'F125W']['ERR0'], fmt = 's', label = 'F125W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F125W']['FLUX0'].std() * 100), color = 'b')
-    ax.errorbar(subdf[subdf['FILTER'] == 'F160W']['Time'], subdf[subdf['FILTER'] == 'F160W']['FLUX0'] + 0.03, yerr = subdf[subdf['FILTER'] == 'F160W']['FLUX0'] * subdf[subdf['FILTER'] == 'F160W']['ERR0'], fmt = 's', label = 'F160W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F160W']['FLUX0'].std() * 100), color = 'r')
+    ax.errorbar(subdf[subdf['FILTER'] == 'F125W']['Time'], subdf[subdf['FILTER'] == 'F125W']['FLUX0'], yerr = subdf[subdf['FILTER'] == 'F125W']['FLUX0'] * subdf[subdf['FILTER'] == 'F125W']['ERR0'], fmt = 's', label = 'F125W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F125W']['FLUX0'].std() * 100), mec = '0.2', mew = 0.5)
+    ax.errorbar(subdf[subdf['FILTER'] == 'F160W']['Time'], subdf[subdf['FILTER'] == 'F160W']['FLUX0'] + 0.03, yerr = subdf[subdf['FILTER'] == 'F160W']['FLUX0'] * subdf[subdf['FILTER'] == 'F160W']['ERR0'], fmt = 's', label = 'F160W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F160W']['FLUX0'].std() * 100), mec = '0.2', mew = 0.5)
 
-    # subdf = df[(df['ORBIT'] >= 7) & (df['CONTAMINATED'] == 1)]
-    # ax.errorbar(subdf[subdf['FILTER'] == 'F125W']['Time'], subdf[subdf['FILTER'] == 'F125W']['FLUX0'], yerr = subdf[subdf['FILTER'] == 'F125W']['FLUX0'] * subdf[subdf['FILTER'] == 'F125W']['ERR0'], fmt = 'x', label = 'F125W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F125W']['FLUX0'].std() * 100), color = 'b')
-    # ax.errorbar(subdf[subdf['FILTER'] == 'F160W']['Time'], subdf[subdf['FILTER'] == 'F160W']['FLUX0'] + 0.03, yerr = subdf[subdf['FILTER'] == 'F160W']['FLUX0'] * subdf[subdf['FILTER'] == 'F160W']['ERR0'], fmt = 'x', label = 'F160W, Std Dev: {0:.2f}%'.format(subdf[subdf['FILTER'] == 'F160W']['FLUX0'].std() * 100), color = 'r')
+    print subdf[subdf['FILTER'] == 'F125W']['ERR0'].mean()
+    print subdf[subdf['FILTER'] == 'F160W']['ERR0'].mean()
+    subdf = df[(df['ORBIT'] >= 7) & (df['CONTAMINATED'] == 1)]
+    ax.errorbar(subdf[subdf['FILTER'] == 'F125W']['Time'], subdf[subdf['FILTER'] == 'F125W']['FLUX0'], yerr = subdf[subdf['FILTER'] == 'F125W']['FLUX0'] * subdf[subdf['FILTER'] == 'F125W']['ERR0'], fmt = 'x', color = '0.8')
+    ax.errorbar(subdf[subdf['FILTER'] == 'F160W']['Time'], subdf[subdf['FILTER'] == 'F160W']['FLUX0'] + 0.03, yerr = subdf[subdf['FILTER'] == 'F160W']['FLUX0'] * subdf[subdf['FILTER'] == 'F160W']['ERR0'], fmt = 'x', color = '0.8')
 
-    ax.axhline(y = 1.0, linestyle = '--', color = '0.2', linewidth = 0.8)
-    
+    ax.axhline(y = 1.0, linestyle = '--', color = '0.2', linewidth = 0.8)    
     ax.axhline(y = 1.03, linestyle = '--', color = '0.2', linewidth = 0.8)
+    
     ax.legend(loc = 'upper right')
     ax.set_ylabel('Normalized Flux', fontsize = 18, fontweight = 'semibold')
     ax.set_xlabel('Time (h)', fontsize = 18, fontweight = 'semibold')

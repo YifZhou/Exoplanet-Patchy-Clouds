@@ -317,7 +317,7 @@ FUNCTION psf_subtraction, input_fn, aperRadius, Subtract
   return, output_fn
 END
 
-FUNCTION aperturePhot, inFn, aperRadius, include_bad
+FUNCTION aperturePhot, inFn, aperRadius
   restore, inFn
   szCube = size(cube1)
   nImages = szCube[3]
@@ -355,7 +355,7 @@ FUNCTION aperturePhot, inFn, aperRadius, include_bad
      meshgrid, 256, 256, xx, yy
      dist = sqrt((xx - infoStruct1.xCenter[i])^2 + (yy - infoStruct1.yCenter[i])^2)
      effID = where(dist LE aperRadius)
-     fluxErr[i] = sqrt(total(((errorCube[*, *, i])[effID])^2 + infoStruct1.sky_sigma[i]))
+     fluxErr[i] = sqrt(total(((errorCube[*, *, i])[effID])^2 + infoStruct1.sky_sigma[i]^2))
      IF (where((dqMaskCube[*, *, i])[effID] EQ 0))[0] NE -1 THEN contaminated[i] = 1
      print, i, ' image finished photometry'
   ENDFOR
