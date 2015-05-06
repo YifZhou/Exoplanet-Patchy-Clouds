@@ -1,0 +1,31 @@
+\documentclass[iop]{emulateapj}
+
+\usepackage{graphicx}
+\usepackage{amstex}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\shorttitle{Short Title}
+\shortauthors{Author et al.}
+
+\begin{document}
+\title{Cloud structure of planetary mass companion AB Pic-b}
+\author{Yifan Zhou, Daniel Apai, ...}
+\affil{University of Arizona}
+
+\begin{abstract}
+...
+\end{abstract}
+
+\keywords{kw1, kw2, ...}
+\maketitle
+
+\acknowledgments{
+  Acknowledgments. 
+}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
