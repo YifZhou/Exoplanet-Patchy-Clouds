@@ -1,53 +1,22 @@
-%merlin.mbs apsrev4-1.bst 2010-07-25 4.21a (PWD, AO, DPC) hacked
-%Control: key (0)
-%Control: author (8) initials jnrlst
-%Control: editor formatted (1) identically to author
-%Control: production of article title (-1) disabled
-%Control: page (0) single
-%Control: year (1) truncated
-%Control: production of eprint (0) enabled
-\begin{thebibliography}{0}%
-\makeatletter
-\providecommand \@ifxundefined [1]{%
- \@ifx{#1\undefined}
-}%
-\providecommand \@ifnum [1]{%
- \ifnum #1\expandafter \@firstoftwo
- \else \expandafter \@secondoftwo
- \fi
-}%
-\providecommand \@ifx [1]{%
- \ifx #1\expandafter \@firstoftwo
- \else \expandafter \@secondoftwo
- \fi
-}%
-\providecommand \natexlab [1]{#1}%
-\providecommand \enquote  [1]{``#1''}%
-\providecommand \bibnamefont  [1]{#1}%
-\providecommand \bibfnamefont [1]{#1}%
-\providecommand \citenamefont [1]{#1}%
-\providecommand \href@noop [0]{\@secondoftwo}%
-\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
-\providecommand \@href[1]{\@@startlink{#1}\@@href}%
-\providecommand \@@href[1]{\endgroup#1\@@endlink}%
-\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
-  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
-\providecommand \@@startlink[1]{}%
-\providecommand \@@endlink[0]{}%
-\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
-\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
-\providecommand \urlprefix  [0]{URL }%
-\providecommand \Eprint [0]{\href }%
-\providecommand \doibase [0]{http://dx.doi.org/}%
-\providecommand \selectlanguage [0]{\@gobble}%
-\providecommand \bibinfo  [0]{\@secondoftwo}%
-\providecommand \bibfield  [0]{\@secondoftwo}%
-\providecommand \translation [1]{[#1]}%
-\providecommand \BibitemOpen [0]{}%
-\providecommand \bibitemStop [0]{}%
-\providecommand \bibitemNoStop [0]{.\EOS\space}%
-\providecommand \EOS [0]{\spacefactor3000\relax}%
-\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
-\let\auto@bib@innerbib\@empty
-%</preamble>
-\end{thebibliography}%
+\begin{thebibliography}{5}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Berta {et~al.}(2012)Berta, Charbonneau, D\'{e}sert,
+  {et~al.}}]{Berta2012}
+Berta, Z.~K., Charbonneau, D., D\'{e}sert, J.-M., {et~al.} 2012, ApJ, 747, 35
+
+\bibitem[{Kreidberg {et~al.}(2014)Kreidberg, Bean, D\'{e}sert,
+  {et~al.}}]{Kreidberg2014}
+Kreidberg, L., Bean, J.~L., D\'{e}sert, J.-M., {et~al.} 2014, Nature, 505, 69
+
+\bibitem[{Mandell {et~al.}(2013)Mandell, Haynes, Sinukoff,
+  {et~al.}}]{Mandell2013}
+Mandell, A.~M., Haynes, K., Sinukoff, E., {et~al.} 2013, ApJ, 779, 128
+
+\bibitem[{Markwardt(2009)}]{Markwardt2009}
+Markwardt, Â. 2009, Astron. Data Anal. Softw. Syst. XVIII ASP Conf. Ser., 411
+
+\bibitem[{Swain {et~al.}(2013)Swain, Deroo, Tinetti, {et~al.}}]{Swain2013}
+Swain, M., Deroo, P., Tinetti, G., {et~al.} 2013, Icarus, 225, 432
+
+\end{thebibliography}
