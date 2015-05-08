@@ -5,6 +5,7 @@ import glob
 import sys
 sys.path.append('../python_src')
 from linearFit import linearFit
+import matplotlib.pyplot as plt
 """
 new photometry method, do the up the ramp fit after sum up all pixel values in one read out
 """
@@ -12,10 +13,11 @@ new photometry method, do the up the ramp fit after sum up all pixel values in o
 if __name__ == '__main__':
     pklList = glob.glob('../data/ABPIC-B_myfits/icdg*pkl')
     pklList.sort()
-    size = 9# measure the photometry from a size= box
+    size = 7# measure the photometry from a size= box
     chisqTh = 2.5
     flux = np.zeros(len(pklList))
     fluxerr = np.zeros(len(pklList))
+    chisqList = np.zeros(len(pklList))
     for i, fn in enumerate(pklList):
         hst = pickle.load(open(fn, 'rb'))
         imShape = hst.countArray.shape[:-1] # the last dimension in shape list is the number of samples. First two dimensions are the size of the image for prepared for correction
@@ -35,11 +37,13 @@ if __name__ == '__main__':
         # flux[i] = readoutList[-1]/hst.expTime[nSampEff - 2]
         # fluxerr[i] = errorList[-1]/hst.expTime[nSampEff - 2]
         print fn, chisq, flux[i]
+        chisqList[i] = chisq
 
     df = pd.read_csv('2015_Feb_27_myfits_aper=5_result.csv')
     df['FLUX'] = flux
     df['FLUXERR'] = fluxerr
     df.to_csv('totalRampUp_size_{0}_result.csv'.format(size), index = False)
+
 
 
 

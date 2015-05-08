@@ -74,7 +74,7 @@ FUNCTION maskoutdq, dq, flagList=flaglist
   ;; problem for photometry
   ;; the pixel that has these flags will be assigned a mask value 0,
   ;; good pixel will be assigned mask value 1
-  IF N_elements(flagList) EQ 0 THEN flagList = [8, 32, 512]
+  IF N_elements(flagList) EQ 0 THEN flagList = [4, 32, 512]
   dq = long(dq)
   mask = dq-dq+1 ;;initialize mask
   FOR k=0, n_elements(flagList) - 1 DO BEGIN

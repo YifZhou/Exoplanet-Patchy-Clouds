@@ -1,0 +1,11 @@
+import matplotlib.pyplot as plt
+import aplpy
+
+fig = plt.figure()
+gc = aplpy.FITSFigure('original.fits', hdu = 1, figure = fig)
+
+gc.show_colorscale(cmap = 'hot', interpolation = 'bicubic', vmax = 3000)
+ax = plt.gca()
+ax.set_xlim([84, 144])
+ax.set_ylim([138, 198])
+plt.show()
