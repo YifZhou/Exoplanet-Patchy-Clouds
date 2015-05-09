@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex msv1"] 1431049522 "msv1.aux" "msv1.bbl" "msv1" 1431050031
+["bibtex msv1"] 1431049522 "msv1.aux" "msv1.bbl" "msv1" 1431121252
   "./apj.bst" 1430968622 30256 4bddfbcee56ad37e9f226301f7fb0885 ""
-  "msv1.aux" 1431050030 3153 a8191ee295b28aced80764a5061b6857 ""
+  "msv1.aux" 1431121251 3153 a8191ee295b28aced80764a5061b6857 ""
   "msv1.bcf" 0 -1 0 ""
-  "msv1Notes.bib" 1431050030 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "msv1Notes.bib" 1431121251 0 d41d8cd98f00b204e9800998ecf8427e ""
   "ref.bib" 1431048851 2593 05f86fab21e706239a8319eae7fd93dc ""
   (generated)
-  "msv1.blg"
   "msv1.bbl"
-["pdflatex"] 1431050029 "msv1.tex" "msv1.pdf" "msv1" 1431050031
+  "msv1.blg"
+["pdflatex"] 1431121250 "msv1.tex" "msv1.pdf" "msv1" 1431121252
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -74,15 +74,15 @@
   "/usr/local/texlive/2014/texmf-dist/web2c/texmf.cnf" 1398200874 31722 4f52421e59a4b9e910cf18e64c1f2b4a ""
   "/usr/local/texlive/2014/texmf-var/web2c/xetex/xelatex.fmt" 1412616994 3441596 11595ad155f36b0fd3da8876b898d921 ""
   "/usr/local/texlive/2014/texmf.cnf" 1401025936 577 a59edbde8d3a8c549d0eeaab1739e2ff ""
-  "msv1.aux" 1431050030 3153 a8191ee295b28aced80764a5061b6857 ""
+  "msv1.aux" 1431121251 3153 a8191ee295b28aced80764a5061b6857 ""
   "msv1.bbl" 1431049523 878 90c98a8f4c9bbcd0e369c9127ce97ef3 "bibtex msv1"
-  "msv1.out" 1431050031 695 4c0e2b42971f3b79b13f32afe750114d ""
-  "msv1.tex" 1431050029 5587 6780afedc1b5a7325d288f58676c7206 ""
+  "msv1.out" 1431121251 695 4c0e2b42971f3b79b13f32afe750114d ""
+  "msv1.tex" 1431121249 5591 a01c9031ba95cb4ce2e7731f629b506a ""
   "original.pdf" 1431047042 644063 5f4ec5cd46aa73a7a1e09ed94aabe2ac ""
   "subtracted.pdf" 1431047042 563649 3ccaf204f7e972a88136617e76ddbf81 ""
   (generated)
+  "msv1Notes.bib"
   "msv1.log"
   "msv1.out"
-  "msv1Notes.bib"
   "msv1.pdf"
   "msv1.aux"
