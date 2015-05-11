@@ -1,0 +1,17 @@
+FUNCTION maskoutdq, dq, flagList=flaglist
+  IF N_elements(flagList) EQ 0 THEN flagList = [8, 32, 512]
+  dq = long(dq)
+  mask = dq-dq+1 ;;initialize mask
+  FOR k=0, n_elements(flagList) - 1 DO BEGIN
+     mask = mask * (1- dq/flagList[k] MOD 2)
+  ENDFOR 
+  return, mask
+END
+
+
+PRO tinytimPSF
+  im = mrdfits('icdg01zeq_flt.fits', 1)
+  err = mrdfits('icdg01zeq_flt.fits', 2)
+  dq = mrdfits('icdg01zeq_flt.fits', 3)
+  
+END

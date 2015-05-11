@@ -1,0 +1,26 @@
+#! /usr/bin/env python
+import subprocess as sp
+"""
+Use Tinytim to generate a PSFs
+"""
+
+def modifyIn(inFile, jitx, jity, secDis):
+    inFile[1] = 'Jitx_{0:.0f}_Jity_{1:.0f}_Dis_{2:.2f}_\n'.format(jitx, jity, secDis)
+    inFile[9] = '{0:.5f} # Major axis jitter in mas\n'.format(jitx)
+    inFile[10] = '{0:.5f} # Major axis jitter in mas\n'.format(jity)
+    inFile[251] = '{0:.5f} #z4 = Focus\n'.format(secDis/100.)
+    return inFile
+
+if __name__ == '__main__':
+    inFile = open('2mass_psf.in', 'r').readlines()
+    jitxList = [0, 10, 20, 30]
+    jityList = [0, 10, 20, 30]
+    dis = 3.0 #fix displacement at 3.0
+    for i in range(4):
+        for j in range(4):
+            modFile = modifyIn(inFile, jitxList[i], jityList[j], dis)
+            out = open('temp.in', 'w')
+            out.writelines(modFile)
+            out.close()
+            sp.call(['tiny2', 'temp.in'])
+            sp.call(['tiny3', 'temp.in', 'sub=10'])
