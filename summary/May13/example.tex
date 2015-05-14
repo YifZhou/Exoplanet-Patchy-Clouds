@@ -1,0 +1,62 @@
+\documentclass[14pt]{beamer}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\setsansfont{Minion Pro}
+
+
+\usetheme{UofA}
+
+
+\title[UofA Example]{Beamer: UofA Theme Example}
+\author{StewArt}
+\institute[UofA]{Stewart Observatory\\
+University of Arizona}
+\begin{document}
+
+{\setbeamertemplate{footline}{}
+  \setbeamertemplate{background canvas}[vertical
+  shading][bottom=UA_BLUE!15,top=white!20]
+  \setbeamertemplate{background}{  \vbox to \paperheight{\vfil\hbox to
+      \paperwidth{\hfil\includegraphics[width=1.5in]{ua_triangle_blue_low}\hfil}}%
+    }
+% \usebackgroundtemplate{%
+%   \vbox to \paperheight{\vfil\hbox to \paperwidth{\hfil\includegraphics[width=1.5in]{ua_triangle}\hfil}}
+%}
+
+%\beamertemplateshadingbackground{UA_BLUE!10}{white!20}
+\begin{frame}
+\maketitle
+\end{frame}}
+
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents[pausesections]
+\end{frame}
+
+\section{Section}\label{sec1}
+\begin{frame}
+  \frametitle{Section}
+  \framesubtitle{no idea}
+Here is a list:
+\begin{itemize}
+\item<1-> Item 1
+\item<2-> Item 2
+\end{itemize}
+\end{frame}
+
+\subsection{Subsection}\label{subsec1_1}
+\begin{frame}
+  \frametitle{Subsection}
+Here is a block:
+\vspace{-.05in}
+\begin{block}<2->{Block}
+Here is some text!
+\end{block}
+\end{frame}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

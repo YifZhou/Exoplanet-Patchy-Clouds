@@ -1,0 +1,9 @@
+
+
+\setbeamerfont{frametitle}{size=\Large, family=\sffamily,shape=\scshape,series=\bfseries}
+\setbeamerfont{title}{size=\Large,family=\sffamily,shape=\scshape,series=\bfseries}
+\setbeamerfont{block
+  title}{size=\Large,family=\sffamily,series=\bfseries,shape=\scshape}
+\setbeamerfont{author}{size=\normalsize,series=\bfseries,parent=structure}
+ \setbeamerfont{institute}{size=\footnotesize,shape=\scshape}
+ \setbeamerfont{date}{size=\footnotesize}
