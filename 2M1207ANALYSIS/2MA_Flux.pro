@@ -7,7 +7,7 @@ PRO Primary_Flux
   flux = fltarr(nFiles)
   FOR i = 0, nFiles - 1 DO BEGIN
      im = mrdfits(fn + fileList[i], 1, hd, /silent)
-     cen = findPeak(im, 141, 159, range = 20)
+     cen = findPeak(im, 141, 159, range =o 20)
      aper, im, cen[0], cen[1], f, ef, sky, esky, 1., 5, [30, 50], [-100, 1e6], /silent, /flux
      x[i] = cen[0]
      y[i] = cen[1]

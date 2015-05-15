@@ -16,8 +16,6 @@ import astropy.io.fits as fits
 #     else:
 #         print 'target missing'
 #         return 1
-
-        
 #     d.set(' '.join(['file', fits_name]))
 #     d.set('align yes')
 #     d.set('contour clear')
@@ -28,16 +26,16 @@ import astropy.io.fits as fits
 #     d.set('scale mode 99.5')
 #     d.set('zoom 4')
 #     return center
-    
+
 if __name__ == '__main__':
     d = ds9.ds9()
     d.set('blink no')
-    d.set('frame delete all') # intitialize ds9
+    d.set('frame delete all')  # intitialize ds9
     file_dir = '/home/yzhou/Documents/Exoplanet_Patchy_Project/data/ABPIC-B'
-    
+   
     target = 'ABPIC-B'
     if target == 'ABPIC-B':
-        planet_coord = '06:19:12.94 -58:03:20.9' # RA and Dec of the planet in FK5 coordinate, data obtained from simbed, for pan the iamge to centered on the target
+        planet_coord = '06:19:12.94 -58:03:20.9'   # RA and Dec of the planet in FK5 coordinate, data obtained from simbed, for pan the iamge to centered on the target
     elif target == '2M1207B':
         planet_coord = '12:07:33.467 -39:32:54.00'
     else:
@@ -61,5 +59,3 @@ if __name__ == '__main__':
     d.set('match scale')
     d.set('blink yes')
     d.set('blink interval 1')
-
-    

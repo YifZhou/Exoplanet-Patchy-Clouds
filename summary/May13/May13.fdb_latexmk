@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1431555228 "May13.tex" "May13.pdf" "May13" 1431555231
+["pdflatex"] 1431646586 "May13.tex" "May13.pdf" "May13" 1431646589
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -178,10 +178,10 @@
   "AmeanTC1.eps" 1222072402 63947 d4ec7018bc02e7aab30800a524ccbfc9 ""
   "CMD.pdf" 1431538153 76632 73b93225db9cc552edab447c29d7c102 ""
   "InputStructure.eps" 1222072382 32534 0ef5f05f79694939aef40412222a5c60 ""
-  "May13.aux" 1431555230 2239 39c2cc5cf5593c8fdea6fc6a89347c8b ""
-  "May13.nav" 1431555230 984 b7ef5c833a1277ad7e52eb6ec5443faf ""
-  "May13.out" 1431555229 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "May13.tex" 1431555227 4707 a284635e112533fe3d579d1e129b42ea ""
+  "May13.aux" 1431646588 2392 007aea66d78e5f76d2511231f47d3336 ""
+  "May13.nav" 1431646588 1076 e988e7153e9c3c40a38c52ee3445c421 ""
+  "May13.out" 1431646587 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "May13.tex" 1431646581 4762 4a27d9b292351f5584e5cf3b2222d3a1 ""
   "RhodRhoG.eps" 1222072393 55000 c1022781c0f44f7328fdbf0f20c265ed ""
   "beamercolorthemeUofA_Color.sty" 1431492754 1712 a2543e86deb3a42707c808adbac74b38 ""
   "beamerfontthemeUofA.sty" 1431499062 502 5bb29c2d1fc02a0ef2600ea7f4412266 ""
@@ -192,10 +192,10 @@
   "spec.png" 1431555083 339621 b5eeb71fe515244592e7fffdd964937c ""
   "ua_triangle_blue_low.png" 1431489203 25050 b22b742c2923bd102b2a919d52610c8b ""
   (generated)
+  "May13.snm"
   "May13.toc"
+  "May13.log"
   "May13.nav"
   "May13.aux"
-  "May13.out"
-  "May13.log"
-  "May13.snm"
   "May13.pdf"
+  "May13.out"

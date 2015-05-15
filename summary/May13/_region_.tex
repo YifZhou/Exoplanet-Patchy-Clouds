@@ -1,4 +1,4 @@
-\documentclass[14pt]{beamer}
+\message{ !name(May13.tex)}\documentclass[14pt]{beamer}
 \usepackage{graphicx}
 \usepackage{fontspec}
 \setsansfont{Minion Pro}
@@ -14,13 +14,20 @@
 University of Arizona}
 \begin{document}
 
+\message{ !name(May13.tex) !offset(-3) }
+
+
 {\setbeamertemplate{footline}{}
   \setbeamertemplate{background canvas}[vertical
   shading][bottom=UA_BLUE!15,top=white!20]
   \setbeamertemplate{background}{  \vbox to \paperheight{\vfil\hbox to
       \paperwidth{\hfil\includegraphics[width=1.5in]{ua_triangle_blue_low}\hfil}}%
     }
+% \usebackgroundtemplate{%
+%   \vbox to \paperheight{\vfil\hbox to \paperwidth{\hfil\includegraphics[width=1.5in]{ua_triangle}\hfil}}
+%}
 
+%\beamertemplateshadingbackground{UA_BLUE!10}{white!20}
 \begin{frame}
 \maketitle
 \end{frame}}
@@ -142,13 +149,6 @@ $Q^{\rm ext}_{\lambda}(r_{\rm c})$ -- extinction efficiency\\}
   \figcite{Apai et. al. (2013)}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Test}
-
-  
-\end{frame}
-
-
 \end{document}
 
 
@@ -156,3 +156,5 @@ $Q^{\rm ext}_{\lambda}(r_{\rm c})$ -- extinction efficiency\\}
 %%% mode: latex
 %%% TeX-master: t
 %%% End:
+
+\message{ !name(May13.tex) !offset(-160) }
