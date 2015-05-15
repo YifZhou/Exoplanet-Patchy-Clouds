@@ -1,0 +1,27 @@
+#/usr/bin/env python
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+def normalize(df):
+    """
+    normalize the flux by filter and angle
+    """
+    
+    flux0 = np.zeros(len(df))
+    flux0[(df['FILTER'] == 'F125W') & (df['POSANG'] == 129)] = df[(df['FILTER'] == 'F125W') & (df['POSANG'] == 129)]['FLUX']/df[(df['FILTER'] == 'F125W') & (df['POSANG'] == 129)]['FLUX'].mean()
+    flux0[(df['FILTER'] == 'F125W') & (df['POSANG'] == 101)] = df[(df['FILTER'] == 'F125W') & (df['POSANG'] == 101)]['FLUX']/df[(df['FILTER'] == 'F125W') & (df['POSANG'] == 101)]['FLUX'].mean()
+    flux0[(df['FILTER'] == 'F160W') & (df['POSANG'] == 129)] = df[(df['FILTER'] == 'F160W') & (df['POSANG'] == 129)]['FLUX']/df[(df['FILTER'] == 'F160W') & (df['POSANG'] == 129)]['FLUX'].mean()
+    flux0[(df['FILTER'] == 'F160W') & (df['POSANG'] == 101)] = df[(df['FILTER'] == 'F160W') & (df['POSANG'] == 101)]['FLUX']/df[(df['FILTER'] == 'F160W') & (df['POSANG'] == 101)]['FLUX'].mean()
+    return flux0
+    
+if __name__ == '__main__':
+    fltFN = '2015_Feb_10_flt_aper=5_result.csv'
+    newFN = '2015_May_02_noramp_aper=5.00_result.csv'
+    fltDF = pd.read_csv(fltFN, parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    newDF = pd.read_csv(newFN, parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    fltDF = fltDF[fltDF['orbit']>=10]
+    newDF = newDF[newDF['orbit']>=10]
+    cosmicRayDF = pd.read_csv('totalRampUp_size_7_result.csv', parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    df['FLUX'][np.where(np.isnan(cosmicRayDF['FLUX']))[0]] = np.nan
+    
