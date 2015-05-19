@@ -1,5 +1,5 @@
 &BeginPar7.5
-Jitx_40_Jity_40_Dis_3.10_
+Jitx_70_Jity_70_Dis_2.85_
 /Users/ZhouYf/tinytim/wfc3_ir.tab  # Name of Zernike table file
 /Users/ZhouYf/tinytim/wfc3_ir.pup  # Name of pupil table file
 00-00-0000 # Observation date (dd-mm-yyyy)
@@ -7,8 +7,8 @@ WFC3_IR  # Camera
 30  # Camera ID number
 F125W  # Filter
 Blackbody(2000.000000K)  # Spectrum file
-40.00000 # Major axis jitter in mas
-40.00000 # Major axis jitter in mas
+70.00000 # Major axis jitter in mas
+70.00000 # Major axis jitter in mas
 0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
 515 541  # Position 1
@@ -249,7 +249,7 @@ Blackbody(2000.000000K)  # Spectrum file
   0.       # Z1 = (Not used)
   0.       # Z2 = X (V2) tilt
   0.       # Z3 = Y (V3) tilt
-0.03100 #z4 = Focus
+0.02850 #z4 = Focus
   1e-12    # Z5 = 0 degree astigmatism
   1e-12    # Z6 = 45 degree astigmatism
   1e-12    # Z7 = X (V2) coma

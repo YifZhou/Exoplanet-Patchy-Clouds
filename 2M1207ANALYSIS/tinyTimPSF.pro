@@ -16,10 +16,12 @@ END
 
 FUNCTION resGrid, im, psf0, mask, gc, gridsize
   dxy0 = [13, 13] - gc
+  ngrid = 5
   mask00 = make_mask(mask,[[17, 9, 0, 3], [13, 13, 12, 100]])
-  gridx = gc[0] + (findgen(7) - 3) * gridSize/3.
-  gridy = gc[1] + (findgen(7) - 3) * gridSize/3.
-  grid = fltarr(7,7)
+  grid = fltarr(ngrid, ngrid)
+  gridx = gc[0] + (findgen(ngrid) - 3) * gridSize/float(ngrid/2)
+  gridy = gc[1] + (findgen(ngrid) - 3) * gridSize/float(ngrid/2)
+
   FOR i=0,6 DO BEGIN
      FOR j=0,6 DO BEGIN
         
@@ -30,9 +32,9 @@ FUNCTION resGrid, im, psf0, mask, gc, gridsize
   ENDFOR
   gridid = (where(grid EQ min(grid)))[0]
   gridc = [0.0, 0.0]
-  gridc[1] = gridid/7
-  gridc[0] = gridid MOD 7
-  newGC = (gridc * gridSize/3) + gc - gridsize
+  gridc[1] = gridid/ngrid
+  gridc[0] = gridid MOD ngrid
+  newGC = (gridc * gridSize/float(ngrid/2)) + gc - gridsize
   diff = newGC - gc
   ;;print, 'min res = ', min(grid)
   return, diff
@@ -58,7 +60,7 @@ PRO tinytimPSF
   ;;           'Jitx_0_Jity_30_Dis_3.00_00.fits', 'Jitx_10_Jity_30_Dis_3.00_00.fits', $
   ;;           'Jitx_20_Jity_30_Dis_3.00_00.fits','Jitx_30_Jity_30_Dis_3.00_00.fits']
 
-  PSF_fn = ['Jitx_00_Jity_00_Dis_2.90_00.fits', 'Jitx_10_Jity_30_Dis_3.00_00.fits', 'Jitx_30_Jity_10_Dis_3.10_00.fits','Jitx_00_Jity_00_Dis_2.95_00.fits', 'Jitx_10_Jity_30_Dis_3.05_00.fits', 'Jitx_30_Jity_20_Dis_2.90_00.fits','Jitx_00_Jity_00_Dis_3.00_00.fits', 'Jitx_10_Jity_30_Dis_3.10_00.fits', 'Jitx_30_Jity_20_Dis_2.95_00.fits','Jitx_00_Jity_00_Dis_3.05_00.fits', 'Jitx_10_Jity_40_Dis_2.90_00.fits', 'Jitx_30_Jity_20_Dis_3.00_00.fits','Jitx_00_Jity_00_Dis_3.10_00.fits', 'Jitx_10_Jity_40_Dis_2.95_00.fits', 'Jitx_30_Jity_20_Dis_3.05_00.fits','Jitx_00_Jity_10_Dis_2.90_00.fits', 'Jitx_10_Jity_40_Dis_3.00_00.fits', 'Jitx_30_Jity_20_Dis_3.10_00.fits','Jitx_00_Jity_10_Dis_2.95_00.fits', 'Jitx_10_Jity_40_Dis_3.05_00.fits', 'Jitx_30_Jity_30_Dis_2.90_00.fits','Jitx_00_Jity_10_Dis_3.00_00.fits', 'Jitx_10_Jity_40_Dis_3.10_00.fits', 'Jitx_30_Jity_30_Dis_2.95_00.fits','Jitx_00_Jity_10_Dis_3.05_00.fits', 'Jitx_20_Jity_00_Dis_2.90_00.fits', 'Jitx_30_Jity_30_Dis_3.00_00.fits','Jitx_00_Jity_10_Dis_3.10_00.fits', 'Jitx_20_Jity_00_Dis_2.95_00.fits', 'Jitx_30_Jity_30_Dis_3.05_00.fits','Jitx_00_Jity_20_Dis_2.90_00.fits', 'Jitx_20_Jity_00_Dis_3.00_00.fits', 'Jitx_30_Jity_30_Dis_3.10_00.fits','Jitx_00_Jity_20_Dis_2.95_00.fits', 'Jitx_20_Jity_00_Dis_3.05_00.fits', 'Jitx_30_Jity_40_Dis_2.90_00.fits','Jitx_00_Jity_20_Dis_3.00_00.fits', 'Jitx_20_Jity_00_Dis_3.10_00.fits', 'Jitx_30_Jity_40_Dis_2.95_00.fits','Jitx_00_Jity_20_Dis_3.05_00.fits', 'Jitx_20_Jity_10_Dis_2.90_00.fits', 'Jitx_30_Jity_40_Dis_3.00_00.fits','Jitx_00_Jity_20_Dis_3.10_00.fits', 'Jitx_20_Jity_10_Dis_2.95_00.fits', 'Jitx_30_Jity_40_Dis_3.05_00.fits','Jitx_00_Jity_30_Dis_2.90_00.fits', 'Jitx_20_Jity_10_Dis_3.00_00.fits', 'Jitx_30_Jity_40_Dis_3.10_00.fits','Jitx_00_Jity_30_Dis_2.95_00.fits', 'Jitx_20_Jity_10_Dis_3.05_00.fits', 'Jitx_40_Jity_00_Dis_2.90_00.fits','Jitx_00_Jity_30_Dis_3.00_00.fits', 'Jitx_20_Jity_10_Dis_3.10_00.fits', 'Jitx_40_Jity_00_Dis_2.95_00.fits','Jitx_00_Jity_30_Dis_3.05_00.fits', 'Jitx_20_Jity_20_Dis_2.90_00.fits', 'Jitx_40_Jity_00_Dis_3.00_00.fits','Jitx_00_Jity_30_Dis_3.10_00.fits', 'Jitx_20_Jity_20_Dis_2.95_00.fits', 'Jitx_40_Jity_00_Dis_3.05_00.fits','Jitx_00_Jity_40_Dis_2.90_00.fits', 'Jitx_20_Jity_20_Dis_3.00_00.fits', 'Jitx_40_Jity_00_Dis_3.10_00.fits','Jitx_00_Jity_40_Dis_2.95_00.fits', 'Jitx_20_Jity_20_Dis_3.05_00.fits', 'Jitx_40_Jity_10_Dis_2.90_00.fits','Jitx_00_Jity_40_Dis_3.00_00.fits', 'Jitx_20_Jity_20_Dis_3.10_00.fits', 'Jitx_40_Jity_10_Dis_2.95_00.fits','Jitx_00_Jity_40_Dis_3.05_00.fits', 'Jitx_20_Jity_30_Dis_2.90_00.fits', 'Jitx_40_Jity_10_Dis_3.00_00.fits','Jitx_00_Jity_40_Dis_3.10_00.fits', 'Jitx_20_Jity_30_Dis_2.95_00.fits', 'Jitx_40_Jity_10_Dis_3.05_00.fits','Jitx_10_Jity_00_Dis_2.90_00.fits', 'Jitx_20_Jity_30_Dis_3.00_00.fits', 'Jitx_40_Jity_10_Dis_3.10_00.fits','Jitx_10_Jity_00_Dis_2.95_00.fits', 'Jitx_20_Jity_30_Dis_3.05_00.fits', 'Jitx_40_Jity_20_Dis_2.90_00.fits','Jitx_10_Jity_00_Dis_3.00_00.fits', 'Jitx_20_Jity_30_Dis_3.10_00.fits', 'Jitx_40_Jity_20_Dis_2.95_00.fits','Jitx_10_Jity_00_Dis_3.05_00.fits', 'Jitx_20_Jity_40_Dis_2.90_00.fits', 'Jitx_40_Jity_20_Dis_3.00_00.fits','Jitx_10_Jity_00_Dis_3.10_00.fits', 'Jitx_20_Jity_40_Dis_2.95_00.fits', 'Jitx_40_Jity_20_Dis_3.05_00.fits','Jitx_10_Jity_10_Dis_2.90_00.fits', 'Jitx_20_Jity_40_Dis_3.00_00.fits', 'Jitx_40_Jity_20_Dis_3.10_00.fits','Jitx_10_Jity_10_Dis_2.95_00.fits', 'Jitx_20_Jity_40_Dis_3.05_00.fits', 'Jitx_40_Jity_30_Dis_2.90_00.fits','Jitx_10_Jity_10_Dis_3.00_00.fits', 'Jitx_20_Jity_40_Dis_3.10_00.fits', 'Jitx_40_Jity_30_Dis_2.95_00.fits','Jitx_10_Jity_10_Dis_3.05_00.fits', 'Jitx_30_Jity_00_Dis_2.90_00.fits', 'Jitx_40_Jity_30_Dis_3.00_00.fits','Jitx_10_Jity_10_Dis_3.10_00.fits', 'Jitx_30_Jity_00_Dis_2.95_00.fits', 'Jitx_40_Jity_30_Dis_3.05_00.fits','Jitx_10_Jity_20_Dis_2.90_00.fits', 'Jitx_30_Jity_00_Dis_3.00_00.fits', 'Jitx_40_Jity_30_Dis_3.10_00.fits','Jitx_10_Jity_20_Dis_2.95_00.fits', 'Jitx_30_Jity_00_Dis_3.05_00.fits', 'Jitx_40_Jity_40_Dis_2.90_00.fits','Jitx_10_Jity_20_Dis_3.00_00.fits', 'Jitx_30_Jity_00_Dis_3.10_00.fits', 'Jitx_40_Jity_40_Dis_2.95_00.fits','Jitx_10_Jity_20_Dis_3.05_00.fits', 'Jitx_30_Jity_10_Dis_2.90_00.fits', 'Jitx_40_Jity_40_Dis_3.00_00.fits','Jitx_10_Jity_20_Dis_3.10_00.fits', 'Jitx_30_Jity_10_Dis_2.95_00.fits', 'Jitx_40_Jity_40_Dis_3.05_00.fits','Jitx_10_Jity_30_Dis_2.90_00.fits', 'Jitx_30_Jity_10_Dis_3.00_00.fits', 'Jitx_40_Jity_40_Dis_3.10_00.fits','Jitx_10_Jity_30_Dis_2.95_00.fits', 'Jitx_30_Jity_10_Dis_3.05_00.fits']
+  readcol,'fn.dat', PSF_fn, format = 'a'
   amp = fltarr(N_elements(PSF_fn))
   res = fltarr(N_elements(PSF_fn))
   jitx = fltarr(N_elements(PSF_fn))
@@ -66,11 +68,11 @@ PRO tinytimPSF
   dis = fltarr(N_elements(PSF_fn))
   PSFList = fltarr(27, 27, N_elements(PSF_fn))
   mask = maskoutdq(dq)
-  fixpix, im, mask, im_fixed
+  fixpix, im, mask, im_fixedn
   xy = findpeak(im_fixed, 13, 13, range=5)
   print, xy
   for i=0, N_elements(PSF_fn) - 1 DO BEGIN 
-     psf0 = mrdfits(PSF_fn[i],/silent)
+     psf0 = mrdfits('./PSFs/'+PSF_fn[i],/silent)
      psf0 = psf0[1:270, 1:270]
      dxy0 = xy0 - xy
      mask0 = make_mask(mask, [17, 9, 0, 3])
