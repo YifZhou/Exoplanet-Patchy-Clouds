@@ -301,6 +301,7 @@ INPUT /usr/local/texlive/2014/texmf-dist/tex/latex/beamer/translator/dicts/trans
 INPUT May13.nav
 INPUT May13.nav
 INPUT ua_triangle_blue_low.png
+INPUT cloudsonearth.jpg
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
@@ -316,9 +317,7 @@ INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm1
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT cond_curves_Fig9.pdf
-INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
-INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm
-INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
+INPUT cloudsonothers.png
 INPUT InputStructure.eps
 INPUT InputStructure.eps
 INPUT RhodRhoG.eps
@@ -327,8 +326,10 @@ INPUT InputStructure.eps
 INPUT InputStructure.eps
 INPUT AmeanTC1.eps
 INPUT AmeanTC1.eps
-INPUT spec.png
+INPUT Colours.eps
+INPUT Colours.eps
 INPUT CMD.pdf
+INPUT varyThick.png
 OUTPUT May13.nav
 OUTPUT May13.toc
 OUTPUT May13.snm

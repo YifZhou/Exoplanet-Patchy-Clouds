@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.10.6)  14 MAY 2015 16:36
+This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.10.6)  20 MAY 2015 13:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1307,48 +1307,47 @@ File: ua_triangle_blue_low.png Graphic file (type QTm)
 <use  "ua_triangle_blue_low.png" > [1
 
 ]
-LaTeX Font Info:    Try loading font information for U+msa on input line 41.
+File: cloudsonearth.jpg Graphic file (type QTm)
+ <use  "cloudsonearth.jpg" > [2
+
+]
+LaTeX Font Info:    Try loading font information for U+msa on input line 44.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 41.
+LaTeX Font Info:    Try loading font information for U+msb on input line 44.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [2
+)
 
-] [3
+LaTeX Font Warning: Command \footnotesize invalid in math mode on input line 44
+.
+
+
+LaTeX Font Warning: Command \footnotesize invalid in math mode on input line 44
+.
+
+
+LaTeX Font Warning: Command \footnotesize invalid in math mode on input line 44
+.
+
+
+LaTeX Font Warning: Command \footnotesize invalid in math mode on input line 44
+.
+
+[3
+
+] [4
 
 ]
 File: cond_curves_Fig9.pdf Graphic file (type QTm)
-
-<use  "cond_curves_Fig9.pdf" >
-Overfull \vbox (2.53374pt too high) detected at line 73
- []
-
-[4
-
-] [5
+ <use  "cond_curves_Fig9.pdf" > [5
 
 ]
-
-Package amsmath Warning: Foreign command \over;
-(amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 73.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 73.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 73.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 73.
-
-
-LaTeX Warning: Command \nobreakspace invalid in math mode on input line 73.
-
+File: cloudsonothers.png Graphic file (type QTm)
+ <use  "cloudsonothers.png" >
 [6
 
 ] [7
@@ -1361,34 +1360,43 @@ LaTeX Warning: Command \nobreakspace invalid in math mode on input line 73.
 
 ] [11
 
+] [12
+
+] [13
+
 ]
 File: InputStructure.eps Graphic file (type eps)
  <InputStructure.eps>
 File: RhodRhoG.eps Graphic file (type eps)
- <RhodRhoG.eps> [12
+ <RhodRhoG.eps>
+[14
 
 ]
 File: InputStructure.eps Graphic file (type eps)
-
-<InputStructure.eps>
+ <InputStructure.eps>
 File: AmeanTC1.eps Graphic file (type eps)
- <AmeanTC1.eps> [13
+ <AmeanTC1.eps> [15
 
 ]
-File: spec.png Graphic file (type QTm)
- <use  "spec.png" >
-Overfull \vbox (2.83554pt too high) detected at line 133
+File: Colours.eps Graphic file (type eps)
+ <Colours.eps>
+Overfull \vbox (229.83525pt too high) detected at line 148
  []
 
-[14
-
-] [15
+[16
 
 ]
 File: CMD.pdf Graphic file (type QTm)
- <use  "CMD.pdf" > [16
+ <use  "CMD.pdf" > [17
 
-] [17
+]
+File: varyThick.png Graphic file (type QTm)
+ <use  "varyThick.png" >
+Overfull \hbox (5.01811pt too wide) in paragraph at lines 167--167
+[][]  
+ []
+
+[18
 
 ]
 \tf@nav=\write6
@@ -1400,20 +1408,20 @@ File: CMD.pdf Graphic file (type QTm)
 \tf@snm=\write8
 \openout8 = `May13.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 154.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 154.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 171.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 171.
  (./May13.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 154.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 154.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 154.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 171.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 171.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 171.
  ) 
 Here is how much of TeX's memory you used:
- 31573 strings out of 493724
- 622291 string characters out of 6145899
- 644540 words of memory out of 5000000
- 34392 multiletter control sequences out of 15000+600000
- 7775 words of font info for 58 fonts, out of 8000000 for 9000
+ 31568 strings out of 493724
+ 622133 string characters out of 6145899
+ 643540 words of memory out of 5000000
+ 34386 multiletter control sequences out of 15000+600000
+ 7122 words of font info for 54 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  56i,16n,73p,10380b,513s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on May13.pdf (17 pages).
+Output written on May13.pdf (18 pages).
