@@ -1,14 +1,14 @@
 &BeginPar7.5
-Jitx_25_Jity_35_Dis_3.20_
+Jitx_40_Jity_40_Dis_1.80_x_515_y_541_
 /Users/ZhouYf/tinytim/wfc3_ir.tab  # Name of Zernike table file
 /Users/ZhouYf/tinytim/wfc3_ir.pup  # Name of pupil table file
 00-00-0000 # Observation date (dd-mm-yyyy)
 WFC3_IR  # Camera
 30  # Camera ID number
 F125W  # Filter
-Blackbody(2000.000000K)  # Spectrum file
-25.00000 # Major axis jitter in mas
-35.00000 # Major axis jitter in mas
+Blackbody(1600.000000K)  # Spectrum file
+40.00000 # Major axis jitter in mas
+40.00000 # Major axis jitter in mas
 0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
 515 541  # Position 1
@@ -16,22 +16,22 @@ Blackbody(2000.000000K)  # Spectrum file
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
 16  # Number of wavelengths
-1.090910 0.003086 512 # Wavelength 1 (microns), weight, grid size
-1.108750 0.044659 512 # Wavelength 2 (microns), weight, grid size
-1.126890 0.048489 512 # Wavelength 3 (microns), weight, grid size
-1.145320 0.051128 512 # Wavelength 4 (microns), weight, grid size
-1.164050 0.055223 512 # Wavelength 5 (microns), weight, grid size
-1.183090 0.057266 512 # Wavelength 6 (microns), weight, grid size
-1.202440 0.060036 512 # Wavelength 7 (microns), weight, grid size
-1.222110 0.063226 512 # Wavelength 8 (microns), weight, grid size
-1.242100 0.067373 512 # Wavelength 9 (microns), weight, grid size
-1.262410 0.069805 512 # Wavelength 10 (microns), weight, grid size
-1.283060 0.074468 512 # Wavelength 11 (microns), weight, grid size
-1.304050 0.073794 512 # Wavelength 12 (microns), weight, grid size
-1.325380 0.081332 512 # Wavelength 13 (microns), weight, grid size
-1.347060 0.079939 512 # Wavelength 14 (microns), weight, grid size
-1.369090 0.085663 512 # Wavelength 15 (microns), weight, grid size
-1.391480 0.084512 512 # Wavelength 16 (microns), weight, grid size
+1.090910 0.002477 512 # Wavelength 1 (microns), weight, grid size
+1.108750 0.036812 512 # Wavelength 2 (microns), weight, grid size
+1.126890 0.041022 512 # Wavelength 3 (microns), weight, grid size
+1.145320 0.044375 512 # Wavelength 4 (microns), weight, grid size
+1.164050 0.049150 512 # Wavelength 5 (microns), weight, grid size
+1.183090 0.052244 512 # Wavelength 6 (microns), weight, grid size
+1.202440 0.056120 512 # Wavelength 7 (microns), weight, grid size
+1.222110 0.060532 512 # Wavelength 8 (microns), weight, grid size
+1.242100 0.066037 512 # Wavelength 9 (microns), weight, grid size
+1.262410 0.070020 512 # Wavelength 10 (microns), weight, grid size
+1.283060 0.076414 512 # Wavelength 11 (microns), weight, grid size
+1.304050 0.077434 512 # Wavelength 12 (microns), weight, grid size
+1.325380 0.087238 512 # Wavelength 13 (microns), weight, grid size
+1.347060 0.087616 512 # Wavelength 14 (microns), weight, grid size
+1.369090 0.095903 512 # Wavelength 15 (microns), weight, grid size
+1.391480 0.096607 512 # Wavelength 16 (microns), weight, grid size
 82  # Integrated PSF dimension (pixels)
 0.036060  # Integrated PSF scaling (arcsec)
 1.000000  # Subsampling factor (1 = normal)
@@ -128,18 +128,26 @@ Blackbody(2000.000000K)  # Spectrum file
 #
 # X coma
 # SWAPPED
- 2.31206647e-02 1.81284830e-04 -5.30494748e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00
- -1.39564501e-04 3.97479493e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
- -2.06559126e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+# Coma removed Biretta(2013)
+# 2.31206647e-02 1.81284830e-04 -5.30494748e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00
+# -1.39564501e-04 3.97479493e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+# -2.06559126e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
  0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
  0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
  0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
 #
 # Y coma
 # SWAPPED
-1.25930198e-02 -5.80506052e-04 5.25377957e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00
- -5.67486735e-04 4.09168135e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
- 2.15934792e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+# Coma removed Biretta (2013)
+# 1.25930198e-02 -5.80506052e-04 5.25377957e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00
+#  -5.67486735e-04 4.09168135e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+#  2.15934792e-06 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
  0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
  0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
  0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
@@ -249,7 +257,7 @@ Blackbody(2000.000000K)  # Spectrum file
   0.       # Z1 = (Not used)
   0.       # Z2 = X (V2) tilt
   0.       # Z3 = Y (V3) tilt
-0.03200 #z4 = Focus
+0.01800 #z4 = Focus
   1e-12    # Z5 = 0 degree astigmatism
   1e-12    # Z6 = 45 degree astigmatism
   1e-12    # Z7 = X (V2) coma
