@@ -13,7 +13,6 @@ xy = [[[135,161], [145,161], [135,173], [145,173]],
 
 if __name__ == '__main__':
     inFile = open('2mass_psf.in', 'r').readlines()
-    xc, yc = 515, 541
     jitxList = np.arange(0,50,10)
     jityList = np.arange(0,50,10)
     disList = np.arange(0, 2.0, 0.2) #fix displacement at 3.0
@@ -24,6 +23,9 @@ if __name__ == '__main__':
                     for dis in disList:
                         aimDIR = os.path.join('.','PSF', 'angle_{0}_dither_{1}'.format(angle, dither))
                         #aimDIR = os.path.join(os.getcwd(), 'PSFs')
+                        xc, yc = xy[angle][dither]
+                        xc = xc + 380
+                        yc = yc + 380
                         if not os.path.exists(aimDIR):
                             os.mkdir(aimDIR)
                         psfDIR = pyTinyTim(xc, yc, 'F125W', jitx, jity, dis, outputDIR = aimDIR)

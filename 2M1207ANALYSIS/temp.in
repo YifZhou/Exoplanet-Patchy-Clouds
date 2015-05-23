@@ -1,5 +1,5 @@
 &BeginPar7.5
-Jitx_40_Jity_40_Dis_1.80_x_515_y_541_
+Jitx_40_Jity_40_Dis_1.80_x_532_y_551_
 /Users/ZhouYf/tinytim/wfc3_ir.tab  # Name of Zernike table file
 /Users/ZhouYf/tinytim/wfc3_ir.pup  # Name of pupil table file
 00-00-0000 # Observation date (dd-mm-yyyy)
@@ -11,7 +11,7 @@ Blackbody(1600.000000K)  # Spectrum file
 40.00000 # Major axis jitter in mas
 0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
-515 541  # Position 1
+532 551  # Position 1
 2.957  # PSF diameter in arcsecs
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
