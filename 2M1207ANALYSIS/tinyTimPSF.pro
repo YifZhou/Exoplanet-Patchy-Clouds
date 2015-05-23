@@ -33,8 +33,7 @@ FUNCTION registerPSF, im, psf0, err, mask, gc
   ;; center of resampled psf is always at [13, 13]
   dxy0 = [13, 13] - gc
   ngrid = 5
-  grid = fltarr(ngrid, ngrid)
-  mask00 = make_mask(mask,[[17, 9, 0, 3], [13, 13, 12, 100]])
+  grid = fltarr(ngrid, ngrid)  
   gridSize = 0.4
   WHILE gridsize GT 5*1e-4 DO BEGIN
      gridx = gc[0] + (findgen(ngrid) - ngrid/2) * gridSize/float(ngrid/2)
@@ -42,7 +41,7 @@ FUNCTION registerPSF, im, psf0, err, mask, gc
      FOR i=0,ngrid-1 DO BEGIN
         FOR j=0,ngrid-1 DO BEGIN
            psf = shiftPSF(psf0, (13-gridx[i]), (13-gridy[j]), factor = 10)
-           optPara = residual(im, psf, mask00, weight = 1/err^2)
+           optPara = residual(im, psf, mask, weight = 1/err^2)
            grid[i, j] = optPara[1]
         ENDFOR
      ENDFOR
@@ -106,11 +105,12 @@ PRO tinytimPSF
   for i=0, N_elements(PSF_fn) - 1 DO BEGIN 
      psf0 = mrdfits('./PSFs/'+PSF_fn[i],/silent)
      psf0 = psf0[1:270, 1:270]
-     xy = registerPSF(im, psf0, err, mask, xy)
+     mask1 = make_mask(mask,[[17, 9, 0, 3], [13, 13, 11, 100]])
+     xy = registerPSF(im, psf0, err, mask1, xy)
      dxy = xy - [13, 13]
      psf = shiftPSF(psf0, -dxy[0], -dxy[1], factor = 10)
-     mask0 = make_mask(mask, [[13 - dxy[0], 13 - dxy[1], 0, 3], [17, 9, 0, 3], [13-dxy[0], 13-dxy[1], 12, 100]])
-     opt_paras = residual(im, psf, mask0, weight = 1/err^2)
+     mask2 = make_mask(mask, [[13 - dxy[0], 13 - dxy[1], 0, 3], [17, 9, 0, 3], [13-dxy[0], 13-dxy[1], 12, 100]])
+     opt_paras = residual(im, psf, mask2, weight = 1/err^2)
      amp[i] = opt_paras[0]
      res[i] = opt_paras[1]
      jitx[i] = float(strmid(PSF_fn[i], 5, 2))
@@ -122,7 +122,12 @@ PRO tinytimPSF
   ENDFOR
   minID = (where(res EQ min(res)))[0]
   psf0 = psfLIST[*,*,minID] * amp[minID]
-  fig = plotComp(im, psf0)
-  s = surface(im - psf0)
+  im_subbed = im - psf0
+  comp_xy = [18, 10] ;; for angle1 at first gc position, the coordinate of companion object is [18, 10]
+  mask3 = mask
+  mask3 = fltarr(27, 27)
+  mask3[comp_xy[0]-1:comp_xy[0]+1, comp_xy[1]-1:comp_xy[1]+1] = 1 ;; only use the center 9 pixel to locate the companion obj
+  comp_xy = registerPSF(im_subbed, PSFList[*,*,minID], err, mask3, [18, 10])
+  
   stop
 END
