@@ -15,10 +15,9 @@ if __name__ == '__main__':
     jitx = float(sys.argv[4])
     jity = float(sys.argv[5])
     dis = float(sys.argv[6])
-    outfn = sys.argv[7]
     aimDIR = os.getcwd()
     xc = xc + 380
     yc = yc + 380
     if not os.path.exists(aimDIR):
         os.mkdir(aimDIR)
-    psfDIR = pyTinyTim(xc, yc, filterName, jitx, jity, dis, outputDIR = aimDIR, outputRoot = outfn)
+    psfDIR = pyTinyTim(xc, yc, filterName, jitx, jity, dis, outputDIR = aimDIR)

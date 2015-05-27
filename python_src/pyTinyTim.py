@@ -26,7 +26,7 @@ def pyTinyTim(xc, yc, filterName, jitx=0, jity=0, secDis=0, outputRoot = None, o
     inFile[7] = '{0}  # Filter\n'.format(filterName)
     inFile[9] = '{0:.5f} # Major axis jitter in mas\n'.format(jitx)
     inFile[10] = '{0:.5f} # Major axis jitter in mas\n'.format(jity)
-    inFile[13] = '{0:d} {1:d}  # Position 1\n'.format(xc, yc)
+    inFile[13] = '{0:d} {1:d}  # Position 1\n'.format(int(xc), int(yc))
     inFile[259] = '{0:.5f} #z4 = Focus\n'.format(secDis/100.)
     out = open('temp.in', 'w')
     out.writelines(inFile)
@@ -42,7 +42,7 @@ def pyTinyTim(xc, yc, filterName, jitx=0, jity=0, secDis=0, outputRoot = None, o
     os.remove(os.path.join(os.getcwd(), tt3_fn))
     fn = outputRoot + '00.fits' # PSF file name
     os.rename(os.path.join(os.getcwd(), fn), os.path.join(outputDIR, fn)) # move the PSF to the aim directory    
-    return inFile
+    return inFile[1].strip()+'00.fits'# return the file name
 
     
 if __name__ == '__main__':

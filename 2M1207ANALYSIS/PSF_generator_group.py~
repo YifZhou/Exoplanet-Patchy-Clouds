@@ -15,7 +15,7 @@ if __name__ == '__main__':
     inFile = open('2mass_psf.in', 'r').readlines()
     jitxList = np.arange(0,50,10)
     jityList = np.arange(0,50,10)
-    disList = np.arange(0, 2.0, 0.2) #fix displacement at 3.0
+    disList = np.arange(0, 3.0, 0.2) #fix displacement at 3.0
     for angle in [0, 1]:
         for dither in range(4):
             for jitx in jitxList:
