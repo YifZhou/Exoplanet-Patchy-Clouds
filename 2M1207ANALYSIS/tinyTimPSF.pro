@@ -247,12 +247,15 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
   PSF2 = shiftPSF(psf0, comp_xy[0] - 13, comp_xy[1] - 13, factor = 10)
   mask40 = fltarr(27, 27)
   mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3], [xy[0], xy[1], 12, 100]]]);*mask40
+  mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3], [xy[0], xy[1], 12, 100]]])*mask40
   amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
-  Set_Plot, 'Z', /COPY
-  p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
-  p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
-  p.Close
+  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
+  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+  ;; Set_Plot, 'Z', /COPY
+  ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
+  ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
+  ;; p.Close
+  
   return, amps
 END
 
@@ -274,6 +277,6 @@ PRO tinytimPSF, infoFile
      sky[i] = a[2]
      chisq[i] = a[3]
   ENDFOR
-  forprint, fileInfo.filename[F125ID], fileInfo.orbit[F125ID], fileInfo.obsdate['F125ID'], fileInfo.obstime['F125ID'], fileInfo.expoTime['F125ID'], fluxA, fluxB, sky, chisq, textout = 'F125Flux.dat', width = 320, /NoCOMMENT
+  forprint, fileInfo.filename[F125ID], fileInfo.orbit[F125ID], fileInfo.obsdate[F125ID], fileInfo.obstime[F125ID], fileInfo.expoTime[F125ID], fluxA, fluxB, sky, chisq, textout = 'F125Flux.dat', width = 320, /NoCOMMENT
   stop
 END

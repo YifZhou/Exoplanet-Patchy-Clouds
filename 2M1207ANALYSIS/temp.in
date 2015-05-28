@@ -7,11 +7,11 @@ WFC3_IR  # Camera
 30  # Camera ID number
 F125W  # Filter
 Blackbody(1600.000000K)  # Spectrum file
-20.00000 # Major axis jitter in mas
+10.00000 # Major axis jitter in mas
 20.00000 # Major axis jitter in mas
 0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
-535 534  # Position 1
+525 534  # Position 1
 2.957  # PSF diameter in arcsecs
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
