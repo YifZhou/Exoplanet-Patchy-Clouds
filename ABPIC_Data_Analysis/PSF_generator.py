@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+from __future__ import print_function, division
 import sys
 import os
 from pyTinyTim import pyTinyTim
@@ -7,16 +8,15 @@ import pickle
 """
 Use Tinytim to generate a PSFs
 """
-
 def exposureFocus(MJD0):
     """
     the spline function is saved in a pickle file
     """
     focus0 = -0.24
     #MJD, focus = np.loadtxt('focus.dat', usecols = (0, 5), unpack = True)
+    #import matplotlib.pyplot as plt
     #spline = splineFunc(MJD, focus)
     spline = pickle.load(open('focus_splineFunc.pkl', 'rb'))
-    #pickle.dump(open('focus_splineFunc.pkl', 'wb'))
     # newMJD = np.linspace(min(MJD), max(MJD), 100*len(MJD))
     # newFocus = spline(newMJD)
     # plt.plot(MJD, focus, '+')
@@ -24,7 +24,7 @@ def exposureFocus(MJD0):
     return focus0 + spline(MJD0)
 
 if __name__ == '__main__':
-    inFile = open('2mass_psf.in', 'r').readlines()
+    inFile = open('abpic.in', 'r').readlines()
     xc = float(sys.argv[1])
     yc = float(sys.argv[2])
     filterName = sys.argv[3]

@@ -31,7 +31,9 @@ FUNCTION shiftPSF, psf0, dx, dy, factor = factor
               [0.025,  0.897,  0.025],$
               [0.0007, 0.025, 0.0007]] ;; intrapixel diffusion core. convol this with the resampled PSF, as indicated by tiny tim manual.
   
-  psf = resample(fshift(psf0, dx*factor, dy*factor), size0/factor, size0/factor)
+  ;;psf = resample(fshift(psf0, dx*factor, dy*factor), size0/factor,
+  ;;size0/factor)
+  psf = resample(my_shift2d(psf0, [dx*factor, dy*factor], cubic = 1), size0/factor, size0/factor)
   psf = convol(psf, PSF_core)
   return, psf
 END
@@ -89,7 +91,7 @@ FUNCTION fit1PSF, im, psf, mask, weight = weight
        [total(mask*(PSF*weight)), total(mask*weight)]]
   b = [[total(mask*(im*PSF*weight))], [total(mask*(im*weight))]]
   amp = LA_invert(A) ## b   ;;; calculate the amplitude of the residual by least chisq fit
-  res = total(mask * (weight*(im - psf*amp[0] - amp[1]))^2)/total(mask)    ;;; calculate the residual, only use the pixels that are not masked
+  res = total(mask * (weight*(im - psf*amp[0] - amp[1])^2))/total(mask)    ;;; calculate the residual, only use the pixels that are not masked
   return, [amp[0], amp[1], sqrt(res)]
 END
 
@@ -104,7 +106,7 @@ FUNCTION fit2PSFs, im, PSF1, PSF2, mask, weight = weight
        [total(mask*(PSF1*weight)), total(mask*(PSF2*weight)), total(mask*weight)]]
   b = [[total(mask*(PSF1*im*weight))], [total(mask*(PSF2*im*weight))], total(mask*(im*weight))]
   amp = LA_invert(A) ## b
-  res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- amp[2]))^2)/total(mask)
+  res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- amp[2])^2))/total(mask)
   return, [amp[0], amp[1], amp[2], res]
 END
 
@@ -174,24 +176,20 @@ FUNCTION plotFitResult, im, PSF1, PSF2, im_c
   return, p
 END
 
-function PSFPhotometry, fn, filterName, angle, dither, xy0
+function PSFPhotometry, im, err, dq, filterName, angle, dither, xy0
   ;;; use tinytim PSF to measure the photometry
-  ;;; input parameter:
-  ;;; fn: filename of the input flt file\
+  ;;; adapted from psf photometry routine from 2M1207's pipeline
+  ;;; fn: filename of the input flt files
   ;;; angle: position angle of HST for the exposure
   ;;; dither: dither position for the exposure
   ;;; xy0: position for the peak pixel of the PSF
-  imagePath = '../data/2M1207B/'
-  im = mrdfits(imagePath + fn, 1)
-  im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-  err = mrdfits(imagePath + fn, 2)
-  err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-  dq = mrdfits(imagePath + fn, 3)
-  dq = dq[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-  ;;; after this, the center of the image went to [13, 13]
-  PSFPath = './PSF/angle_' + strn(angle) + '_dither_' + strn(angle) + '/'
+  PSFPath = './PSF/filter_'+filterName+'_angle_' + strn(angle) + '_dither_' + strn(angle) + '/'
   readcol, PSFPath + 'fn.dat', PSF_fn, format = 'a' ;; read in all fits file names
-  amp = fltarr(2, N_elements(PSF_fn))
+  im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  dq = dq[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  amp = fltarr(N_elements(PSF_fn))
+  sky = fltarr(N_elements(PSF_fn))
   res = fltarr(N_elements(PSF_fn))
   jitx = fltarr(N_elements(PSF_fn))
   jity = fltarr(N_elements(PSF_fn))
@@ -199,86 +197,115 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
   PSFList = fltarr(27, 27, N_elements(PSF_fn))
   mask = maskoutdq(dq)
   fixpix, im, mask, im_fixed
-  xy = findpeak(im_fixed, 13, 13, range=5)
-  print, xy
-  IF angle EQ 0 THEN comp_xy = [18,10] ELSE comp_xy = [16, 8]
+  xy1 = findpeak(im_fixed, 13, 13, range=5)
   xyList = make_array(N_elements(PSF_fn), 2, /float)
   for i=0, N_elements(PSF_fn) - 1 DO BEGIN 
      psf0 = mrdfits(PSFPath+PSF_fn[i],/silent)
      psf0 = psf0[1:270, 1:270] ;; weird enough, 10x sampling PSF return ed by TinyTim has a size of 272*272, instead of 27*27. Thus, trim off the edge pixels
-     mask1 = make_mask(mask,[[comp_xy[0], comp_xy[1], 0, 3], [13, 13, 11, 100]])
-     xy = registerPSF(im, psf0, err, mask1, xy)
+     mask1 = make_mask(mask, [[13, 13, 8, 100]])
+     xy = registerPSF(im, psf0, err, mask1, xy1)
      xyList[i, *] = xy
      dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
      psf = shiftPSF(psf0, dxy[0], dxy[1], factor = 10)
-     mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3], [comp_xy[0], comp_xy[1], 0, 3], [xy[0], xy[1], 12, 100]])
+     mask2 = make_mask(mask, [[xy[0], xy[1], 8, 100]])
      opt_paras = fit1PSF(im, psf, mask2, weight = 1/err^2)
-     amp[0, i] = opt_paras[0]
-     amp[1, i] = opt_paras[1]
+     amp[i] = opt_paras[0]
+     sky[i] = opt_paras[1]
      res[i] = opt_paras[2]
      jitx[i] = float(strmid(PSF_fn[i], 5, 2))
      jity[i] = float(strmid(PSF_fn[i], 13, 2))
      dis[i] = float(strmid(PSF_fn[i], 20, 4))
-     print,'PSF name: ', PSF_fn[i]
-     print,'opimized rms residual: ', res[i]
+     ;; print,'PSF name: ', PSF_fn[i]
+     ;; print,'opimized rms residual: ', res[i]
      PSFList[*, *, i] = psf
   ENDFOR
   minID = (where(res EQ min(res)))[0]
-  im_subbed = im - psfLIST[*,*,minID] * amp[0, minID] - amp[1, minID]
-  xy = xyList[minID, *] ;; center of the primary
-  PSF_box = im_subbed[comp_xy[0]-2:comp_xy[0]+2, comp_xy[1]-2:comp_xy[1]+2]
-  maxBox = max(PSF_box, maxID)
-  PSF_x_cood = maxID MOD 5
-  PSF_y_cood = maxID/5
-  comp_xy = comp_xy - [2, 2] + [PSF_x_cood, PSF_y_cood] ;; use the peak pixel in a 5x5 box as the initial guess for the center of the companion obj.
-  comp_xy0 = comp_xy - [13,13] + xy0       ;;; the peak pixel of the companion obj in original image
-  spawn, 'python PSF_generator.py ' + strn(comp_xy0[0]) + ' ' + strn(comp_xy0[1])$
-         + ' ' + filterName + ' ' + strn(jitx[minID]) + ' ' + strn(jity[minID])$
-         + ' ' + strn(dis[minID]) + ' comp_PSF' ;; use tinytim to generate a PSF file that works for  companion
-
-  PSF0 = mrdfits('comp_PSF00.fits')
-  mask3 = mask
-  mask3 = fltarr(27, 27)
-  mask3[comp_xy[0]-1:comp_xy[0]+1, comp_xy[1]-1:comp_xy[1]+1] = 1 ;; only use the center 9 pixel to locate the companion obj
-  comp_xy = registerPSF(im_subbed, PSF0, err, mask3, comp_xy)
-
-  ;;; fit two PSFs
-  PSF1 = psfList[*,*,minID]
-  PSF2 = shiftPSF(psf0, comp_xy[0] - 13, comp_xy[1] - 13, factor = 10)
-  mask40 = fltarr(27, 27)
-  mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3], [xy[0], xy[1], 12, 100]]])*mask40
-  amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
-  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
-  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
-  ;; Set_Plot, 'Z', /COPY
-  ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
-  ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
-  ;; p.Close
-  
+  print, 'Best fitted PSF, Jitx = ', jitx[minID], ', Jity = ', jity[minID], 'Dis = ', dis[minID]
+  amps = [amp[minID], sky[minID], xyList[minID, 0]-13+xy0[0], xyList[minID, 1]-13+xy0[1]]
   return, amps
 END
 
-PRO tinytimPSF, subtractedFile
+FUNCTION PSFPhotometry1, im, err, dq, MJD, filterName, angle, dither, xy0
+  ;;; use the focus model, only try one PSFf
+  im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  dq = dq[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  mask = maskoutdq(dq)
+  mask1 = make_mask(mask, [[13, 13, 5, 100]])
+  fixpix, im, mask, im_fixed
+  xy1 = findpeak(im_fixed, 13, 13, range=5)
+  ;; jitx = [0, 10, 20, 30]
+  ;; jity = [0, 10, 20, 30]
+  ;; resGrid = fltarr(4, 4)
+  ;; FOR i = 0, 3 DO BEGIN
+  ;;    FOR j = 0, 3 DO BEGIN
+  ;;       spawn, 'python PSF_generator.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
+  ;;              + ' ' + filterName + ' ' + strn(jitx[i]) + ' ' + strn(jity[j])$
+  ;;              + ' ' + strn(MJD) + ' ./PSF/temp' ;; use tinytim to generate a PSF file that works for  companion
+  ;;       psf0 = mrdfits('./PSF/temp00.fits',/silent)
+  ;;       psf0 = psf0[1:270, 1:270] ;; weird enough, 10x sampling PSF return ed by TinyTim has a size of 272*272, instead of 27*27. Thus, trim off the edge pixels
+  ;;       xy = registerPSF(im, psf0, err, mask1, xy1)
+  ;;       dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
+  ;;       psf = shiftPSF(psf0, dxy[0], dxy[1], factor = 10)
+  ;;       mask2 = make_mask(mask, [[xy[0], xy[1], 5, 100]])
+  ;;       opt_paras = fit1PSF(im, psf, mask2, weight = 1/err^2)
+  ;;       resGrid[i, j] = opt_paras[2]
+  ;;    ENDFOR     
+  ;; ENDFOR
+  spawn, 'python PSF_generator.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
+               + ' ' + filterName + ' ' + strn(-1) + ' ' + strn(-1)$
+               + ' ' + strn(MJD) + ' ./PSF/temp' ;; use tinytim to generate a PSF file that works for  companion
+  psf0 = mrdfits('./PSF/temp00.fits',/silent)
+  psf0 = psf0[1:270, 1:270] ;; weird enough, 10x sampling PSF return ed by TinyTim has a size of 272*272, instead of 27*27. Thus, trim off the edge pixels
+  xy = registerPSF(im, psf0, err, mask1, xy1)
+  dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
+  psf = shiftPSF(psf0, dxy[0], dxy[1], factor = 10)
+  mask2 = make_mask(mask, [[xy[0], xy[1], 5, 100]])
+  opt_paras = fit1PSF(im, psf, mask2, weight = 1/err^2)
+  IF opt_paras[2] GT 6 THEN stop 
+  amps = [opt_paras[0:1], xy - 13 + xy0]
+  print, 'fitting reduced Chisq = ', opt_paras[2]
+  return, amps
+END
+
+
+PRO tinytimPSF
   ;;; use primary subtracted file from aperture photometry to test
-  ;;; whehter tinyTim PSF fit measurement is better than aperture photometry
-  fileInfo = myReadCSV(infoFile, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
-  xy = [[[135,161], [145,161], [135,173], [145,173]],$
-      [[142, 159],[152,159], [142, 171], [152, 171]]]
-  fileInfo.PosAngle = (fileInfo.orbit + 1) MOD 2
-  F125ID = where(fileInfo.filter EQ 'F125W')
-  fluxA = fltarr(N_elements(F125ID))
-  fluxB = fltarr(N_elements(F125ID))
-  sky = fltarr(N_elements(F125ID))
-  chisq = fltarr(N_elements(F125ID))
-  FOR i=0, N_elements(F125ID) - 1 DO BEGIN
-     id = F125ID[i]
-     a = PSFPhotometry(fileInfo.filename[id], fileInfo.filter[id], long(fileInfo.PosAngle[id]), long(fileInfo.dither[id]), xy[*, long(fileInfo.dither[id]), long(fileInfo.posAngle[id])])
-     fluxA[i] = a[0]
-     fluxB[i] = a[1]
-     sky[i] = a[2]
-     chisq[i] = a[3]
+  ;;; whehter tinyTim PSF fit measurement is better than aperture
+  ;;; photometry
+  subtractedFile = '2015_May_07_subtracted.sav'
+  restore, subtractedFile
+  dataDIR = '../data/ABPIC-B_noramp/'
+  infoFile = '2015_May_07_noramp_aper=5.00_result.csv'
+  fileInfo = myReadCSV(infoFile, ['FILENAME','FILTER','ORBIT','POSANG','DITHER','EXPOSURE_SET','OBS_DATE','OBS_TIME','EXPOSURE_TIME','XOFF','YOFF','XCENTER','YCENTER','PSF_ID','PSF_AMPLITUTE','SKY_LEVEL','SKY_SIGMA','FLUX','FLUXERR','XFWHM','YFWHM','CONTAMINATED'])
+  
+
+  xy = [[[95,208], [105,208], [95,219], [105,219]],$
+      [[129, 222],[139,222], [129, 233], [139, 233]]]
+  fileInfo.PosAng = (fileInfo.orbit + 1) MOD 2
+  flux = fltarr(N_elements(fileInfo.filename))
+  sky = fltarr(N_elements(fileInfo.filename))
+  xfit = fltarr(N_elements(fileInfo.filename))
+  yfit = fltarr(N_elements(fileInfo.filename))
+  FOR i=0, N_elements(fileInfo.fileName) - 1 DO BEGIN
+     print, 'FILE: ', fileInfo.filename[i]
+     hdrim = mrdfits(dataDIR + fileInfo.filename[i], 0, hd,/silent)
+     MJD = fxpar(hd, 'EXPSTART')
+     dq = mrdfits(dataDIR + fileInfo.filename[i], 3,/silent)
+     im = cube1[*,*,i]
+     err = errorcube[*,*,i]
+     ;;a = PSFPhotometry(im, err, dq, fileInfo.Filter[i], long(fileInfo.Posang[i]), long(fileInfo.dither[i]), xy[*, long(fileinfo.dither[i]), long(fileInfo.posang[i])])
+     a = PSFPhotometry1(im, err, dq, MJD, fileInfo.Filter[i], long(fileInfo.Posang[i]), long(fileInfo.dither[i]), xy[*, long(fileinfo.dither[i]), long(fileInfo.posang[i])])
+     flux[i] = a[0]
+     sky[i] = a[1]
+     xfit[i] = a[2]
+     yfit[i] = a[3]
   ENDFOR
-  forprint, fileInfo.filename[F125ID], fileInfo.orbit[F125ID], fileInfo.obsdate[F125ID], fileInfo.obstime[F125ID], fileInfo.expoTime[F125ID], fluxA, fluxB, sky, chisq, textout = 'F125Flux.dat', width = 320, /NoCOMMENT
+  infoStruct1 = add_tag(infoStruct1, 'flux_fit', flux)
+  infoStruct1 = add_tag(infoStruct1, 'x_fit', xfit)
+  infoStruct1 = add_tag(infoStruct1, 'y_fit', yfit)
+  infoStruct1 = add_tag(infoStruct1, 'skyy_fit', sky)
+  save, infoStruct1, file = 'ABPIC-B_tinyTim_fit.sav'
+  spawn, 'python sav2csv.py ABPIC-B_tinyTim_fit.sav ABPIC-B_tinyTim_fit.csv' ;; convert .sav file to csv file for easier using.
   stop
 END
