@@ -27,7 +27,7 @@ def pyTinyTim(xc, yc, filterName, jitx=0, jity=0, secDis=0, outputRoot = None, o
     inFile[9] = '{0:.5f} # Major axis jitter in mas\n'.format(jitx)
     inFile[10] = '{0:.5f} # Major axis jitter in mas\n'.format(jity)
     inFile[13] = '{0:d} {1:d}  # Position 1\n'.format(int(xc), int(yc))
-    inFile[259] = '{0:.5f} #z4 = Focus\n'.format(secDis/100.)
+    inFile[259] = '{0:.5f} #z4 = Focus\n'.format(secDis * 0.011)
     out = open('temp.in', 'w')
     out.writelines(inFile)
     out.close()

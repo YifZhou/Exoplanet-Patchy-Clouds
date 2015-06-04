@@ -9,7 +9,7 @@ f125W  # Filter
 Blackbody(1600.000000K)  # Spectrum file
 -1.000000  # Major axis jitter in mas (-1 = no jitter)
 -1.000000  # Minor axis jitter in mas
-0.000000  # Angle of jitter major axis in deg from +X axis
+135.0  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
 0 0  # Position 1
 2.957  # PSF diameter in arcsecs
