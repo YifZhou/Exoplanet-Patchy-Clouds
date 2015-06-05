@@ -322,6 +322,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   ;;; dither: dither position for the exposure
   ;;; xy0: position for the peak pixel of the PSF
   forward_FUNCTION findpeak
+
   imagePath = '../data/2M1207B/'
   imhd= mrdfits(imagePath +fn, 0, hd)
   MJD = fxpar(hd, 'EXPSTART')
@@ -367,7 +368,6 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   PSF1 = PSFList[*, *, minID]
   jitx = jitxList[minID]
   jity = jityList[minID]
-  xy = xyList[*, minID] + xy0 - [13, 13] ;; apply the offset
   im_subbed = im - PSF1 * ampList[minID] - skyList[minID]
   PSF_box = im_subbed[comp_xy[0]-2:comp_xy[0]+2, comp_xy[1]-2:comp_xy[1]+2]
   maxBox = max(PSF_box, maxID)
@@ -405,7 +405,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
   ;; p.Close
   
-  return, [amps, xy, comp_xy + xy0 - [13, 13]]
+  return, [amps, xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
 END
 
 PRO tinytimPSF
@@ -433,10 +433,10 @@ PRO tinytimPSF
      fluxB[i] = a[1]
      sky[i] = a[2]
      chisq[i] = a[3]
-     Primary_x = a[4]
-     Primary_y = a[5]
-     Secondary_x = a[6]
-     Secondary_y = a[7]
+     Primary_x[i] = a[4]
+     Primary_y[i] = a[5]
+     Secondary_x[i] = a[6]
+     Secondary_y[i] = a[7]
   ENDFOR
   F125Info = add_tag(F125Info, 'fluxa', fluxa)
   F125Info = add_tag(F125Info, 'fluxb', fluxb)
@@ -446,4 +446,43 @@ PRO tinytimPSF
   F125Info = add_tag(F125Info, 'Secondary_x', Secondary_x)
   F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
 
+  save, F125Info, file = 'TinyTimF125Result.sav'
+  spawn, 'python sav2csv.py TinyTimF125Result.sav TinyTimF125Result.csv'  ;; convert .sav file to csv file for easier using.
+
+  ;;; F160W
+  F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  xy = [[[135,161], [145,161], [135,173], [145,173]],$
+      [[142, 159],[152,159], [142, 171], [152, 171]]]
+  F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
+  F160ID = where(F160Info.filter EQ 'F160W')
+  fluxA = fltarr(N_elements(F160ID))
+  fluxB = fltarr(N_elements(F160ID))
+  Primary_x = fltarr(N_elements(F160ID))
+  Primary_y = fltarr(N_elements(F160ID))
+  Secondary_x = fltarr(N_elements(F160ID))
+  Secondary_y = fltarr(N_elements(F160ID)) 
+  sky = fltarr(N_elements(F160ID))
+  chisq = fltarr(N_elements(F160ID))
+  FOR i=0, N_elements(F160ID) - 1 DO BEGIN
+     id = F160ID[i]
+     a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])])
+     fluxA[i] = a[0]
+     fluxB[i] = a[1]
+     sky[i] = a[2]
+     chisq[i] = a[3]
+     Primary_x[i] = a[4]
+     Primary_y[i] = a[5]
+     Secondary_x[i] = a[6]
+     Secondary_y[i] = a[7]
+  ENDFOR
+  F160Info = add_tag(F160Info, 'fluxa', fluxa)
+  F160Info = add_tag(F160Info, 'fluxb', fluxb)
+  F160Info = add_tag(F160Info, 'sky', sky)
+  F160Info = add_tag(F160Info, 'Primary_x', Primary_x)
+  F160Info = add_tag(F160Info, 'Primary_y', Primary_y)
+  F160Info = add_tag(F160Info, 'Secondary_x', Secondary_x)
+  F160Info = add_tag(F160Info, 'Secondary_y', Secondary_y)
+
+  save, F160Info, file = 'TinyTimF160Result.sav'
+  spawn, 'python sav2csv.py TinyTimF160Result.sav TinyTimF160Result.csv'  ;; convert .sav file to csv file for easier using.
 END

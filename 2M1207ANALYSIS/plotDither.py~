@@ -1,0 +1,22 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+"""comment
+"""
+
+if __name__ == '__main__':
+    df125 = pd.read_csv('2M1207B_flt_F125W_fileInfo.csv', parse_dates = {'datetime':['OBS_DATE', 'OBS_TIME']}, index_col = 'datetime')
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    for orbit in range(6):
+        subdf = df125[df125['ORBIT'] == orbit]
+        ax.plot(subdf['DITHER']+1, subdf['FLUXA']/subdf['FLUXA'].mean(), '+', label = '{0}'.orbit)
+
+    ax.set_xlabel('Dither')
+    plt.show()
+    
+    

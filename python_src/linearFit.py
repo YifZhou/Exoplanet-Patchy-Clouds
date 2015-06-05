@@ -1,6 +1,6 @@
 import numpy as np
 def linearFit(x, y, dy = None):
-    if dy is None: dy = np.sqrt(np.abs(y)) # assume poisson Noise
+    if dy is None: dy = np.ones(len(y)) 
     """
     my own linear fit routine, since there is no good scipy or numpy linearFit routine written up
     """
