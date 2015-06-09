@@ -12,7 +12,7 @@ def exposureFocus(MJD0):
     """
     the spline function is saved in a pickle file
     """
-    focus0 = -0.24
+    focus0 = -0.24 # constant focus offset for wfc3
     #MJD, focus = np.loadtxt('focus.dat', usecols = (0, 5), unpack = True)
     #spline = splineFunc(MJD, focus)
     spline = pickle.load(open('focus_splineFunc.pkl', 'rb'))
