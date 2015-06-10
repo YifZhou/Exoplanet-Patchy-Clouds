@@ -24,10 +24,9 @@ def exposureFocus(MJD0):
     return focus0 + spline(MJD0)
 
 if __name__ == '__main__':
-    inFile = open('2mass_psf.in', 'r').readlines()
     xc = float(sys.argv[1])
     yc = float(sys.argv[2])
-    filterName = sys.argv[3]
+    fileName = os.path.join(os.getcwd(), sys.argv[3])
     jitx = float(sys.argv[4])
     jity = float(sys.argv[5])
     MJD = float(sys.argv[6])
@@ -38,4 +37,4 @@ if __name__ == '__main__':
     yc = yc + 380
     if not os.path.exists(aimDIR):
         os.mkdir(aimDIR)
-    psfDIR = pyTinyTim(xc, yc, filterName, jitx, jity, dis, outputDIR = aimDIR, outputRoot = outfn)
+    psfDIR = pyTinyTim(xc, yc, fileName, jitx, jity, dis, outputDIR = aimDIR, outputRoot = outfn)

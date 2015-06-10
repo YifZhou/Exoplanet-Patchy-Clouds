@@ -1,34 +1,34 @@
 &BeginPar7.5
-comp_PSF
+2massA  # Output PSF file rootname
 /Users/ZhouYf/tinytim/wfc3_ir.tab  # Name of Zernike table file
 /Users/ZhouYf/tinytim/wfc3_ir.pup  # Name of pupil table file
 00-00-0000 # Observation date (dd-mm-yyyy)
 WFC3_IR  # Camera
 30  # Camera ID number
 F160W  # Filter
-2massB_spec.dat  # Spectrum file
-30.00000 # Major axis jitter in mas
-20.00000 # Minor axis jitter in mas
-135.000000  # Angle of jitter major axis in deg from +X axis
+2massA_spec.dat  # Spectrum file
+-1.000000  # Major axis jitter in mas (-1 = no jitter)
+-1.000000  # Minor axis jitter in mas
+0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
-535 545  # Position 1
+0 0  # Position 1
 2.959  # PSF diameter in arcsecs
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
 13  # Number of wavelengths
-1.398900 0.007753 512 # Wavelength 1 (microns), weight, grid size
-1.420530 0.013477 512 # Wavelength 2 (microns), weight, grid size
-1.442490 0.010355 512 # Wavelength 3 (microns), weight, grid size
-1.464800 0.072154 512 # Wavelength 4 (microns), weight, grid size
-1.487440 0.077647 512 # Wavelength 5 (microns), weight, grid size
-1.510440 0.089773 512 # Wavelength 6 (microns), weight, grid size
-1.533800 0.061252 512 # Wavelength 7 (microns), weight, grid size
-1.557510 0.094322 512 # Wavelength 8 (microns), weight, grid size
-1.581590 0.101998 512 # Wavelength 9 (microns), weight, grid size
-1.606050 0.108872 512 # Wavelength 10 (microns), weight, grid size
-1.630880 0.109361 512 # Wavelength 11 (microns), weight, grid size
-1.656100 0.130168 512 # Wavelength 12 (microns), weight, grid size
-1.681700 0.122869 512 # Wavelength 13 (microns), weight, grid size
+1.398900 0.014697 512 # Wavelength 1 (microns), weight, grid size
+1.420530 0.024757 512 # Wavelength 2 (microns), weight, grid size
+1.442490 0.017948 512 # Wavelength 3 (microns), weight, grid size
+1.464800 0.079606 512 # Wavelength 4 (microns), weight, grid size
+1.487440 0.080087 512 # Wavelength 5 (microns), weight, grid size
+1.510440 0.087822 512 # Wavelength 6 (microns), weight, grid size
+1.533800 0.088587 512 # Wavelength 7 (microns), weight, grid size
+1.557510 0.097522 512 # Wavelength 8 (microns), weight, grid size
+1.581590 0.100704 512 # Wavelength 9 (microns), weight, grid size
+1.606050 0.100545 512 # Wavelength 10 (microns), weight, grid size
+1.630880 0.102051 512 # Wavelength 11 (microns), weight, grid size
+1.656100 0.107118 512 # Wavelength 12 (microns), weight, grid size
+1.681700 0.098555 512 # Wavelength 13 (microns), weight, grid size
 64  # Integrated PSF dimension (pixels)
 0.046241  # Integrated PSF scaling (arcsec)
 1.000000  # Subsampling factor (1 = normal)
@@ -254,7 +254,7 @@ F160W  # Filter
   0.       # Z1 = (Not used)
   0.       # Z2 = X (V2) tilt
   0.       # Z3 = Y (V3) tilt
--0.05158 #z4 = Focus
+0.000000 # Z4 = Focus
   1e-12    # Z5 = 0 degree astigmatism
   1e-12    # Z6 = 45 degree astigmatism
   1e-12    # Z7 = X (V2) coma

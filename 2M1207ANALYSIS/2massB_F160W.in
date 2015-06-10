@@ -1,5 +1,5 @@
 &BeginPar7.5
-comp_PSF
+2massB  # Output PSF file rootname
 /Users/ZhouYf/tinytim/wfc3_ir.tab  # Name of Zernike table file
 /Users/ZhouYf/tinytim/wfc3_ir.pup  # Name of pupil table file
 00-00-0000 # Observation date (dd-mm-yyyy)
@@ -7,11 +7,11 @@ WFC3_IR  # Camera
 30  # Camera ID number
 F160W  # Filter
 2massB_spec.dat  # Spectrum file
-30.00000 # Major axis jitter in mas
-20.00000 # Minor axis jitter in mas
+-1.000000  # Major axis jitter in mas (-1 = no jitter)
+-1.000000  # Minor axis jitter in mas
 135.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
-535 545  # Position 1
+0 0  # Position 1
 2.959  # PSF diameter in arcsecs
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
@@ -254,7 +254,7 @@ F160W  # Filter
   0.       # Z1 = (Not used)
   0.       # Z2 = X (V2) tilt
   0.       # Z3 = Y (V3) tilt
--0.05158 #z4 = Focus
+0.000000 # Z4 = Focus
   1e-12    # Z5 = 0 degree astigmatism
   1e-12    # Z6 = 45 degree astigmatism
   1e-12    # Z7 = X (V2) coma

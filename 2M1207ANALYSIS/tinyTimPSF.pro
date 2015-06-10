@@ -323,8 +323,10 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   ;;; xy0: position for the peak pixel of the PSF
   forward_FUNCTION findpeak
 
+  primaryTTFN = '2massA_' + filterName + '.in' ;; primary Tinytim parameter input file
+  companionTTFN = '2massB_' + filterName + '.in' ;; companion Tinytim parameter input file
   imagePath = '../data/2M1207B/'
-  imhd= mrdfits(imagePath +fn, 0, hd)
+  imhd= mrdfits(imagePath +fn, 0, hd, /silent)
   MJD = fxpar(hd, 'EXPSTART')
   im = mrdfits(imagePath + fn, 1,/silent)
   im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
@@ -334,13 +336,12 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   dq = dq[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   ;;; after this, the center of the image went to [13, 13]
   mask = maskoutdq(dq)
-  fixpix, im, mask, im_fixed
+  fixpix, im, mask, im_fixed, /silent
   xy1 = findpeak(im_fixed, 13, 13, range=5)
-  print, xy1
-  IF angle EQ 0 THEN comp_xy = [18,10] ELSE comp_xy = [16, 8]
+  IF angle EQ 0 THEN comp_xy = [18,10] ELSE comp_xy = [16, 8]  
   spawn, 'python PSF_generate_list.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
-         + ' ' + filterName + ' ' + ' ' + strn(MJD)  ;; use tinytim to generate a PSF file that works for  companion
-  readcol, 'fn.dat', PSF_fn, format = 'a'            ;; read in all fits file names
+         + ' ' + primaryTTFN + ' ' + ' ' + strn(MJD)  ;; use tinytim to generate a PSF file that works for  companion
+  readcol, 'fn.dat', PSF_fn, format = 'a', /silent            ;; read in all fits file names
   nPSFs = N_elements(PSF_fn)
   ampList = fltarr(nPSfs)
   skyList = fltarr(nPSFs)
@@ -375,9 +376,9 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   PSF_y_cood = maxID/5
   comp_xy = comp_xy - [2, 2] + [PSF_x_cood, PSF_y_cood] ;; use the peak pixel in a 5x5 box as the initial guess for the center of the companion obj.
   comp_xy0 = comp_xy - [13,13] + xy0                    ;;; the peak pixel of the companion obj in original image
-  
+  print, 'Best optimazed Jitter:', jitx, jity
   spawn, 'python PSF_generator.py ' + strn(comp_xy0[0]) + ' ' + strn(comp_xy0[1])$
-         + ' ' + filterName + ' ' + strn(jitx) + ' ' + strn(jity)$
+         + ' ' + companionTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
          + ' ' + strn(MJD) + ' comp_PSF' ;; use tinytim to generate a PSF file that works for  companion
 
   PSF02 = mrdfits('comp_PSF00.fits',/silent)
@@ -412,7 +413,7 @@ PRO tinytimPSF
   forward_FUNCTION myReadCSV
   F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
   F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
-  ;;; F125W
+  ;;F125W
   F125Info = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
   xy = [[[135,161], [145,161], [135,173], [145,173]],$
       [[142, 159],[152,159], [142, 171], [152, 171]]]

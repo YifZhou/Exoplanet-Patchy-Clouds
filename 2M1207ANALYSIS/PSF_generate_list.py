@@ -29,12 +29,11 @@ def exposureFocus(MJD0):
     return focus0 + spline(MJD0)
 
 if __name__ == '__main__':
-    inFile = open('2mass_psf.in', 'r').readlines()
     jitxList = np.arange(0,50,10)
     jityList = np.arange(0,50,10)
     xc = int(sys.argv[1])+380
     yc = int(sys.argv[2])+380
-    filterName = sys.argv[3]
+    fileName = sys.argv[3]
     MJD = float(sys.argv[4])
    
     aimDIR = os.path.join('.','PSF_temp')
@@ -43,7 +42,7 @@ if __name__ == '__main__':
     PSFFNFile = open( 'fn.dat', 'w')
     for jitx in jitxList:
         for jity in jityList:
-            psfFN = pyTinyTim(xc, yc, filterName, jitx, jity, exposureFocus(MJD), outputDIR = aimDIR)
+            psfFN = pyTinyTim(xc, yc, fileName, jitx, jity, exposureFocus(MJD), outputDIR = aimDIR)
             PSFFNFile.write(os.path.join(aimDIR, psfFN) + '\n')
 
     PSFFNFile.close()

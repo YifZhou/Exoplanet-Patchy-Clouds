@@ -433,10 +433,10 @@ PRO tinytimPSF
      fluxB[i] = a[1]
      sky[i] = a[2]
      chisq[i] = a[3]
-     Primary_x = a[4]
-     Primary_y = a[5]
-     Secondary_x = a[6]
-     Secondary_y = a[7]
+     Primary_x[i] = a[4]
+     Primary_y[i] = a[5]
+     Secondary_x[i] = a[6]
+     Secondary_y[i] = a[7]
   ENDFOR
   F125Info = add_tag(F125Info, 'fluxa', fluxa)
   F125Info = add_tag(F125Info, 'fluxb', fluxb)
@@ -470,10 +470,10 @@ PRO tinytimPSF
      fluxB[i] = a[1]
      sky[i] = a[2]
      chisq[i] = a[3]
-     Primary_x = a[4]
-     Primary_y = a[5]
-     Secondary_x = a[6]
-     Secondary_y = a[7]
+     Primary_x[i] = a[4]
+     Primary_y[i] = a[5]
+     Secondary_x[i] = a[6]
+     Secondary_y[i] = a[7]
   ENDFOR
   F160Info = add_tag(F160Info, 'fluxa', fluxa)
   F160Info = add_tag(F160Info, 'fluxb', fluxb)
