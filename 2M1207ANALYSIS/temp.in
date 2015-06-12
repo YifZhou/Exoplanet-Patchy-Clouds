@@ -7,12 +7,12 @@ WFC3_IR  # Camera
 30  # Camera ID number
 F160W  # Filter
 2massB_spec.dat  # Spectrum file
-30.00000 # Major axis jitter in mas
+20.00000 # Major axis jitter in mas
 20.00000 # Minor axis jitter in mas
-135.000000  # Angle of jitter major axis in deg from +X axis
+0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
 535 545  # Position 1
-2.959  # PSF diameter in arcsecs
+5.919  # PSF diameter in arcsecs
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
 13  # Number of wavelengths
@@ -29,7 +29,7 @@ F160W  # Filter
 1.630880 0.109361 512 # Wavelength 11 (microns), weight, grid size
 1.656100 0.130168 512 # Wavelength 12 (microns), weight, grid size
 1.681700 0.122869 512 # Wavelength 13 (microns), weight, grid size
-64  # Integrated PSF dimension (pixels)
+128  # Integrated PSF dimension (pixels)
 0.046241  # Integrated PSF scaling (arcsec)
 1.000000  # Subsampling factor (1 = normal)
 2  #  Use mirror maps? (0 = no, otherwise yes)

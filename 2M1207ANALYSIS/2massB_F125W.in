@@ -1,5 +1,5 @@
 &BeginPar7.5
-2massB  # Output PSF file rootname
+2massB_F125W  # Output PSF file rootname
 /Users/ZhouYf/tinytim/wfc3_ir.tab  # Name of Zernike table file
 /Users/ZhouYf/tinytim/wfc3_ir.pup  # Name of pupil table file
 00-00-0000 # Observation date (dd-mm-yyyy)
@@ -9,10 +9,10 @@ F125W  # Filter
 2massB_spec.dat  # Spectrum file
 -1.000000  # Major axis jitter in mas (-1 = no jitter)
 -1.000000  # Minor axis jitter in mas
-135.000000  # Angle of jitter major axis in deg from +X axis
+0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
 0 0  # Position 1
-2.957  # PSF diameter in arcsecs
+5.986  # PSF diameter in arcsecs
 1  # Skip wavelengths with low weights? (0=no)
 0.010000  # Min good weight limit coefficient
 16  # Number of wavelengths
@@ -32,7 +32,7 @@ F125W  # Filter
 1.347060 0.056942 512 # Wavelength 14 (microns), weight, grid size
 1.369090 0.050750 512 # Wavelength 15 (microns), weight, grid size
 1.391480 0.040760 512 # Wavelength 16 (microns), weight, grid size
-82  # Integrated PSF dimension (pixels)
+166  # Integrated PSF dimension (pixels)
 0.036060  # Integrated PSF scaling (arcsec)
 1.000000  # Subsampling factor (1 = normal)
 2  #  Use mirror maps? (0 = no, otherwise yes)

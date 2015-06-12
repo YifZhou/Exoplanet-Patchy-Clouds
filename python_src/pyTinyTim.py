@@ -32,7 +32,7 @@ def pyTinyTim(xc, yc, fileName, jitx=0, jity=0, secDis=0, outputRoot = None, out
     out.close()
     FNULL = open(os.devnull, 'w')
     sp.call(['tiny2', 'temp.in'], stdout=FNULL, stderr=sp.STDOUT)
-    sp.call(['tiny3', 'temp.in', 'sub=10'], stdout=FNULL, stderr=sp.STDOUT)
+    sp.call(['tiny3', 'temp.in', 'sub=9'], stdout=FNULL, stderr=sp.STDOUT)
     FNULL.close()
     print(outputRoot, '00.fits generated', sep = '')
     psf_fn = inFile[1].strip()+'00_psf.fits'

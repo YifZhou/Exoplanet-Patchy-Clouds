@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from linearFit import linearFit
 import numpy as np
-plt.style.use('ggplot')
+plt.style.use('myggplot')
 
 def plotLightCurve(DataFrame125, DataFrame160, doCorrection = False):
     """
@@ -26,11 +26,18 @@ def plotLightCurve(DataFrame125, DataFrame160, doCorrection = False):
     ax_F160.plot(DataFrame160.index, DataFrame160['FLUXA']/DataFrame160['FLUXA'].mean(), linewidth = 0, marker = 's', label = 'primary')
     ax_F160.plot(DataFrame160.index, DataFrame160['FLUXB']/DataFrame160['FLUXB'].mean(), linewidth = 0, marker = 'o', label = 'secondary')
     ax_F160.set_title('F160W')
-    
+    fluxA1250 = (DataFrame125['FLUXA']/DataFrame125['FLUXA'].mean()).values
+    fluxA1600 = (DataFrame160['FLUXA']/DataFrame160['FLUXA'].mean()).values
+    print('Peak to Peak difference for primary:')
+    print('F125W {0:.4f}'.format(fluxA1250.max() - fluxA1250.min()))
+    print('F160W {0:.4f}'.format(fluxA1600.max() - fluxA1600.min()))
+    print('Standard Deviation for primary:')
+    print('F125W {0:.4f}'.format(fluxA1250.std()))
+    print('F160W {0:.4f}'.format(fluxA1600.std()))
     for ax in fig.get_axes():
         ax.set_xlabel('Time')
         ax.set_ylabel('Normalized flux')
-        #ax.legend(loc='best')
+        ax.legend(loc='best')
     fig.autofmt_xdate()
     return fig
 
@@ -43,7 +50,7 @@ def correlation(df, ifPlot = True):
     """
     x = df['FLUXA']/df['FLUXA'].mean()
     y = df['FLUXB']/df['FLUXB'].mean()
-    fitResult = linearFit(x, y)
+    fitResult = linearFit(x.values, y.values)
     if ifPlot:
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -54,14 +61,11 @@ def correlation(df, ifPlot = True):
     
         
 if __name__ == '__main__':
-    fn125 = 'TinyTimF125Result.csv'
-    fn160 = 'TinyTimF160Result.csv'
+    fn125 = '2015_Jun_10TinyTimF125Result.csv'
+    fn160 = '2015_Jun_10TinyTimF160Result.csv'
     df125 = pd.read_csv(fn125, parse_dates = {'datetime':['OBSDATE', 'OBSTIME']}, index_col = 'datetime')
     df160 = pd.read_csv(fn160, parse_dates = {'datetime':['OBSDATE', 'OBSTIME']}, index_col = 'datetime')
     fig1 = plotLightCurve(df125, df160)
     fig2 = correlation(df125)
+    fig3 = correlation(df160)
     plt.show()
-
-
-
-    
