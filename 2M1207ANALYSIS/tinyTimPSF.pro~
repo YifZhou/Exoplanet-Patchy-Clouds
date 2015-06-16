@@ -1,3 +1,12 @@
+FUNCTION dateString
+  time = systime()
+  mm = strmid(time, 4, 3)
+  dd = string(uint(strmid(time, 8, 2)), format = '(I2.2)')
+  year = strmid(time, 20, 4)
+  return, year + '_' + mm + '_' + dd
+END
+
+
 FUNCTION plotComp, im, psf0
   
   ;; plot the slices OF the image profile
@@ -110,12 +119,30 @@ FUNCTION shiftPSF, psf0, dx, dy, factor = factor
   ;; dx, dy: the shift distance in x AND y direction. The pixel sizes FOR both dx AND dy are the same as the original image, instead OF oversampled PSF
   ;; factor: the oversample rate, default value is 10
   
-  IF N_elements(factor) EQ 0 THEN factor = 10
-  size0 = (size(psf0))[1]
-    PSF_core = [[0.0007, 0.025005,  0.0007],$
+  ;;IF N_elements(factor) EQ 0 THEN factor = 10
+  ;; default super sample factor is 9
+  PSF_core = [[0.0007, 0.025005,  0.0007],$
               [0.025005,  0.89718,  0.025005],$
               [0.0007, 0.025005, 0.0007]] ;; intrapixel diffusion core. convol this with the resampled PSF, as indicated by tiny tim manual.
-  psf = frebin(fshift(psf0, dx*factor, dy*factor), size0/factor, size0/factor,/total)
+  IF N_elements(factor) EQ 0 THEN factor = 9
+  size0 = (size(psf0))[1]
+  peak_xy = size0/2 ;; the x and y coordinate of the peak of the oversampled
+
+  ;;Step One, shift
+  ;;psf = fshift(psf0, dx*factor, dy*factor) ;; dont use fshift,
+  ;;instead, using bicubic interpolation to do the shift, which is
+  ;;done by my_shift2d
+  psf = my_shift2d(psf0, dx*factor, dy*factor, cubic = 1)
+
+  ;;Step Two, select sub region
+  ;; the effective PSF will be 27x27 pixels, or 3x3 arcsec
+  ;; so the subsize will be 27*9 = 243 and 243/2 = 121
+  psf = psf[peak_xy - 121: peak_xy + 121, peak_xy - 121: peak_xy + 121]
+
+  ;;Step Three, rebin the psf, using frebin
+  psf = frebin(psf, 27, 27, /total)
+  
+  ;;Step Four, convolve with a PSF core
   psf = convol(psf, PSF_core)
   return, psf
 END
@@ -380,7 +407,6 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
          + ' ' + strn(MJD) + ' comp_PSF' ;; use tinytim to generate a PSF file that works for  companion
 
   PSF02 = mrdfits('comp_PSF00.fits',/silent)
-  PSF02 = PSF02[1:270, 1:270]
   mask3 = mask
   mask3 = fltarr(27, 27)
   mask3[comp_xy[0]-1:comp_xy[0]+1, comp_xy[1]-1:comp_xy[1]+1] = 1           ;; only use the center 9 pixel to locate the companion obj
@@ -389,7 +415,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   ;;; fit two PSFs
   mask40 = fltarr(27, 27)
   mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3.5], [xy[0], xy[1], 11, 100]]])*mask40
+  mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3.5], [xy[0], xy[1], 11, 100]]]);;*mask40
   ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
   comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
   PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 10)
@@ -446,7 +472,8 @@ PRO tinytimPSF
   F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
 
   save, F125Info, file = 'TinyTimF125Result.sav'
-  spawn, 'python sav2csv.py TinyTimF125Result.sav TinyTimF125Result.csv'  ;; convert .sav file to csv file for easier using.
+  csvFN = dateString()+'TinyTimF125Result.csv'
+  spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
 
   ;;; F160W
   F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
@@ -483,5 +510,6 @@ PRO tinytimPSF
   F160Info = add_tag(F160Info, 'Secondary_y', Secondary_y)
 
   save, F160Info, file = 'TinyTimF160Result.sav'
-  spawn, 'python sav2csv.py TinyTimF160Result.sav TinyTimF160Result.csv'  ;; convert .sav file to csv file for easier using.
+  csvFN = dateString() + 'TinyTimF160Result.csv'
+  spawn, 'python sav2csv.py TinyTimF160Result.sav ' + csvFN ;; convert .sav file to csv file for easier using.
 END
