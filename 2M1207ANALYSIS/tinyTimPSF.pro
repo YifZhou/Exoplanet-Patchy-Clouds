@@ -139,8 +139,8 @@ FUNCTION shiftPSF, psf0, dx, dy, factor = factor
   ;; convolve a N x N array with a 3x3 array, the effective region of
   ;; the result will be a (N-2) x (N-2) array ( N-2 = N-3+1)
   ;; so generate a 29x29 array first
-  ;; so the subsize will be 29*9 = 261 and 261/2 = 131
-  psf = psf[peak_xy - 131: peak_xy + 131, peak_xy - 131: peak_xy + 131]
+  ;; so the suzbsize will be 29*9 = 261 and 261/2 = 130
+  psf = psf[peak_xy - 130: peak_xy + 130, peak_xy - 130: peak_xy + 130]
 
   ;;Step Three, rebin the psf, using frebin
   psf = frebin(psf, 29, 29, /total)
@@ -381,12 +381,12 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   jityList = [0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40]
   FOR i = 0, nPSFs - 1 DO begin
      psf0 = mrdfits(PSF_fn[i],/silent)
-     mask1 = make_mask(mask,[[comp_xy[0], comp_xy[1], 0, 3]])
+     mask1 = make_mask(mask,[[comp_xy[0], comp_xy[1], 0, 5]])
      xy = registerPSF(im, psf0, mask1, xy1, weight = 1/err^2)
      dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
      xyList[*, i] = xy
      PSF= shiftPSF(psf0, dxy[0], dxy[1], factor = 9)
-     mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 3]])
+     mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 5]])
      opt_paras = fit1PSF(im, PSF, mask2, weight = 1/err^2)
      PSFList[*, *, i] = PSF
      ampList[i] = opt_paras[0]

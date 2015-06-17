@@ -8,7 +8,7 @@ WFC3_IR  # Camera
 F160W  # Filter
 2massB_spec.dat  # Spectrum file
 20.00000 # Major axis jitter in mas
-30.00000 # Minor axis jitter in mas
+20.00000 # Minor axis jitter in mas
 0.000000  # Angle of jitter major axis in deg from +X axis
 1  # Number of positions
 535 545  # Position 1
