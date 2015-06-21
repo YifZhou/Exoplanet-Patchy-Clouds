@@ -7,6 +7,31 @@ import numpy as np
 plt.style.use('myggplot')
 
 
+def normFlux(dataFrame, normDither=False):
+    """    Keyword Arguments:
+    dataFrame  -- input data frame
+    normDither -- (default False) if normalize by dither position, default
+    is faulse
+    reurn the normalized flux for primary and secondary
+    """
+    fluxA0 = np.zeros(len(dataFrame))
+    fluxB0 = np.zeros(len(dataFrame))
+    if normDither:
+        for angle in [0, 1]:
+            for dither in range(4):
+                subDF_id = np.where((dataFrame['POSANGLE'] == angle) &
+                                    (dataFrame['DITHER'] == dither))
+                subDF = dataFrame[(dataFrame['POSANGLE'] == angle) &
+                                  (dataFrame['DITHER'] == dither)]
+                fluxA0[subDF_id] = subDF['FLUXA'] / subDF['FLUXA'].mean()
+                fluxB0[subDF_id] = subDF['FLUXB'] / subDF['FLUXB'].mean()
+    if not normDither:
+        fluxA0 = dataFrame['FLUXA'] / dataFrame['FLUXA'].mean()
+        fluxB0 = dataFrame['FLUXB'] / dataFrame['FLUXB'].mean()
+
+    return fluxA0, fluxB0
+
+
 def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
     """
 
@@ -23,22 +48,20 @@ def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
     fig = plt.figure(figsize=(12, 6))
     ax_F125 = fig.add_subplot(121)
     ax_F160 = fig.add_subplot(122, sharey=ax_F125)
-    ax_F125.plot(DataFrame125.index, DataFrame125[
-                 'FLUXA'] / DataFrame125['FLUXA'].mean(),
+    fluxA1250, fluxB1250 = normFlux(DataFrame125, normDither=True)
+    fluxA1600, fluxB1600 = normFlux(DataFrame160, normDither=True)
+    ax_F125.plot(DataFrame125.index, fluxA1250,
                  linewidth=0, marker='s', label='priamry')
-    ax_F125.plot(DataFrame125.index, DataFrame125[
-                 'FLUXB'] / DataFrame125['FLUXB'].mean(),
+    ax_F125.plot(DataFrame125.index, fluxB1250,
                  linewidth=0, marker='o', label='secondary')
     ax_F125.set_title('F125W')
-    ax_F160.plot(DataFrame160.index, DataFrame160[
-                 'FLUXA'] / DataFrame160['FLUXA'].mean(),
+    ax_F160.plot(DataFrame160.index, fluxA1600,
                  linewidth=0, marker='s', label='primary')
-    ax_F160.plot(DataFrame160.index, DataFrame160[
-                 'FLUXB'] / DataFrame160['FLUXB'].mean(),
+    ax_F160.plot(DataFrame160.index, fluxB1600,
                  linewidth=0, marker='o', label='secondary')
     ax_F160.set_title('F160W')
-    fluxA1250 = (DataFrame125['FLUXA'] / DataFrame125['FLUXA'].mean()).values
-    fluxA1600 = (DataFrame160['FLUXA'] / DataFrame160['FLUXA'].mean()).values
+    # fluxA1250 = (DataFrame125['FLUXA'] / DataFrame125['FLUXA'].mean()).values
+    # fluxA1600 = (DataFrame160['FLUXA'] / DataFrame160['FLUXA'].mean()).values
     print('Peak to Peak difference for primary:')
     print('F125W {0:.4f}'.format(fluxA1250.max() - fluxA1250.min()))
     print('F160W {0:.4f}'.format(fluxA1600.max() - fluxA1600.min()))

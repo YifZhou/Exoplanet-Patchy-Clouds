@@ -15,5 +15,14 @@ def KLtrans(targetImage, imageCube):
                  n is the number of images.
     targetImage -- the targetImage to be transformed
     """
-    nImages = imageCube.shape[-1]  # number of images saved in the imageCube
+    nImages = imageCube.shape[0]  # number of images saved in the imageCube
     E = np.zeros((nImages, nImages))
+    for i in range(nImages):
+        for j in range(nImages):
+            E[i][j] = (imageCube[i, :, :] * imageCube[j, :, :]).sum()
+    eigens, vectors = np.linalg.eig(E)  # eigen values
+
+    pass
+
+if __name__ == '__main__':
+    savFile = readsav('F125W_KLIP_PSF_library.sav')

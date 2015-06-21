@@ -8,8 +8,13 @@ FUNCTION maskoutdq, dq, flagList=flaglist
   dq = long(dq)
   mask = dq-dq+1 ;;initialize mask as a zero array
   FOR k=0, n_elements(flagList) - 1 DO BEGIN
+     IF long(alog2(flagList[k])) EQ alog2(flagList[k]) THEN BEGIN 
      mask = mask * (1- dq/flagList[k] MOD 2) ;;; mask out each flags, if (dq/flag) mod 2 == 1,
-                                             ;;; then that dq value contains the flag     
+                                             ;;; then that dq value
+                                             ;;; contains the flag
+     ENDIF ELSE BEGIN
+        mask = mask * (1 - (dq EQ flaglist[k]))
+     ENDELSE 
   ENDFOR 
   return, mask
 END
@@ -33,30 +38,30 @@ PRO collectKlipPSF
      id = angle0ID(i)
      im = mrdfits(dataDIR + df.filename[id], 1, /silent)
      dq = mrdfits(dataDIR + df.filename[id], 3, /silent)
-     mask = maskoutdq(dq)
+     mask = maskoutdq(dq, flagList = [40])
      cx = df.primary_x[id]
      cy = df.primary_y[id]
      dx = cx - round(cx)
      dy = cy - round(cy)
      subim = im[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14]                       ;; a 29*29 subarray, to avoid the edge effect caused by shifting the image
      fixpix, subim, mask[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14], subim_fixed ;; remove bad pixels, to avoid weird behavior of hot pixel in shifting
-     subim = my_shift2d(subim, -dx, -dy, /cubic)
-     angle0cube[*, *, i] = subim[1:27, 1:27]
+     subim_fixed = my_shift2d(subim_fixed, -dx, -dy)
+     angle0cube[*, *, i] = subim_fixed[1:27, 1:27]
   ENDFOR
 
   FOR i=0, n_elements(angle1ID) - 1 DO BEGIN
      id = angle1ID(i)
      im = mrdfits(dataDIR + df.filename[id], 1, /silent)
      dq = mrdfits(dataDIR + df.filename[id], 3, /silent)
-     mask = maskoutdq(dq)
+     mask = maskoutdq(dq, flagList = [40])
      cx = df.primary_x[id]
      cy = df.primary_y[id]
      dx = cx - round(cx)
      dy = cy - round(cy)
      subim = im[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14]                       ;; a 29*29 subarray, to avoid the edge effect caused by shifting the image
      fixpix, subim, mask[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14], subim_fixed ;; remove bad pixels, to avoid weird behavior of hot pixel in shifting
-     subim = my_shift2d(subim, -dx, -dy, /cubic)
-     angle1cube[*, *, i] = subim[1:27, 1:27]
+     subim_fixed = my_shift2d(subim_fixed, -dx, -dy)
+     angle1cube[*, *, i] = subim_fixed[1:27, 1:27]
   ENDFOR
   save, angle0cube, angle1cube, file = 'F125W_KLIP_PSF_library.sav'
   
@@ -74,30 +79,31 @@ PRO collectKlipPSF
      id = angle0ID(i)
      im = mrdfits(dataDIR + df.filename[id], 1, /silent)
      dq = mrdfits(dataDIR + df.filename[id], 3, /silent)
-     mask = maskoutdq(dq)
+     mask = maskoutdq(dq, flagList = [40])
      cx = df.primary_x[id]
      cy = df.primary_y[id]
      dx = cx - round(cx)
      dy = cy - round(cy)
      subim = im[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14]                       ;; a 29*29 subarray, to avoid the edge effect caused by shifting the image
      fixpix, subim, mask[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14], subim_fixed ;; remove bad pixels, to avoid weird behavior of hot pixel in shifting
-     subim = my_shift2d(subim, -dx, -dy, /cubic)
-     angle0cube[*, *, i] = subim[1:27, 1:27]
+     subim_fixed = my_shift2d(subim_fixed, -dx, -dy)
+     angle0cube[*, *, i] = subim_fixed[1:27, 1:27]
   ENDFOR
 
   FOR i=0, n_elements(angle1ID) - 1 DO BEGIN
      id = angle1ID(i)
      im = mrdfits(dataDIR + df.filename[id], 1, /silent)
      dq = mrdfits(dataDIR + df.filename[id], 3, /silent)
-     mask = maskoutdq(dq)
+     mask = maskoutdq(dq, flagList = [40])
      cx = df.primary_x[id]
      cy = df.primary_y[id]
      dx = cx - round(cx)
      dy = cy - round(cy)
      subim = im[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14]                       ;; a 29*29 subarray, to avoid the edge effect caused by shifting the image
      fixpix, subim, mask[round(cx) - 14: round(cx) + 14, round(cy) - 14: round(cy) + 14], subim_fixed ;; remove bad pixels, to avoid weird behavior of hot pixel in shifting
-     subim = my_shift2d(subim, -dx, -dy, /cubic)
-     angle1cube[*, *, i] = subim[1:27, 1:27]
+     subim_fixed = my_shift2d(subim_fixed, -dx, -dy)
+     angle1cube[*, *, i] = subim_fixed[1:27, 1:27]
   ENDFOR
   save, angle0cube, angle1cube, file = 'F160W_KLIP_PSF_library.sav'
 END
+
