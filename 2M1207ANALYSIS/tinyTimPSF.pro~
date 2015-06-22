@@ -136,15 +136,18 @@ FUNCTION shiftPSF, psf0, dx, dy, factor = factor
 
   ;;Step Two, select sub region
   ;; the effective PSF will be 27x27 pixels, or 3x3 arcsec
-  ;; so the subsize will be 27*9 = 243 and 243/2 = 121
-  psf = psf[peak_xy - 121: peak_xy + 121, peak_xy - 121: peak_xy + 121]
+  ;; convolve a N x N array with a 3x3 array, the effective region of
+  ;; the result will be a (N-2) x (N-2) array ( N-2 = N-3+1)
+  ;; so generate a 29x29 array first
+  ;; so the suzbsize will be 29*9 = 261 and 261/2 = 130
+  psf = psf[peak_xy - 130: peak_xy + 130, peak_xy - 130: peak_xy + 130]
 
   ;;Step Three, rebin the psf, using frebin
-  psf = frebin(psf, 27, 27, /total)
+  psf = frebin(psf, 29, 29, /total)
   
   ;;Step Four, convolve with a PSF core
-  psf = convol(psf, PSF_core)
-  return, psf
+  psf = convol(psf, PSF_core) ;; a 29*29 array
+  return, psf[1:27, 1:27] ;; finally, return a 27*27 array
 END
 
 FUNCTION fit1PSF, im, psf, mask, weight = weight
@@ -187,7 +190,7 @@ FUNCTION registerPSF, im, psf0, mask, gc, weight = weight
      gridy = gc[1] + (findgen(ngrid) - ngrid/2) * gridSize/float(ngrid/2) ;;; y coordinate of each grid point
      FOR i=0,ngrid-1 DO BEGIN
         FOR j=0,ngrid-1 DO BEGIN
-           psf = shiftPSF(psf0, (gridx[i]-13), (gridy[j]-13), factor = 10)
+           psf = shiftPSF(psf0, (gridx[i]-13), (gridy[j]-13), factor = 9)
            optPara = fit1PSF(im, psf, mask, weight = weight)
            grid[i, j] = optPara[2]
         ENDFOR
@@ -236,7 +239,7 @@ FUNCTION register2PSFs, im, PSF1, PSF02, mask, gc, weight = weight
      gridy = gc[1] + (findgen(ngrid) - ngrid/2) * gridSize/float(ngrid/2) ;;; y coordinate of each grid point
      FOR i=0,ngrid-1 DO BEGIN
         FOR j=0,ngrid-1 DO BEGIN
-           PSF2 = shiftPSF(PSF02, (gridx[i]-13), (gridy[j]-13), factor = 10)
+           PSF2 = shiftPSF(PSF02, (gridx[i]-13), (gridy[j]-13), factor = 9)
            optPara = fit2PSFs(im, PSF1, PSF2, mask, weight = weight)
            grid[i, j] = optPara[3]
         ENDFOR
@@ -291,7 +294,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
      xy = registerPSF(im, psf0, err, mask1, xy)
      xyList[i, *] = xy
      dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
-     psf = shiftPSF(psf0, dxy[0], dxy[1], factor = 10)
+     psf = shiftPSF(psf0, dxy[0], dxy[1], factor = 9)
      mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3], [comp_xy[0], comp_xy[1], 0, 3], [xy[0], xy[1], 12, 100]])
      opt_paras = fit1PSF(im, psf, mask2, weight = 1/err^2)
      amp[0, i] = opt_paras[0]
@@ -325,7 +328,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
 
   ;;; fit two PSFs
   PSF1 = psfList[*,*,minID]
-  PSF2 = shiftPSF(psf0, comp_xy[0] - 13, comp_xy[1] - 13, factor = 10)
+  PSF2 = shiftPSF(psf0, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)
   mask40 = fltarr(27, 27)
   mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
   mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3], [xy[0], xy[1], 12, 100]]])*mask40
@@ -378,12 +381,12 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   jityList = [0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40]
   FOR i = 0, nPSFs - 1 DO begin
      psf0 = mrdfits(PSF_fn[i],/silent)
-     mask1 = make_mask(mask,[[comp_xy[0], comp_xy[1], 0, 3], [13, 13, 11, 100]])
+     mask1 = make_mask(mask,[[comp_xy[0], comp_xy[1], 0, 5]])
      xy = registerPSF(im, psf0, mask1, xy1, weight = 1/err^2)
      dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
      xyList[*, i] = xy
-     PSF= shiftPSF(psf0, dxy[0], dxy[1], factor = 10)
-     mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 3], [xy[0], xy[1], 11, 100]])
+     PSF= shiftPSF(psf0, dxy[0], dxy[1], factor = 9)
+     mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 5]])
      opt_paras = fit1PSF(im, PSF, mask2, weight = 1/err^2)
      PSFList[*, *, i] = PSF
      ampList[i] = opt_paras[0]
@@ -415,10 +418,10 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   ;;; fit two PSFs
   mask40 = fltarr(27, 27)
   mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[[xy[0], xy[1], 0, 3.5], [xy[0], xy[1], 11, 100]]]);;*mask40
+  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 3.5]]);;*mask40
   ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
   comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
-  PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 10)
+  PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)
   amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
 
   ;;print,'opimized rms residual: ', amps[3]

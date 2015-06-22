@@ -1,0 +1,24 @@
+PRO combineResidual
+  ;;; median combine the residual
+  ;;; prepare for a residual included fitting
+  ;;; generate residual for each individual position
+  F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
+  F125INFO = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  residual= [27, 27, 8]
+  FOREACH angle, [0, 1] DO BEGIN
+     FOREACH dither, [0, 1, 2, 3] DO BEGIN
+        psfID = where((F125INFO.posangle EQ angle) AND (F125INFO.posangle EQ angle))
+        FOREACH id, psfID DO BEGIN
+           fn = './fitsResult/' + strmid(F125INFO.filename[id], 0, 9) + '.fits' ;;;saved fitting result fits file
+           im = mrdfits(fn, 0)
+           psf = mrdfits(fn, 1)
+           residual[*, *, angle*4 + dither] = im - psf           
+           ENDFOREACH        
+        ENDFOREACH
+     ENDFOREACH
+  
+  F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
+  F160INFO = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+END
+
+  
