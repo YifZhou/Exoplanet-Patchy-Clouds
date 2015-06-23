@@ -41,6 +41,7 @@ PRO combineResidual
           psf = mrdfits(fn, 1, /silent)
           residualCube[*, *, i] = im - psf ;;;save the residual for every individual exposure
        ENDFOR
+       residual[*, *, angle*4 + dither] = median(residualCube, dimension=3)       
     ENDFOREACH
   ENDFOREACH
   save, residual, file = 'F160W_residual.sav'  
