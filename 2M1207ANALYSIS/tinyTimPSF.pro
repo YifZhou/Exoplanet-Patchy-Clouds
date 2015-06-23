@@ -444,44 +444,44 @@ PRO tinytimPSF
   COMMON diff, residual
   F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
   F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
-  ;;F125W
-  F125Info = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
-  restore, 'F125W_residual.sav'
-  xy = [[[135,161], [145,161], [135,173], [145,173]],$
-      [[142, 159],[152,159], [142, 171], [152, 171]]]
-  F125Info.PosAngle = (F125Info.orbit + 1) MOD 2
-  F125ID = where(F125Info.filter EQ 'F125W')
-  fluxA = fltarr(N_elements(F125ID))
-  fluxB = fltarr(N_elements(F125ID))
-  Primary_x = fltarr(N_elements(F125ID))
-  Primary_y = fltarr(N_elements(F125ID))
-  Secondary_x = fltarr(N_elements(F125ID))
-  Secondary_y = fltarr(N_elements(F125ID)) 
-  sky = fltarr(N_elements(F125ID))
-  chisq = fltarr(N_elements(F125ID))
-  FOR i=0, N_elements(F125ID) - 1 DO BEGIN
-     id = F125ID[i]
-     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual)
-     fluxA[i] = a[0]
-     fluxB[i] = a[1]
-     sky[i] = a[2]
-     chisq[i] = a[3]
-     Primary_x[i] = a[4]
-     Primary_y[i] = a[5]
-     Secondary_x[i] = a[6]
-     Secondary_y[i] = a[7]
-  ENDFOR
-  F125Info = add_tag(F125Info, 'fluxa', fluxa)
-  F125Info = add_tag(F125Info, 'fluxb', fluxb)
-  F125Info = add_tag(F125Info, 'sky', sky)
-  F125Info = add_tag(F125Info, 'Primary_x', Primary_x)
-  F125Info = add_tag(F125Info, 'Primary_y', Primary_y)
-  F125Info = add_tag(F125Info, 'Secondary_x', Secondary_x)
-  F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
+  ;; ;;F125W
+  ;; F125Info = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  ;; restore, 'F125W_residual.sav'
+  ;; xy = [[[135,161], [145,161], [135,173], [145,173]],$
+  ;;     [[142, 159],[152,159], [142, 171], [152, 171]]]
+  ;; F125Info.PosAngle = (F125Info.orbit + 1) MOD 2
+  ;; F125ID = where(F125Info.filter EQ 'F125W')
+  ;; fluxA = fltarr(N_elements(F125ID))
+  ;; fluxB = fltarr(N_elements(F125ID))
+  ;; Primary_x = fltarr(N_elements(F125ID))
+  ;; Primary_y = fltarr(N_elements(F125ID))
+  ;; Secondary_x = fltarr(N_elements(F125ID))
+  ;; Secondary_y = fltarr(N_elements(F125ID)) 
+  ;; sky = fltarr(N_elements(F125ID))
+  ;; chisq = fltarr(N_elements(F125ID))
+  ;; FOR i=0, N_elements(F125ID) - 1 DO BEGIN
+  ;;    id = F125ID[i]
+  ;;    a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual)
+  ;;    fluxA[i] = a[0]
+  ;;    fluxB[i] = a[1]
+  ;;    sky[i] = a[2]
+  ;;    chisq[i] = a[3]
+  ;;    Primary_x[i] = a[4]
+  ;;    Primary_y[i] = a[5]
+  ;;    Secondary_x[i] = a[6]
+  ;;    Secondary_y[i] = a[7]
+  ;; ENDFOR
+  ;; F125Info = add_tag(F125Info, 'fluxa', fluxa)
+  ;; F125Info = add_tag(F125Info, 'fluxb', fluxb)
+  ;; F125Info = add_tag(F125Info, 'sky', sky)
+  ;; F125Info = add_tag(F125Info, 'Primary_x', Primary_x)
+  ;; F125Info = add_tag(F125Info, 'Primary_y', Primary_y)
+  ;; F125Info = add_tag(F125Info, 'Secondary_x', Secondary_x)
+  ;; F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
 
-  save, F125Info, file = 'TinyTimF125Result.sav'
-  csvFN = dateString()+'TinyTimF125Result.csv'
-  spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
+  ;; save, F125Info, file = 'TinyTimF125Result.sav'
+  ;; csvFN = dateString()+'TinyTimF125Result.csv'
+  ;; spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
 
   ;;; F160W
   F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])

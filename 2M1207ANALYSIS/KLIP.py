@@ -8,15 +8,15 @@ from scipy.io import readsav  # read IDL save file
 """
 
 
-def KLtrans(targetImage, imageCube):
+def KLtrans(imageCube, effIndex):
     """
     Keyword Arguments:
     imageCube -- PSF library, i*j*n, i and j are dimensions of the image,
                  n is the number of images.
-    targetImage -- the targetImage to be transformed
+    effIndex -- the index to define the search Area
     """
     nImages = imageCube.shape[0]  # number of images saved in the imageCube
-    E = np.zeros((nImages, nImages))
+    R = np.zeros()
     for i in range(nImages):
         for j in range(nImages):
             E[i][j] = (imageCube[i, :, :] * imageCube[j, :, :]).sum()
