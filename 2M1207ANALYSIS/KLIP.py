@@ -20,15 +20,18 @@ def KLtrans(imageCube, effIndex):
     # establish R array
     # for _eff, only non-masked value counts
     # on the other hand, for R, every value conts
-    R_eff = np.zeros((nImages, effIndex))
+    R_eff = np.zeros((nImages, len(effIndex[0])))
     R = np.zeros((nImages, imageCube[0].size))
     for i in range(nImages):
         R_eff[i, :] = imageCube[i][effIndex].flatten()
+        R[i, :] = imageCube[i].flatten()
     eigens, vectors = np.linalg.eig(np.dot(R_eff, R_eff.T))
     # sort by eigen values, get the index from large to small
     sort_ind = np.argsort(eigens)[::-1]
-    sorted_vectors = np.sqrt(vectors[sort_ind]).reshape(-1, 1)
-    Z = np.dot(1 / sorted_vectors * vectors[:, sort_ind]. T, R)
+    sv = np.sqrt(eigens[sort_ind]).reshape(-1, 1)
+    Z = np.dot(1 / sv * np.transpose(vectors[:, sort_ind]), R)
+    # sv = np.sqrt(w[sort_ind]).reshape(-1, 1)
+    # Z = np.dot(1. / sv * np.transpose(V[:, sort_ind]), R)
     return Z
 
 
@@ -60,7 +63,7 @@ def getEffIndex(imShape, center, radiusList):
         xi, yi = np.where((dist > rPair[0]) & (dist < rPair[1]))
         dim1_eff.append(xi)
         dim2_eff.append(yi)
-    return zip(np.concatenate(dim1_eff), np.concatenate(dim2_eff))
+    return np.concatenate(dim1_eff), np.concatenate(dim2_eff)
 
 
 if __name__ == '__main__':
@@ -68,3 +71,5 @@ if __name__ == '__main__':
     cube0 = savFile['angle0cube']
     cube1 = savFile['angle1cube']
     id_eff = getEffIndex(cube0[0].shape, [17, 9], [[6.5, 10]])
+    Z = KLtrans(cube0, id_eff)
+    im = KLIP(cube1[0], Z, id_eff, 20)

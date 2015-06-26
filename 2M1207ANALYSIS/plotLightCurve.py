@@ -101,8 +101,8 @@ def correlation(df, ifPlot=True):
 
 
 if __name__ == '__main__':
-    fn125 = '2015_Jun_23TinyTimF125Result.csv'
-    fn160 = '2015_Jun_23TinyTimF160Result.csv'
+    fn125 = '2015_Jun_24TinyTimF125Result.csv'
+    fn160 = '2015_Jun_24TinyTimF160Result.csv'
     df125 = pd.read_csv(
         fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
