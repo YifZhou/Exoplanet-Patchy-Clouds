@@ -46,33 +46,32 @@ if __name__ == '__main__':
     np.savetxt('F160Result.dat', np.c_[df160['Time'].values, f160A0, f160B0])
     """
     according to calculation made by matlab
-    For F125B amp=0.0139   T=10.9765    dphi=0.5874    baseline=1.0001
+    For F125A amp=0.0139   T=10.9765    dphi=0.5874    baseline=1.0001
     """
     plt.close('all')
     fig = plt.figure()
-    ax125 = fig.add_subplot(211)
-    points125, = ax125.plot(df125['Time'], f125B0, 'o')
+    ax125 = fig.add_subplot(111)
+    points125, = ax125.plot(df125['Time'], f125A0, 'o')
     t = np.linspace(df125['Time'].min(), df125['Time'].max(), 500)
-    modelFlux = 0.0139 * np.sin(2 * np.pi / 10.9765 * t + 0.5874) + 1.0001
+    modelFlux = 0.0041 * np.sin(2 * np.pi / 6.8618 * t - 8.1991) + 1.0008
     line125, = ax125.plot(t, modelFlux)
     ax125.set_title('F125W')
-    """For F160B I used two type fit,
-    1. free parameter fit
-    amp=0.0088    T=9.2692   dphi=-0.1180    baseline=1.0002
-    2. fixed parameter fit
-    amp=0.0080    T=10.9765  dphi=0.2525    baseline=0.9997
-    """
-    ax160 = fig.add_subplot(212)
-    points160, = ax160.plot(df160['Time'], f160B0, 'o')
-    t = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
-    modelFlux1 = 0.0080 * np.sin(2 * np.pi / 10.9765 * t + 0.2525) + 0.9997
-    modelFlux2 = 0.0088 * np.sin(2 * np.pi / 9.2692 * t - 0.1180) + 1.0002
-    line160_1, = ax160.plot(t, modelFlux1, label='P=10.9')
-    line160_2, = ax160.plot(t, modelFlux2, label='P=9.3')
-    ax160.set_title('F160W')
-    for ax in [ax125, ax160]:
-        ax.set_xlabel('Time (h)')
-        ax.set_ylabel('Nomalized Flux')
-        ax.legend()
-    fig.tight_layout()
-    plt.savefig('sineCurveFit.pdf')
+    plt.savefig('sineCurveFit_primary.pdf')
+    # """For F160B I used two type fit,
+    # 1. free parameter fit
+    # amp=0.0088    T=9.2692   dphi=-0.1180    baseline=1.0002
+    # 2. fixed parameter fit
+    # amp=0.0080    T=10.9765  dphi=0.2525    baseline=0.9997
+    # """
+    # ax160 = fig.add_subplot(212)
+    # points160, = ax160.plot(df160['Time'], f160B0, 'o')
+    # t = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
+    # modelFlux1 = 0.0080 * np.sin(2 * np.pi / 10.9765 * t + 0.2525) + 0.9997
+    # modelFlux2 = 0.0088 * np.sin(2 * np.pi / 9.2692 * t - 0.1180) + 1.0002
+    # ax160.set_title('F160W')
+    # for ax in [ax125, ax160]:
+    #     ax.set_xlabel('Time (h)')
+    #     ax.set_ylabel('Nomalized Flux')
+    #     ax.legend()
+    # fig.tight_layout()
+    # plt.savefig('sineCurveFit.pdf')

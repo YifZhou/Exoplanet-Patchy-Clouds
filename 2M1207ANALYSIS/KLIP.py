@@ -3,6 +3,7 @@ from __future__ import print_function, division
 import numpy as np
 from scipy.io import readsav  # read IDL save file
 import matplotlib.pyplot as plt
+from astropy.io import fits
 """KLIP pipe line
    reference:  Sourmer 2012
 adapted from Neil Zimmerman's code
@@ -43,12 +44,12 @@ def KLIP(targetImage, KLBases, effIndex, klip):
     klip -- number of principle component to use
     """
     target_eff = targetImage[effIndex].flatten()
-    KLBases_eff = KLBases[0:klip, effIndex]
+    KLBases_eff = KLBases[0:klip, effIndex[0] * 27 + effIndex[1]]
     # project target image on KL_bases
     coeff = np.dot(KLBases_eff, target_eff)
     image = np.zeros(targetImage.shape)
     for i, c in enumerate(coeff):
-        image += KLBases[i, :].reshape(targetImage.shape)
+        image += KLBases[i, :].reshape(targetImage.shape) * c
     return image
 
 
@@ -73,3 +74,4 @@ if __name__ == '__main__':
     id_eff = getEffIndex(cube0[0].shape, [17, 9], [[6.5, 10]])
     Z = KLtrans(cube0, id_eff)
     im = KLIP(cube1[0], Z, id_eff, 20)
+    fits.writeto('test.fits', im - cube1[0], clobber=True)

@@ -1,0 +1,16 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+from astropy.io import fits
+import numpy as np
+
+"""examine the residual
+"""
+
+if __name__ == '__main__':
+    residualFile = './fitsResult/icdg01a1q.fits'
+    im = fits.getdata(residualFile, 0)
+    psf = fits.getdata(residualFile, 1)
+    residual = im - psf
+    residual0 = np.abs(residual / im)
+    print('Mean value = {0}'.format(residual0.mean()))
+    print('Max value = {0}'.format(residual0.max()))
