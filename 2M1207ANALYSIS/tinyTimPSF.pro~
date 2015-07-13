@@ -343,7 +343,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
   return, amps
 END
 
-function PSFPhotometry1, fn, filterName, angle, dither, xy0
+function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=removeResidual
   ;;; use tinytim PSF to measure the photometry
   ;;; input parameter:
   ;;; fn: filename of the input flt file\
@@ -351,7 +351,9 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   ;;; dither: dither position for the exposure
   ;;; xy0: position for the peak pixel of the PSF
   forward_FUNCTION findpeak
-
+  COMMON diff, residual
+  IF keyword_set(removeResidual) THEN removeResidual = 1 $
+     ELSE removeResidual = 0
   primaryTTFN = '2massA_' + filterName + '.in' ;; primary Tinytim parameter input file
   companionTTFN = '2massB_' + filterName + '.in' ;; companion Tinytim parameter input file
   imagePath = '../data/2M1207B/'
@@ -359,6 +361,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0
   MJD = fxpar(hd, 'EXPSTART')
   im = mrdfits(imagePath + fn, 1,/silent)
   im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  IF removeResidual THEN im = im - residual[*, *, angle*4 + dither] ;; remove the difference of residual and PSF
   err = mrdfits(imagePath + fn, 2,/silent)
   err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   dq = mrdfits(imagePath + fn, 3,/silent)
@@ -438,10 +441,12 @@ END
 
 PRO tinytimPSF
   forward_FUNCTION myReadCSV
+  COMMON diff, residual
   F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
   F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
-  ;;F125W
+  ;; ;;F125W
   F125Info = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  restore, 'F125W_residual.sav'
   xy = [[[135,161], [145,161], [135,173], [145,173]],$
       [[142, 159],[152,159], [142, 171], [152, 171]]]
   F125Info.PosAngle = (F125Info.orbit + 1) MOD 2
@@ -456,7 +461,7 @@ PRO tinytimPSF
   chisq = fltarr(N_elements(F125ID))
   FOR i=0, N_elements(F125ID) - 1 DO BEGIN
      id = F125ID[i]
-     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])])
+     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual)
      fluxA[i] = a[0]
      fluxB[i] = a[1]
      sky[i] = a[2]
@@ -473,6 +478,7 @@ PRO tinytimPSF
   F125Info = add_tag(F125Info, 'Primary_y', Primary_y)
   F125Info = add_tag(F125Info, 'Secondary_x', Secondary_x)
   F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
+  F125Info = add_tag(F125Info, 'Chisq', chisq)
 
   save, F125Info, file = 'TinyTimF125Result.sav'
   csvFN = dateString()+'TinyTimF125Result.csv'
@@ -480,6 +486,7 @@ PRO tinytimPSF
 
   ;;; F160W
   F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  restore, 'F160W_residual.sav'
   xy = [[[135,161], [145,161], [135,173], [145,173]],$
       [[142, 159],[152,159], [142, 171], [152, 171]]]
   F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
@@ -494,7 +501,7 @@ PRO tinytimPSF
   chisq = fltarr(N_elements(F160ID))
   FOR i=0, N_elements(F160ID) - 1 DO BEGIN
      id = F160ID[i]
-     a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])])
+     a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])], /removeResidual)
      fluxA[i] = a[0]
      fluxB[i] = a[1]
      sky[i] = a[2]
@@ -511,6 +518,7 @@ PRO tinytimPSF
   F160Info = add_tag(F160Info, 'Primary_y', Primary_y)
   F160Info = add_tag(F160Info, 'Secondary_x', Secondary_x)
   F160Info = add_tag(F160Info, 'Secondary_y', Secondary_y)
+  F160Info = add_tag(F160Info, 'Chisq', chisq)
 
   save, F160Info, file = 'TinyTimF160Result.sav'
   csvFN = dateString() + 'TinyTimF160Result.csv'

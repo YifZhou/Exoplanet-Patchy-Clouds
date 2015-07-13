@@ -8,11 +8,12 @@ import pickle
 Use Tinytim to generate a PSFs
 """
 
+
 def exposureFocus(MJD0):
     """
     the spline function is saved in a pickle file
     """
-    focus0 = -0.24 # constant focus offset for wfc3
+    focus0 = -0.24  # constant focus offset for wfc3
     #MJD, focus = np.loadtxt('focus.dat', usecols = (0, 5), unpack = True)
     #spline = splineFunc(MJD, focus)
     spline = pickle.load(open('focus_splineFunc.pkl', 'rb'))
@@ -37,4 +38,5 @@ if __name__ == '__main__':
     yc = yc + 380
     if not os.path.exists(aimDIR):
         os.mkdir(aimDIR)
-    psfDIR = pyTinyTim(xc, yc, fileName, jitx, jity, dis, outputDIR = aimDIR, outputRoot = outfn)
+    psfDIR = pyTinyTim(
+        xc, yc, fileName, jitx, jity, dis, outputDIR=aimDIR, outputRoot=outfn)

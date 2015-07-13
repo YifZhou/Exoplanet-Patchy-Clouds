@@ -6,42 +6,42 @@ Database file #1: msv1Notes.bib
 Database file #2: ref.bib.bib
 You've used 6 entries,
             2947 wiz_defined-function locations,
-            689 strings with 5564 characters,
-and the built_in function-call counts, 2564 in all, are:
-= -- 218
-> -- 164
-< -- 2
-+ -- 60
-- -- 54
-* -- 206
-:= -- 513
+            690 strings with 5689 characters,
+and the built_in function-call counts, 2952 in all, are:
+= -- 241
+> -- 222
+< -- 1
++ -- 81
+- -- 75
+* -- 260
+:= -- 579
 add.period$ -- 6
 call.type$ -- 6
-change.case$ -- 38
+change.case$ -- 46
 chr.to.int$ -- 6
 cite$ -- 6
-duplicate$ -- 109
-empty$ -- 155
-format.name$ -- 68
-if$ -- 490
+duplicate$ -- 112
+empty$ -- 161
+format.name$ -- 91
+if$ -- 560
 int.to.chr$ -- 1
 int.to.str$ -- 1
 missing$ -- 6
 newline$ -- 22
 num.names$ -- 24
-pop$ -- 28
+pop$ -- 39
 preamble$ -- 1
-purify$ -- 38
+purify$ -- 46
 quote$ -- 0
-skip$ -- 95
+skip$ -- 98
 stack$ -- 0
-substring$ -- 107
+substring$ -- 120
 swap$ -- 0
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 54
 warning$ -- 0
-while$ -- 23
+while$ -- 24
 width$ -- 0
 write$ -- 63

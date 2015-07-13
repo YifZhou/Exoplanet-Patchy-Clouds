@@ -1,0 +1,184 @@
+\documentclass[apj]{emulateapj}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{natbib}
+\bibliographystyle{apj}
+\usepackage[breaklinks,colorlinks,citecolor=blue,linkcolor=magenta]{hyperref} 
+\shorttitle{Short Title}
+\shortauthors{Zhou et al.}
+
+%%% new command %%%
+\newcommand{\ima}{\texttt{ima} files }
+\newcommand{\flt}{\texttt{flt} files }
+\newcommand{\eps}{$\mathrm{e}^{-}/\mathrm{s}$}
+\begin{document}
+\title{Variability of Planetary Mass Companion 2M1207 B}
+\author{Yifan Zhou, Daniel Apai, ...}
+\affil{University of Arizona}
+
+\begin{abstract}
+...
+\end{abstract}
+
+\keywords{kw1, kw2, ...}
+\maketitle
+%
+\section{Introcduction}
+
+\section{Observation}
+We carried out high contrast direct imaging observation of  2M1207
+system on UT 2014 April 11 using HST.
+(\textit{HST} Proposal GO-13418, PI: D. Apai). The data were acquired
+with the Wide Field Camera 3 (WFC3, citation needed) in filter F125W
+and F160W using the $256\times256$ sub-array mode. We observed
+2M1207 system in continuous 6 HST orbits and obtained a data-set that
+have a temporal resolution of $\sim1.5$ minutes and baseline of $\sim
+8$ hours.
+
+
+The observation was initially designed to apply standard roll
+subtraction to remove the primary star. The telescope roll angles for
+data taken in orbit 1, 3, 5 and those taken in orbit 2, 4, 6 have a
+difference of $25^{\circ}$, thus the companion would appear at
+different position relative to the primary with different roll angle
+and the primary in the two data set can be subtracted from each other.
+In each orbit we will take a sequence of 13 SPARS25 exposures with
+NSAMP=10, alternating between F160W and F125W filters. To improve PSF
+sampling and reduce the influence of bad pixels, we applied standard 4
+point dithering. In each orbit, exposures were taken with dithering
+position 1 -- 4 sequently. To sum, we obtained 70 multi-acuum images
+for filter F125W and 64 images for filter F160W with exposure time of
+88.4 seconds for both two filters.
+
+
+\section{Data Reduction}
+
+Through the whole analysis, we used the \flt that were
+produced by WFC3's \texttt{calwfc3} pipeline. The \flt were reduced
+with calibrations including dark current correction, non-linearity
+correction, and flat field correction. A further step of up-the-ramp
+fit was applied to combine all non-destructive read and remove cosmic
+rays. Although \citeauthor{Mandell2013} stated that WFC3 IR time series
+extract from {\flt} have a rms 1.3 times larger than that obtained
+from {\ima}, \flt keeps all pixels of the image of 2M1207 A
+unsaturated while in most of non-destructive reads the cores of 2M1207
+A are saturated, so that with \flt the flux of 2M1207 B can be more
+precisely separated from that of 2M1207A. 
+
+The small angular separation of 2M1207 A and B (as shown in Figure
+\ref{fig:1}) makes precise primary star subtraction and photometry
+very difficult. On the under-sampled WFC3 IR detector (plate scale
+$\sim 0.13$ arcsec per pixel), the primary and the secondary only
+separate by $\sim 6$ pixels, which is about 5 times of the FWHM of the
+PSF. In addition, under-sampling of the PSF causes significant
+artifacts when shifting the PSF to register images no matter what
+interpolation method is used.
+
+\begin{figure}[h]
+  \centering
+  \plotone{original}
+  \plotone{subtracted}
+  \caption{WFC3 F160W images of 2M1207A system. Upper: original image,
+    lower: residual model and primary PSF subtracted. The image of
+    2M1207 B is overshadowed by the halo of the image of 2M1207A and
+    can be hardly seen from the original image. With a hybrid PSF
+    (residual + Tiny Tim PSF) subtraction, the image of 2M1207 B is
+    clearly presented.}
+  \label{fig:1}
+\end{figure}
+\subsection{Tiny Tim PSF Photometry}
+To over come the difficulty, we make use of the Tiny Tim PSF simulator
+to pursue high precision photometry under this extreme
+circumstance. Tiny Tim can produce model PSF based on the filter,
+spectrum of target, focus status, and the telescope jitter. One
+significant advantage of Tiny Tim PSF over empirical PSF is that Tiny Tim can
+produce over-sampled PSF, which makes the shifting and interpolation
+rather straight forward. However, Tiny Tim model PSFs have systematic
+errors. \citeauthor{Biretta2014} demonstrated that the diffraction
+spikes and coma are not well simulated with Tiny Tim for WFC3 IR images.
+
+We start the reduction by making bad pixel masks for every
+images. Pixels with data quality flags 'bad detector pixels' (DQ = 4),
+'unstable response' (DQ = 32), and 'bad or uncertain flat value' (DQ =
+512) were masked out and excluded from further analysis as suggested
+by previous transit exoplanet
+spectroscopic observations\citep[e.g.][]{Berta2012, Kreidberg2014}.
+
+We then produced a list of 10x over-sampled PSFs based on the
+positions and spectrum \citep{Bonnefoy2014} of 2M1207A with different telescope jitter
+ranging from 0 to 50 mini-arcsec per second in both $x$ and $y$
+direction. The focus parameter was calculated using the model listed
+on the STScI
+website\footnote{\url{http://www.stsci.edu/hst/observatory/focus/FocusModel}}. The
+PSFs were registered with the original image by searching on a dynamic
+grid and minimizing the residual of a region centered on 2M1207 A with
+the image of 2M1207 B mostly excluded. The best fitted primary star
+position and telescope jitter were obtained in this step. Then, we
+generated the PSF for 2M1207 B based on its position on detector,
+spectrum \citep{Patience2010}, and the telescope jitter that had been obtained above. In
+the final step, we combined the two PSFs together. We fixed the
+position of the primary as it had been fitted in the first step and
+fitted for the amplitude of the two PSFs and the precise position of
+the secondary. Since the total fluxes of the model PSFs are normalized
+to unity as default, the fluxes of 2M1207 A and B are solely
+represented by the amplitude of the two PSFs coordinately.
+
+Because of the systematic errors of the Tiny Tim PSF, the quality of the
+fitting is not optimistic. The reduced $\chi^{2}$ values are around
+$\sim10$. However, we found that the residual patterns were very
+stable among the image that have the same dithering position and
+telescope rolling. Therefore, we median combined the residual images
+that have the same dithering position and telescope rolling angle to
+construct 8 residual models (4 dithering position $\times$ 2 telescope
+rolling angle) for each filter. We pre-subtract the corresponding
+residual from the original image and repeated the procedure that
+listed above. Using this extra-step, the systematic error of Tiny Tim
+greatly decreased to around unity.
+
+The fluxes for both 2M1207 A and B are clearly correlated with the
+dithering position, which is primarily due to imperfection of the flat
+field. To reduce the correlation, we normalize each group of exposures
+that have the same dithering position and roll angle indivadually --
+we took the median of the fluxes that were measured from these
+exposures as normalization factors and devided them from every flux
+measurement. 
+\subsection{Uncertainty Analysis}
+\begin{figure*}[h]
+  \centering
+  \plottwo{F125_corr}{F160_corr}
+  \caption{Fluxes of the primary and the secondary is correlated with
+    the ditheirng positions. Different symbols represent different
+    orbits.}
+  \label{fig:fig2}
+\end{figure*}
+\section{Result}
+\begin{figure}[h]
+  \centering
+  \plotone{sineCurveFit}
+  \caption{Normalized light curves for F125W and F160W. Red squares
+    are the phtometric measurment for 2M1207 B, and gray dots are for
+    2M1207 A.}
+  \label{fig:3}
+\end{figure}
+\section{Discussion }
+\begin{itemize}
+\item a data-reduction pipeline is developed to obtain high precision
+  photometry measurement from high contrast WFC3 IR data. For a
+  contrast of $\sim 7$ magnitudes at an angular separation of
+  $\sim0.7''$, we obtained photometry measurement for 2M1207 B at
+  precision of about 2-3\%. 
+\item time variability for 2M1207 B was discovered, the light curve of
+  2M1207 B for both two colors can be fitted with a T=10.7 hr
+  sinusoidal curve.
+\item the atmosphere and cloud structure of 2M1207 B. How does it
+  compare to the brown dwarf.
+\end{itemize}
+\bibliography{ref.bib}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

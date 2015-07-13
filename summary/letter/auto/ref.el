@@ -11,5 +11,7 @@
     "Mandell2013"
     "Deming2013"
     "Triaud2015"
-    "Biretta2014")))
+    "biretta2014"
+    "Patience2010"
+    "Bonnefoy2014")))
 

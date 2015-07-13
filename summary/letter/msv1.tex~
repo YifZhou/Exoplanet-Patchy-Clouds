@@ -143,6 +143,12 @@ interpolation rather straight forward. However, Tiny Tim has systematic
 errors in producing model PSFs. E.G. the diffraction spikes and coma
 are not well simulated in Tiny Tim PSFs \citep{Biretta2014}.
 
+We first produced a list of 10x oversampled PSFs based on the positions and spectrum
+of 2M1207A with different telescope jitter ranging from 0 to 50
+mini-arcsec per second in both $x$ and $y$ direction. The PSFs were
+aligned with the original image by minimizing the residual of a region
+centered on 2M1207 A with the image of 2M1207 B mostly excluded. 
+
 
 \section{Result}
 \section{Discussion}

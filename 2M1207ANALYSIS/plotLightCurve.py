@@ -45,9 +45,10 @@ def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
     The flux for secondary is seemed to be anti-correlated with
     the flux for primary, decide if do the correction
     """
-    fig = plt.figure(figsize=(12, 6))
-    ax_F125 = fig.add_subplot(121)
-    ax_F160 = fig.add_subplot(122, sharey=ax_F125)
+    fig1 = plt.figure()
+    fig2 = plt.figure()
+    ax_F125 = fig1.add_subplot(111)
+    ax_F160 = fig2.add_subplot(111)
     fluxA1250, fluxB1250 = normFlux(DataFrame125, normDither=True)
     fluxA1600, fluxB1600 = normFlux(DataFrame160, normDither=True)
     ax_F125.plot(DataFrame125.index, fluxA1250,
@@ -68,15 +69,17 @@ def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
     print('Standard Deviation for primary:')
     print('F125W {0:.4f}'.format(fluxA1250.std()))
     print('F160W {0:.4f}'.format(fluxA1600.std()))
-    for ax in fig.get_axes():
+    for ax in [ax_F125, ax_F160]:
         ax.set_xlabel('Time')
         ax.set_ylabel('Normalized flux')
         ax.legend(loc='best')
         xlim = ax.get_xlim()
         dx = (xlim[1] - xlim[0]) * 0.1
         ax.set_xlim([xlim[0] - dx, xlim[1] + dx])
-    fig.autofmt_xdate()
-    return fig
+
+    for fig in [fig1, fig2]:
+        fig.autofmt_xdate()
+    return fig1, fig2
 
 
 def correlation(df, ifPlot=True):
@@ -109,7 +112,7 @@ if __name__ == '__main__':
     df160 = pd.read_csv(
         fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
-    fig1 = plotLightCurve(df125, df160)
+    fig125, fig160 = plotLightCurve(df125, df160)
     fig2 = correlation(df125)
     fig3 = correlation(df160)
     plt.show()

@@ -431,6 +431,8 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   print, amps
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+  ;; writefits, './fitsResult/example.fits', im
+  ;; writefits, './fitsResult/example.fits', PSF1*amps[0] + amps[2], /append
   ;; Set_Plot, 'Z', /COPY
   ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
@@ -522,5 +524,15 @@ PRO tinytimPSF
 
   save, F160Info, file = 'TinyTimF160Result.sav'
   csvFN = dateString() + 'TinyTimF160Result.csv'
-  spawn, 'python sav2csv.py TinyTimF160Result.sav ' + csvFN ;; convert .sav file to csv file for easier using.
+  spawn, 'python sav2csv.py TinyTimF160Result.sav ' + csvFN ;;
+  convert .sav file to csv file for easier using.
+  ;; F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
+  ;; F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  ;; restore, 'F160W_residual.sav'
+  ;; xy = [[[135,161], [145,161], [135,173], [145,173]],$
+  ;;     [[142, 159],[152,159], [142, 171], [152, 171]]]
+  ;; F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
+  ;; F160ID = where(F160Info.filter EQ 'F160W')
+  ;; id = 12
+  ;; a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])], /removeResidual)
 END

@@ -8,6 +8,11 @@ Berta, Z.~K., Charbonneau, D., D\'{e}sert, J.-M., {et~al.} 2012, ApJ, 747, 35
 \bibitem[{Biretta(2014)}]{Biretta2014}
 Biretta, J. 2014, Space Telescope WFC Instrument Science Report, 1, 10
 
+\bibitem[{Bonnefoy {et~al.}(2014)Bonnefoy, Chauvin, Lagrange, Rojo, Allard,
+  Pinte, Dumas, \& Homeier}]{Bonnefoy2014}
+Bonnefoy, M., Chauvin, G., Lagrange, A.-M., Rojo, P., Allard, F., Pinte, C.,
+  Dumas, C., \& Homeier, D. 2014, A\&A, 562, A127
+
 \bibitem[{Kreidberg {et~al.}(2014)Kreidberg, Bean, D\'{e}sert,
   {et~al.}}]{Kreidberg2014}
 Kreidberg, L., Bean, J.~L., D\'{e}sert, J.-M., {et~al.} 2014, Nature, 505, 69
@@ -16,10 +21,8 @@ Kreidberg, L., Bean, J.~L., D\'{e}sert, J.-M., {et~al.} 2014, Nature, 505, 69
   {et~al.}}]{Mandell2013}
 Mandell, A.~M., Haynes, K., Sinukoff, E., {et~al.} 2013, ApJ, 779, 128
 
-\bibitem[{Markwardt(2009)}]{Markwardt2009}
-Markwardt, Â. 2009, Astron. Data Anal. Softw. Syst. XVIII ASP Conf. Ser., 411
-
-\bibitem[{Swain {et~al.}(2013)Swain, Deroo, Tinetti, {et~al.}}]{Swain2013}
-Swain, M., Deroo, P., Tinetti, G., {et~al.} 2013, Icarus, 225, 432
+\bibitem[{Patience {et~al.}(2010)Patience, King, {De Rosa}, \&
+  Marois}]{Patience2010}
+Patience, J., King, R.~R., {De Rosa}, R.~J., \& Marois, C. 2010, A\&A, 517, A76
 
 \end{thebibliography}

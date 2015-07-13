@@ -7,6 +7,7 @@ from scipy.signal import lombscargle  # lomb scargle method
 from plotLightCurve import normFlux
 #from lmfit import Model
 from scipy.optimize import leastsq
+plt.style.use('paper')
 """measure the period of light curve
 """
 
@@ -51,10 +52,11 @@ if __name__ == '__main__':
     plt.close('all')
     fig = plt.figure()
     ax125 = fig.add_subplot(211)
-    points125, = ax125.plot(df125['Time'], f125B0, 'o')
+    points125, = ax125.plot(df125['Time'], f125B0, 's', ms=6)
+    ax125.plot(df125['Time'], f125A0, 'o', color='0.8', zorder=0)
     t = np.linspace(df125['Time'].min(), df125['Time'].max(), 500)
     modelFlux = 0.0139 * np.sin(2 * np.pi / 10.9765 * t + 0.5874) + 1.0001
-    line125, = ax125.plot(t, modelFlux)
+    line125, = ax125.plot(t, modelFlux, linewidth=1.8)
     ax125.set_title('F125W')
     """For F160B I used two type fit,
     1. free parameter fit
@@ -62,17 +64,19 @@ if __name__ == '__main__':
     2. fixed parameter fit
     amp=0.0080    T=10.9765  dphi=0.2525    baseline=0.9997
     """
-    ax160 = fig.add_subplot(212)
-    points160, = ax160.plot(df160['Time'], f160B0, 'o')
+    ax160 = fig.add_subplot(212, sharex=ax125)
+    points160, = ax160.plot(df160['Time'], f160B0, 's', ms=6)
+    ax160.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
     t = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
     modelFlux1 = 0.0080 * np.sin(2 * np.pi / 10.9765 * t + 0.2525) + 0.9997
     modelFlux2 = 0.0088 * np.sin(2 * np.pi / 9.2692 * t - 0.1180) + 1.0002
-    line160_1, = ax160.plot(t, modelFlux1, label='P=10.9')
-    line160_2, = ax160.plot(t, modelFlux2, label='P=9.3')
+    line160_1, = ax160.plot(t, modelFlux1, label='P=10.9', linewidth=1.8)
+    line160_2, = ax160.plot(t, modelFlux2, label='P=9.3', linewidth=1.8)
     ax160.set_title('F160W')
     for ax in [ax125, ax160]:
         ax.set_xlabel('Time (h)')
         ax.set_ylabel('Nomalized Flux')
         ax.legend()
     fig.tight_layout()
+    # plt.show()
     plt.savefig('sineCurveFit.pdf')
