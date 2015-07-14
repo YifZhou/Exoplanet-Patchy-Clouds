@@ -343,7 +343,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
   return, amps
 END
 
-function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=removeResidual
+function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=removeResidual, AFEM=AFEM
   ;;; use tinytim PSF to measure the photometry
   ;;; input parameter:
   ;;; fn: filename of the input flt file\
@@ -360,8 +360,15 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   imhd= mrdfits(imagePath +fn, 0, hd, /silent)
   MJD = fxpar(hd, 'EXPSTART')
   im = mrdfits(imagePath + fn, 1,/silent)
-  im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-  IF removeResidual THEN im = im - residual[*, *, angle*4 + dither] ;; remove the difference of residual and PSF
+  IF n_elements(AFEM) GT 0 THEN BEGIN
+     im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+     AFEM_eff = AFEM[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+     im = im*AFEM_eff
+     IF removeResidual THEN im = im - residual[*, *, angle*4 + dither]*AFEM_eff ;; remove the difference of residual and PSF
+  ENDIF ELSE BEGIN
+     im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+     IF removeResidual THEN im = im - residual[*, *, angle*4 + dither] ;; remove the difference of residual and PSF
+  ENDELSE 
   err = mrdfits(imagePath + fn, 2,/silent)
   err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   dq = mrdfits(imagePath + fn, 3,/silent)
@@ -441,7 +448,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   return, [amps, xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
 END
 
-PRO tinytimPSF
+PRO tinytimPSF, addAFEM=addAFEM
   forward_FUNCTION myReadCSV
   COMMON diff, residual
   F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
@@ -461,9 +468,11 @@ PRO tinytimPSF
   Secondary_y = fltarr(N_elements(F125ID)) 
   sky = fltarr(N_elements(F125ID))
   chisq = fltarr(N_elements(F125ID))
+  IF keyword_set(addAFEM) THEN AFEM0 = randomn(seed, 256, 256)*0.01 $ ;; make an AFEM
+  ELSE AFEM0 = [] ;; if keyword is not set, set it as void
   FOR i=0, N_elements(F125ID) - 1 DO BEGIN
      id = F125ID[i]
-     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual)
+     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
      fluxA[i] = a[0]
      fluxB[i] = a[1]
      sky[i] = a[2]
@@ -524,8 +533,7 @@ PRO tinytimPSF
 
   save, F160Info, file = 'TinyTimF160Result.sav'
   csvFN = dateString() + 'TinyTimF160Result.csv'
-  spawn, 'python sav2csv.py TinyTimF160Result.sav ' + csvFN ;;
-  convert .sav file to csv file for easier using.
+  spawn, 'python sav2csv.py TinyTimF160Result.sav ' + csvFN ;; convert .sav file to csv file for easier using.
   ;; F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
   ;; F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
   ;; restore, 'F160W_residual.sav'
