@@ -1,0 +1,35 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+from plotLightCurve import NormFlux
+import matplotlib.pyplot as plt
+
+"""split the sample by dithering position
+"""
+if __name__ == '__main__':
+    fn125 = '2015_Jun_24TinyTimF125Result.csv'
+    fn160 = '2015_Jun_24TinyTimF160Result.csv'
+    ##
+    df125 = pd.read_csv(
+        fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125 = df125.sort_index()
+    # time in ns
+    df125['Time'] = np.float32(
+        df125.index.values - df125.index.values[0]) / (60 * 60 * 1e9)
+    df160 = pd.read_csv(
+        fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df160 = df125.sort_index()
+    # time in ns
+    df160['Time'] = np.float32(
+        df125.index.values - df125.index.values[0]) / (60 * 60 * 1e9)
+
+    df125_1 = df125[df125['DITHER'] < 2]
+    df125_2 = df125[df125['DITHER'] > 2]
+    f125A0_1, f125B0_1 = normFlux(df125_1, normDither=True)
+    f125A0_2, f125B0_2 = normFlux(df125_2, normDither=True)
+    fig = plt.figure()
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax1.plot(df125_1['Time'], f125B0_1, 's')
+    ax2.plot(df125_2['Time'], f125B0_1, 's')

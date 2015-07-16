@@ -71,7 +71,7 @@ if __name__ == '__main__':
     savFile = readsav('F125W_KLIP_PSF_library.sav')
     cube0 = savFile['angle0cube']
     cube1 = savFile['angle1cube']
-    id_eff = getEffIndex(cube0[0].shape, [17, 9], [[6.5, 10]])
+    id_eff = getEffIndex(cube0[0].shape, [17, 9], [[4, 10]])
     Z = KLtrans(cube0, id_eff)
-    im = KLIP(cube1[0], Z, id_eff, 20)
-    fits.writeto('test.fits', im - cube1[0], clobber=True)
+    im = KLIP(cube1[0], Z, id_eff, 12)
+    fits.writeto('test.fits', cube1[0] - im, clobber=True)

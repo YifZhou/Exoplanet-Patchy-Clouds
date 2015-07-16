@@ -224,6 +224,22 @@ FUNCTION fit2PSFs, im, PSF1, PSF2, mask, weight = weight
   return, [amp[0], amp[1], amp[2], res]
 END
 
+FUNCTION fit2PSFs_res, im, PSF1, PSF2, residual, mask, weight = weight
+  ;;; fit two PSf to one image to calculate the flux of secondary
+  ;;; PSF1: PSF of the primary
+  ;;; PSF2: PSF of the secondary
+  ;;; return the amplitude of two PSFs
+  IF N_elements(weight) EQ 0 THEN weight = im - im + 1 ;;; default value for the weight array is a ones array
+  A = [[total(mask*(PSF1^2*weight)), total(mask*(PSF1*PSF2*weight)), total(mask*(PSF1*residual*weight)), total(mask*(PSF1*weight))],$
+       [total(mask*(PSF1*PSF2*weight)), total(mask*(PSF2^2*weight)), total(mask*(PSF2*residual*weight)),total(mask*(PSF2*weight))],$
+       [total(mask*(PSF1*residual*weight)), total(mask*(PSF2*residual*weight)), total(mask*(residual^2*weight)),total(mask*(residual*weight))],$
+       [total(mask*(PSF1*weight)), total(mask*(PSF2*weight)), total(mask*(residual*weight)),total(mask*weight)]]
+  b = [[total(mask*(PSF1*im*weight))], [total(mask*(PSF2*im*weight))], [total(mask*(residual*im*weight))], [total(mask*(im*weight))]]
+  amp = LA_invert(A) ## b
+  res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- residual * amp[2] - amp[3])^2))/total(mask)
+  return, [amp[0], amp[1], amp[3], res, amp[2]] ;; put the amplitude for residual at th end
+END
+
 FUNCTION register2PSFs, im, PSF1, PSF02, mask, gc, weight = weight
   ;;; PSF1 is fixed, using detector sample rate, PSF2 uses 10x sample rate
   dxy0 = [13, 13] - gc
@@ -364,11 +380,12 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
      im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
      AFEM_eff = AFEM[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
      im = im*AFEM_eff
-     IF removeResidual THEN im = im - residual[*, *, angle*4 + dither]*AFEM_eff ;; remove the difference of residual and PSF
+     residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
   ENDIF ELSE BEGIN
      im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-     IF removeResidual THEN im = im - residual[*, *, angle*4 + dither] ;; remove the difference of residual and PSF
-  ENDELSE 
+     residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
+  ENDELSE
+  IF removeResidual THEN im = im - residual0 ;; remove the difference of residual and PSF
   err = mrdfits(imagePath + fn, 2,/silent)
   err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   dq = mrdfits(imagePath + fn, 3,/silent)
@@ -432,7 +449,8 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
   comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
   PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)
-  amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
+  ;;amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
+  amps = fit2PSFs_res(im + residual0, PSF1, PSF2, residual0, mask4, weight=1/err^2)
 
   ;;print,'opimized rms residual: ', amps[3]
   print, amps
@@ -445,7 +463,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
   ;; p.Close
   
-  return, [amps, xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
+  return, [amps[0:3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
 END
 
 PRO tinytimPSF, addAFEM=addAFEM

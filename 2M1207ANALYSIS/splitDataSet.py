@@ -1,0 +1,55 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+from plotLightCurve import normFlux
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+"""split the sample by dithering position
+"""
+if __name__ == '__main__':
+    fn125 = '2015_Jun_24TinyTimF125Result.csv'
+    fn160 = '2015_Jun_24TinyTimF160Result.csv'
+    ##
+    df125 = pd.read_csv(
+        fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125 = df125.sort_index()
+    # time in ns
+    df125['Time'] = np.float32(
+        df125.index.values - df125.index.values[0]) / (60 * 60 * 1e9)
+    df125 = df125[df125['ORBIT'] > 1]  # remove the data from the first orbit
+    df160 = pd.read_csv(
+        fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df160 = df160.sort_index()
+    # time in ns
+    df160['Time'] = np.float32(
+        df160.index.values - df160.index.values[0]) / (60 * 60 * 1e9)
+    df160 = df160[df160['ORBIT'] > 1]  # remove the data from the first orbit
+
+    df125_1 = df125[(df125['DITHER'] == 1) | (df125['DITHER'] == 3)]
+    df125_2 = df125[(df125['DITHER'] == 0) | (df125['DITHER'] == 2)]
+    f125A0, f125B0 = normFlux(df125, normDither=True)
+    f125A0_1, f125B0_1 = normFlux(df125_1, normDither=True)
+    f125A0_2, f125B0_2 = normFlux(df125_2, normDither=True)
+
+    np.savetxt('F125_data1.dat',
+               np.c_[df125_1['Time'].values, f125A0_1, f125B0_1])
+    np.savetxt('F125_data2.dat',
+               np.c_[df125_2['Time'].values, f125A0_2, f125B0_2])
+    np.savetxt('F125_data_orbit_gt_1.dat',
+               np.c_[df125['Time'].values, f125A0, f125B0])
+
+    df160_1 = df160[(df160['DITHER'] == 1) | (df160['DITHER'] == 3)]
+    df160_2 = df160[(df160['DITHER'] == 0) | (df160['DITHER'] == 2)]
+    f160A0, f160B0 = normFlux(df160, normDither=True)
+    f160A0_1, f160B0_1 = normFlux(df160_1, normDither=True)
+    f160A0_2, f160B0_2 = normFlux(df160_2, normDither=True)
+
+    np.savetxt('F160_data1.dat',
+               np.c_[df160_1['Time'].values, f160A0_1, f160B0_1])
+    np.savetxt('F160_data2.dat',
+               np.c_[df160_2['Time'].values, f160A0_2, f160B0_2])
+    np.savetxt('F160_data_orbit_gt_1.dat',
+               np.c_[df160['Time'].values, f160A0, f160B0])
