@@ -383,7 +383,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
      residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
   ENDIF ELSE BEGIN
      im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-     residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
+     residual0 = residual[*, *, angle*4 + dither]
   ENDELSE
   IF removeResidual THEN im = im - residual0 ;; remove the difference of residual and PSF
   err = mrdfits(imagePath + fn, 2,/silent)
