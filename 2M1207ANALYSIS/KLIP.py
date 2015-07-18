@@ -21,10 +21,10 @@ def KLtrans(imageCube, effIndex):
     # establish R array
     # for _eff, only non-masked value counts
     # on the other hand, for R, every value conts
-    R_eff = np.zeros((nImages, len(effIndex[0])))
+    R_eff = np.zeros((nImages, len(effIndex)))
     R = np.zeros((nImages, imageCube[0].size))
     for i in range(nImages):
-        R_eff[i, :] = imageCube[i][effIndex].flatten()
+        R_eff[i, :] = imageCube[i].flatten()[effIndex]
         R[i, :] = imageCube[i].flatten()
     eigens, vectors = np.linalg.eig(np.dot(R_eff, R_eff.T))
     # sort by eigen values, get the index from large to small
@@ -43,8 +43,8 @@ def KLIP(targetImage, KLBases, effIndex, klip):
     effIndex -- effective index to discrbie the search area
     klip -- number of principle component to use
     """
-    target_eff = targetImage[effIndex].flatten()
-    KLBases_eff = KLBases[0:klip, effIndex[0] * 27 + effIndex[1]]
+    target_eff = targetImage.flatten()[effIndex]
+    KLBases_eff = KLBases[0:klip, effIndex]
     # project target image on KL_bases
     coeff = np.dot(KLBases_eff, target_eff)
     image = np.zeros(targetImage.shape)
@@ -53,25 +53,52 @@ def KLIP(targetImage, KLBases, effIndex, klip):
     return image
 
 
-def getEffIndex(imShape, center, radiusList):
-    """calculate search region Index
+def getEffCoord(imShape, annulusList):
+    """return index for search region
+    exclude region listed in annulusList
+    annulusList is an n*4 array, including n annulli
+    each annulli centered at annulusList[i][0], annuluslist[i][1]
+    inner radius: annlusList[i][2], out radius: annlusList[i][3]
     """
     xx, yy = np.meshgrid(np.arange(imShape[0]), np.arange(imShape[1]))
-    dist = np.sqrt((xx - center[0])**2 + (yy - center[1])**2)
-    dim1_eff = []
-    dim2_eff = []  # use dimension 1 and 2 instead of x and y
-    for rPair in radiusList:
-        xi, yi = np.where((dist > rPair[0]) & (dist < rPair[1]))
-        dim1_eff.append(xi)
-        dim2_eff.append(yi)
-    return np.concatenate(dim1_eff), np.concatenate(dim2_eff)
+    mask = np.ones(imShape)
+    for annulus in annulusList:
+        dist = np.sqrt((xx - annulus[0])**2 + (yy - annulus[1])**2)
+        mask[np.where((dist >= annulus[2]) & (dist <= annulus[3]))] = 0
+    return np.where(mask == 1)
 
 
 if __name__ == '__main__':
     savFile = readsav('F125W_KLIP_PSF_library.sav')
     cube0 = savFile['angle0cube']
     cube1 = savFile['angle1cube']
-    id_eff = getEffIndex(cube0[0].shape, [17, 9], [[4, 10]])
+    # get effective coordinate
+    coord_eff = getEffCoord(cube0[0].shape, [[17, 9, 0, 4], [17, 9, 10, 100],
+                                             [13, 13, 0, 3]])
+    id_eff = coord_eff[0] * cube0[0].shape[1] + coord_eff[1]
     Z = KLtrans(cube0, id_eff)
-    im = KLIP(cube1[0], Z, id_eff, 12)
-    fits.writeto('test.fits', cube1[0] - im, clobber=True)
+    residual = np.zeros((cube1.shape[0], cube0.shape[0] - 3))
+    maxValue = np.zeros((cube1.shape[0], cube0.shape[0] - 3))
+    klipList = range(3, cube0.shape[0])
+    for i in range(cube1.shape[0]):
+        for j, klip in enumerate(klipList):
+            im = KLIP(cube1[i], Z, id_eff, klip)
+            resIm = cube1[i] - im
+            residual[i, j] = np.sqrt((resIm[coord_eff]**2).sum())
+            maxValue[i, j] = resIm[8, 16]
+    residual0 = np.mean(residual, axis=0)
+    maxValue0 = np.mean(maxValue, axis=0)
+    plt.close('all')
+    fig = plt.figure()
+    ax_res = fig.add_subplot(111)
+    ax_max = ax_res.twinx()
+    l_res, = ax_res.plot(klipList, residual0, label='residual')
+    ax_res.set_xlabel('klip')
+    ax_res.set_ylabel('Residual')
+    l_max, = ax_max.plot(klipList, maxValue0 / maxValue0.max(),
+                         label='max value', color='b')
+    ax_max.set_ylabel('Max value')
+    ls = [l_res, l_max]
+    labels = [l.get_label() for l in ls]
+    ax_res.legend(ls, labels)
+    plt.show()
