@@ -1,0 +1,38 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+from plotLightCurve import normFlux
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+if __name__ == '__main__':
+    fn125_1 = '2015_Jun_24TinyTimF125Result.csv'
+    fn125_2 = '2015_Jul_14TinyTimF125Result.csv'
+    fn125_3 = '2015_Jul_16TinyTimF125Result.csv'
+
+    df125_1 = pd.read_csv(
+        fn125_1, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125_1 = df125_1.sort_index()
+    # time in ns
+    df125_1['Time'] = np.float32(
+        df125_1.index.values - df125_1.index.values[0]) / (60 * 60 * 1e9)
+    fA125_1, fB125_1 = normFlux(df125_1, normDither=True)
+
+    df125_2 = pd.read_csv(
+        fn125_2, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125_2 = df125_2.sort_index()
+    # time in ns
+    df125_2['Time'] = np.float32(
+        df125_2.index.values - df125_2.index.values[0]) / (60 * 60 * 1e9)
+    fA125_2, fB125_2 = normFlux(df125_2, normDither=True)
+
+    df125_3 = pd.read_csv(
+        fn125_3, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125_3 = df125_3.sort_index()
+    # time in ns
+    df125_3['Time'] = np.float32(
+        df125_3.index.values - df125_3.index.values[0]) / (60 * 60 * 1e9)
+    fA125_3, fB125_3 = normFlux(df125_3, normDither=True)

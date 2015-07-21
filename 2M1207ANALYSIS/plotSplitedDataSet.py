@@ -93,4 +93,5 @@ if __name__ == '__main__':
         ax.set_ylabel('normed flux')
     ax4.set_xlabel('Time (hr)')
     fig160.tight_layout()
-    plt.show()
+    fig125.savefig('F125W_SplitDataSet.pdf')
+    fig160.savefig('F160W_SplitDataSet.pdf')

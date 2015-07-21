@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.10.6)  13 JUL 2015 23:16
+This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.10.6)  19 JUL 2015 22:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**msv1.tex
-(./msv1.tex
+**letter_v1.tex
+(./letter_v1.tex
 LaTeX2e <2014/05/01>
 Babel <3.9l> and hyphenation patterns for 79 languages loaded.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/emulateapj/emulateapj.cls
@@ -400,8 +400,8 @@ Class revtex4-1 Info: cite was not loaded (OK!) on input line 16.
 Class revtex4-1 Info: mcite was not loaded (OK!) on input line 16.
 Class revtex4-1 Info: multicol was not loaded (OK!) on input line 16.
 
-(./msv1.aux)
-\openout1 = `msv1.aux'.
+(./letter_v1.aux)
+\openout1 = `letter_v1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
@@ -420,7 +420,8 @@ LaTeX Font Info:    ... okay on input line 16.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
 \AtBeginShipoutBox=\box48
- (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2014/04/23 v1.1a Standard LaTeX Color (DPC)
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/color.cfg
@@ -442,12 +443,12 @@ LaTeX Info: Redefining \ref on input line 16.
 LaTeX Info: Redefining \pageref on input line 16.
 LaTeX Info: Redefining \nameref on input line 16.
 
-(./msv1.out) (./msv1.out)
+(./letter_v1.out) (./letter_v1.out)
 \@outlinefile=\write4
-\openout4 = `msv1.out'.
+\openout4 = `letter_v1.out'.
 
 Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 16.
-\openout3 = `msv1Notes.bib'.
+\openout3 = `letter_v1Notes.bib'.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
@@ -494,20 +495,19 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 167.
- (./msv1.bbl)
-[2] [3]
+ (./letter_v1.bbl) [2] [3]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 179.
- (./msv1.aux)
+ (./letter_v1.aux)
 Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 179.
 Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 179.
  ) 
 Here is how much of TeX's memory you used:
  11349 strings out of 493724
- 154163 string characters out of 6145899
- 253883 words of memory out of 5000000
+ 154243 string characters out of 6145899
+ 253888 words of memory out of 5000000
  14582 multiletter control sequences out of 15000+600000
  11264 words of font info for 47 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 32i,7n,45p,451b,394s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,7n,45p,456b,394s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on msv1.pdf (3 pages).
+Output written on letter_v1.pdf (3 pages).
