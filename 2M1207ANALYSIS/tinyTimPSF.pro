@@ -444,8 +444,9 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
 
   ;;; fit two PSFs
   mask40 = fltarr(27, 27)
-  mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 3.5]]);;*mask40
+  ;;mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
+  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 2]]);;*mask40
+  
   ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
   comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
   PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)

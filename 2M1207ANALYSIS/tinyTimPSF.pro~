@@ -224,6 +224,22 @@ FUNCTION fit2PSFs, im, PSF1, PSF2, mask, weight = weight
   return, [amp[0], amp[1], amp[2], res]
 END
 
+FUNCTION fit2PSFs_res, im, PSF1, PSF2, residual, mask, weight = weight
+  ;;; fit two PSf to one image to calculate the flux of secondary
+  ;;; PSF1: PSF of the primary
+  ;;; PSF2: PSF of the secondary
+  ;;; return the amplitude of two PSFs
+  IF N_elements(weight) EQ 0 THEN weight = im - im + 1 ;;; default value for the weight array is a ones array
+  A = [[total(mask*(PSF1^2*weight)), total(mask*(PSF1*PSF2*weight)), total(mask*(PSF1*residual*weight)), total(mask*(PSF1*weight))],$
+       [total(mask*(PSF1*PSF2*weight)), total(mask*(PSF2^2*weight)), total(mask*(PSF2*residual*weight)),total(mask*(PSF2*weight))],$
+       [total(mask*(PSF1*residual*weight)), total(mask*(PSF2*residual*weight)), total(mask*(residual^2*weight)),total(mask*(residual*weight))],$
+       [total(mask*(PSF1*weight)), total(mask*(PSF2*weight)), total(mask*(residual*weight)),total(mask*weight)]]
+  b = [[total(mask*(PSF1*im*weight))], [total(mask*(PSF2*im*weight))], [total(mask*(residual*im*weight))], [total(mask*(im*weight))]]
+  amp = LA_invert(A) ## b
+  res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- residual * amp[2] - amp[3])^2))/total(mask)
+  return, [amp[0], amp[1], amp[3], res, amp[2]] ;; put the amplitude for residual at th end
+END
+
 FUNCTION register2PSFs, im, PSF1, PSF02, mask, gc, weight = weight
   ;;; PSF1 is fixed, using detector sample rate, PSF2 uses 10x sample rate
   dxy0 = [13, 13] - gc
@@ -343,7 +359,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
   return, amps
 END
 
-function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=removeResidual
+function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=removeResidual, AFEM=AFEM
   ;;; use tinytim PSF to measure the photometry
   ;;; input parameter:
   ;;; fn: filename of the input flt file\
@@ -360,8 +376,16 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   imhd= mrdfits(imagePath +fn, 0, hd, /silent)
   MJD = fxpar(hd, 'EXPSTART')
   im = mrdfits(imagePath + fn, 1,/silent)
-  im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-  IF removeResidual THEN im = im - residual[*, *, angle*4 + dither] ;; remove the difference of residual and PSF
+  IF n_elements(AFEM) GT 0 THEN BEGIN
+     im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+     AFEM_eff = AFEM[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+     im = im*AFEM_eff
+     residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
+  ENDIF ELSE BEGIN
+     im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+     residual0 = residual[*, *, angle*4 + dither]
+  ENDELSE
+  IF removeResidual THEN im = im - residual0 ;; remove the difference of residual and PSF
   err = mrdfits(imagePath + fn, 2,/silent)
   err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   dq = mrdfits(imagePath + fn, 3,/silent)
@@ -425,21 +449,24 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
   comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
   PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)
-  amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
+  ;;amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
+  amps = fit2PSFs_res(im + residual0, PSF1, PSF2, residual0, mask4, weight=1/err^2)
 
   ;;print,'opimized rms residual: ', amps[3]
   print, amps
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+  ;; writefits, './fitsResult/example.fits', im
+  ;; writefits, './fitsResult/example.fits', PSF1*amps[0] + amps[2], /append
   ;; Set_Plot, 'Z', /COPY
   ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
   ;; p.Close
   
-  return, [amps, xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
+  return, [amps[0:3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
 END
 
-PRO tinytimPSF
+PRO tinytimPSF, addAFEM=addAFEM
   forward_FUNCTION myReadCSV
   COMMON diff, residual
   F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
@@ -459,9 +486,11 @@ PRO tinytimPSF
   Secondary_y = fltarr(N_elements(F125ID)) 
   sky = fltarr(N_elements(F125ID))
   chisq = fltarr(N_elements(F125ID))
+  IF keyword_set(addAFEM) THEN AFEM0 = 1+randomn(seed, 256, 256)*0.01 $ ;; make an AFEM
+  ELSE AFEM0 = [] ;; if keyword is not set, set it as void
   FOR i=0, N_elements(F125ID) - 1 DO BEGIN
      id = F125ID[i]
-     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual)
+     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
      fluxA[i] = a[0]
      fluxB[i] = a[1]
      sky[i] = a[2]
@@ -523,4 +552,13 @@ PRO tinytimPSF
   save, F160Info, file = 'TinyTimF160Result.sav'
   csvFN = dateString() + 'TinyTimF160Result.csv'
   spawn, 'python sav2csv.py TinyTimF160Result.sav ' + csvFN ;; convert .sav file to csv file for easier using.
+  ;; F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
+  ;; F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  ;; restore, 'F160W_residual.sav'
+  ;; xy = [[[135,161], [145,161], [135,173], [145,173]],$
+  ;;     [[142, 159],[152,159], [142, 171], [152, 171]]]
+  ;; F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
+  ;; F160ID = where(F160Info.filter EQ 'F160W')
+  ;; id = 12
+  ;; a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])], /removeResidual)
 END
