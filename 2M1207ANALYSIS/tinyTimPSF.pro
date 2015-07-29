@@ -383,7 +383,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
      residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
   ENDIF ELSE BEGIN
      im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-     residual0 = residual[*, *, angle*4 + dither]
+     residual0 = residual[*, *, angle*4 + dither] 
   ENDELSE
   IF removeResidual THEN im = im - residual0 ;; remove the difference of residual and PSF
   err = mrdfits(imagePath + fn, 2,/silent)
@@ -424,6 +424,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   PSF1 = PSFList[*, *, minID]
   jitx = jitxList[minID]
   jity = jityList[minID]
+  xy = xyList[*, minID]
   im_subbed = im - PSF1 * ampList[minID] - skyList[minID]
   PSF_box = im_subbed[comp_xy[0]-2:comp_xy[0]+2, comp_xy[1]-2:comp_xy[1]+2]
   maxBox = max(PSF_box, maxID)
@@ -445,7 +446,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;;; fit two PSFs
   mask40 = fltarr(27, 27)
   ;;mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 2]]);;*mask40
+  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 3.5]]);;*mask40
   
   ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
   comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)

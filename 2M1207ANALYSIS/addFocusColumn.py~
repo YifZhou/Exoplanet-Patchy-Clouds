@@ -1,0 +1,20 @@
+from PSF_generator import exposureFocus
+import pandas as pd
+from astropy.io import fits
+import numpy as np
+
+if __name__ == '__main__':
+    fn125 = '2015_Jun_24TinyTimF125Result.csv'
+    fn160 = '2015_Jun_24TinyTimF160Result.csv'
+    df125 = pd.read_csv(
+        fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df160 = pd.read_csv(
+        fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    filePath = '../data/2M1207B/'
+    df125['focus'] = pd.Series(np.zeros(len(df125)), index=df125.index)
+    for index, row in df125.iterrows():
+        hd = fits.getheader(filePath + row['FILENAME'], 0)
+        MJD = hd['EXPSTART']
+        df125.ix[index]['focus'] = exposureFocus(MJD)

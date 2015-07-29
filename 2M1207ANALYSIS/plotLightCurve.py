@@ -32,14 +32,34 @@ def normFlux(dataFrame, normDither=False):
     return fluxA0, fluxB0
 
 
-def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
+def correlation(x, y, doPlot=False):
+    """
+
+    Arguments:
+    - `df`: dataframe
+    - `ifPlot`: if make the plot
+    """
+    fitResult = linearFit(x, y)
+    if doPlot:
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(x, y, linewidth=0, marker='o')
+        xx = np.linspace(x.min(), x.max(), 100)
+        ax.plot(xx, xx * fitResult[1] + fitResult[0])
+        ax.set_xlabel('Primary')
+        ax.set_ylabel('Secondary')
+        return (fitResult[0], fitResult[1])
+    else:
+        return (fitResult[0], fitResult[1])
+
+
+def plotLightCurve(DataFrame125, DataFrame160, applyCorr=False):
     """
 
     Arguments:
     - `DataFrame125`: Data Frame for F125W
     - `DataFrame160`: Data Frame for F160W
-    - `doCorrection`: if correct the flux of secondary
-    using the flux of primary
+    - `doCorrection`: correlation between the primary and the secondary
 
     read the data frame and plot the light curve,
     The flux for secondary is seemed to be anti-correlated with
@@ -51,6 +71,11 @@ def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
     ax_F160 = fig2.add_subplot(111)
     fluxA1250, fluxB1250 = normFlux(DataFrame125, normDither=True)
     fluxA1600, fluxB1600 = normFlux(DataFrame160, normDither=True)
+    if applyCorr:
+        corr125 = correlation(fluxA1250, fluxB1250)
+        corr160 = correlation(fluxA1600, fluxB1600)
+        fluxB1250 = fluxB1250 / (fluxA1250 * corr125[1] + corr125[0])
+        fluxB1600 = fluxB1600 / (fluxA1600 * corr160[1] + corr160[0])
     ax_F125.plot(DataFrame125.index, fluxA1250,
                  linewidth=0, marker='s', label='priamry')
     ax_F125.plot(DataFrame125.index, fluxB1250,
@@ -82,37 +107,15 @@ def plotLightCurve(DataFrame125, DataFrame160, doCorrection=False):
     return fig1, fig2
 
 
-def correlation(df, ifPlot=True):
-    """
-
-    Arguments:
-    - `df`: dataframe
-    - `ifPlot`: if make the plot
-    """
-    x = df['FLUXA'] / df['FLUXA'].mean()
-    y = df['FLUXB'] / df['FLUXB'].mean()
-    fitResult = linearFit(x.values, y.values)
-    if ifPlot:
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.plot(x, y, linewidth=0, marker='o')
-        xx = np.linspace(x.min(), x.max(), 100)
-        ax.plot(xx, xx * fitResult[1] + fitResult[0])
-        ax.set_xlabel('Primary')
-        ax.set_ylabel('Secondary')
-        return fig
-
-
 if __name__ == '__main__':
-    fn125 = '2015_Jul_16TinyTimF125Result.csv'
-    fn160 = '2015_Jul_16TinyTimF160Result.csv'
+    fn125 = '2015_Jun_24TinyTimF125Result.csv'
+    fn160 = '2015_Jun_24TinyTimF160Result.csv'
+    applyCorr = True
+    plt.close('all')
     df125 = pd.read_csv(
         fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
     df160 = pd.read_csv(
         fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
-    fig125, fig160 = plotLightCurve(df125, df160)
-    fig2 = correlation(df125)
-    fig3 = correlation(df160)
-    plt.show()
+    fig125, fig160 = plotLightCurve(df125, df160, applyCorr)

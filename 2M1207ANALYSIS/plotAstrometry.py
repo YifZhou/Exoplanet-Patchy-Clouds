@@ -74,7 +74,7 @@ def plotDitherAstrometry(df):
 
 if __name__ == '__main__':
     plt.close('all')
-    df125 = pd.read_csv('2015_Jun_17TinyTimF125Result.csv', parse_dates={
+    df125 = pd.read_csv('2015_Jun_24TinyTimF125Result.csv', parse_dates={
         'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
     primary_pos, secondary_pos = getRADec(df125)
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     fig1 = plotDitherAstrometry(df125)
     fig1.suptitle('F125W')
 
-    df160 = pd.read_csv('2015_Jun_17TinyTimF160Result.csv', parse_dates={
+    df160 = pd.read_csv('2015_Jun_24TinyTimF160Result.csv', parse_dates={
         'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
     primary_pos, secondary_pos = getRADec(df160)

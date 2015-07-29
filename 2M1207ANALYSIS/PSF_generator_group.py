@@ -20,4 +20,4 @@ if __name__ == '__main__':
     yc = yc + 380
     if not os.path.exists(aimDIR):
         os.mkdir(aimDIR)
-    psfDIR = pyTinyTim(xc, yc, filterName, jitx, jity, dis, outputDIR = aimDIR)
+    psfDIR = pyTinyTim(xc, yc, filterName, jitx, jity, dis, outputDIR=aimDIR)

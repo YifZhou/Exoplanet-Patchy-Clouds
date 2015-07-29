@@ -366,10 +366,17 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;;; angle: position angle of HST for the exposure
   ;;; dither: dither position for the exposure
   ;;; xy0: position for the peak pixel of the PSF
+  Sep = 0.773 ;; arcsec
+  PA = 125.37
   forward_FUNCTION findpeak
   COMMON diff, residual
-  IF keyword_set(removeResidual) THEN removeResidual = 1 $
-     ELSE removeResidual = 0
+  IF keyword_set(removeResidual) THEN BEGIN
+     removeResidual = 1
+     residual0 = residual[*, *, angle*4 + dither] 
+  ENDIF ELSE BEGIN
+     removeResidual = 0
+     residual0 = fltarr(27, 27)
+  ENDELSE 
   primaryTTFN = '2massA_' + filterName + '.in' ;; primary Tinytim parameter input file
   companionTTFN = '2massB_' + filterName + '.in' ;; companion Tinytim parameter input file
   imagePath = '../data/2M1207B/'
@@ -380,10 +387,9 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
      im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
      AFEM_eff = AFEM[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
      im = im*AFEM_eff
-     residual0 = residual[*, *, angle*4 + dither]*AFEM_eff
+     residual0 = residual0*AFEM_eff
   ENDIF ELSE BEGIN
      im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-     residual0 = residual[*, *, angle*4 + dither] 
   ENDELSE
   IF removeResidual THEN im = im - residual0 ;; remove the difference of residual and PSF
   err = mrdfits(imagePath + fn, 2,/silent)
@@ -424,39 +430,37 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   PSF1 = PSFList[*, *, minID]
   jitx = jitxList[minID]
   jity = jityList[minID]
-  im_subbed = im - PSF1 * ampList[minID] - skyList[minID]
-  PSF_box = im_subbed[comp_xy[0]-2:comp_xy[0]+2, comp_xy[1]-2:comp_xy[1]+2]
-  maxBox = max(PSF_box, maxID)
-  PSF_x_cood = maxID MOD 5
-  PSF_y_cood = maxID/5
-  comp_xy = comp_xy - [2, 2] + [PSF_x_cood, PSF_y_cood] ;; use the peak pixel in a 5x5 box as the initial guess for the center of the companion obj.
-  comp_xy0 = comp_xy - [13,13] + xy0                    ;;; the peak pixel of the companion obj in original image
   print, 'Best optimazed Jitter:', jitx, jity
+
+  primary_xy0 = xyList[*, minID] + xy0 - [13, 13] ;; the xy coordinate of primary in the original image
+  ;;; use literature RA/Dec to calculate the position for secondary
+  ;;; in another routine, the position of secondary if measured by fit
+  imhd= mrdfits(imagePath +fn, 1, hd, /silent)
+  xyad, hd, primary_xy0[0], primary_xy0[1], RA_primary, Dec_primary
+  PASep2RADEC, RA_primary, Dec_primary, PA, Sep, RA_secondary, Dec_secondary
+  adxy, hd, RA_secondary, Dec_secondary, x_secondary, y_secondary
+  comp_xy = [x_secondary, y_secondary] - xy0 + [13, 13]
+  comp_xy0 = round([x_secondary, y_secondary])
   spawn, 'python PSF_generator.py ' + strn(comp_xy0[0]) + ' ' + strn(comp_xy0[1])$
          + ' ' + companionTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
          + ' ' + strn(MJD) + ' comp_PSF' ;; use tinytim to generate a PSF file that works for  companion
 
   PSF02 = mrdfits('comp_PSF00.fits',/silent)
-  mask3 = mask
-  mask3 = fltarr(27, 27)
-  mask3[comp_xy[0]-1:comp_xy[0]+1, comp_xy[1]-1:comp_xy[1]+1] = 1           ;; only use the center 9 pixel to locate the companion obj
-  comp_xy = registerPSF(im_subbed, PSF02, mask3, comp_xy, weight = 1/err^2) ;; caluate the center of secondary coarsely
 
-  ;;; fit two PSFs
-  mask40 = fltarr(27, 27)
-  ;;mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
-  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 3.5]]);;*mask40
-  
-  ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
-  comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
   PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)
   ;;amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
-  amps = fit2PSFs_res(im + residual0, PSF1, PSF2, residual0, mask4, weight=1/err^2)
+  mask40 = fltarr(27, 27)
+  xy = xyList[*, minID]
+  ;;mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
+  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 3.5]]) ;;*mask40
+  IF removeResidual THEN amps = fit2PSFs_res(im + residual0, PSF1, PSF2, residual0, mask4, weight=1/err^2) $
+                                ELSE amps = fit2PSFs(im, PSF1, PSF2, mask4, weight=1/err^2)
 
   ;;print,'opimized rms residual: ', amps[3]
   print, amps
-  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
-  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+  writefits, './fixPosFitsResult/'+strmid(fn, 0, 9) + '.fits', im
+  writefits, './fixPosFitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+    writefits, './fixPosFitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + amps[2], /append
   ;; writefits, './fitsResult/example.fits', im
   ;; writefits, './fitsResult/example.fits', PSF1*amps[0] + amps[2], /append
   ;; Set_Plot, 'Z', /COPY
@@ -467,14 +471,63 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   return, [amps[0:3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
 END
 
-PRO tinytimPSF, addAFEM=addAFEM
+PRO combineResidual
+  ;;; median combine the residual
+  ;;; prepare for a residual included fitting
+  ;;; generate residual for each individual position
+
+  ;;;; F125W
+  F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
+  F125INFO = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  residual= fltarr(27, 27, 8)
+  F125INFO.posangle[where(F125INFO.posangle EQ 202.0)] = 0
+  F125INFO.posangle[where(F125INFO.posangle EQ 227.0)] = 1
+  FOREACH angle, [0, 1] DO BEGIN
+    FOREACH dither, [0, 1, 2, 3] DO BEGIN
+       IDList = where((F125INFO.posangle EQ angle) AND (F125INFO.dither EQ dither))
+       residualCube = fltarr(27, 27, n_elements(IDList)) ;; a temporary cube to save the residual for every individual exposure
+       FOR i = 0, n_elements(IDList) - 1 DO BEGIN
+          id = IDList[i]
+          fn = './fixPosFitsResult/' + strmid(F125INFO.filename[id], 0, 9) + '.fits' ;;;saved fitting result fits file
+          im = mrdfits(fn, 0, /silent)
+          psf = mrdfits(fn, 1, /silent)
+          residualCube[*, *, i] = im - psf ;;;save the residual for every individual exposure
+       ENDFOR
+       residual[*, *, angle*4 + dither] = median(residualCube, dimension=3)       
+    ENDFOREACH
+  ENDFOREACH
+  save, residual, file = 'F125W_fixPosResidual.sav'
+
+  ;;;; F160W
+  F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
+  F160INFO = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  F160INFO.posangle[where(F160INFO.posangle EQ 202.0)] = 0
+  F160INFO.posangle[where(F160INFO.posangle EQ 227.0)] = 1
+  FOREACH angle, [0, 1] DO BEGIN
+     FOREACH dither, [0, 1, 2, 3] DO BEGIN
+       IDList = where((F160INFO.posangle EQ angle) AND (F160INFO.dither EQ dither))
+       residualCube = fltarr(27, 27, n_elements(IDList)) ;; a temporary cube to save the residual for every individual exposure
+       FOR i = 0, n_elements(IDList) - 1 DO BEGIN
+          id = IDList[i]
+          fn = './fixPosFitsResult/' + strmid(F160INFO.filename[id], 0, 9) + '.fits' ;;;saved fitting result fits file
+          im = mrdfits(fn, 0, /silent)
+          psf = mrdfits(fn, 1, /silent)
+          residualCube[*, *, i] = im - psf ;;;save the residual for every individual exposure
+       ENDFOR
+       residual[*, *, angle*4 + dither] = median(residualCube, dimension=3)       
+    ENDFOREACH
+  ENDFOREACH
+  save, residual, file = 'F160W_fixPosResidual.sav'  
+END
+
+PRO tinytimPSF_fixPosition, addAFEM=addAFEM
+  ;; fix the PA/Sep values as literature valeus
   forward_FUNCTION myReadCSV
   COMMON diff, residual
   F125InfoFN = '2M1207B_flt_F125W_fileInfo.csv'
   F160InfoFN = '2M1207B_flt_F160W_fileInfo.csv'
   ;; ;;F125W
   F125Info = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
-  restore, 'F125W_residual.sav'
   xy = [[[135,161], [145,161], [135,173], [145,173]],$
       [[142, 159],[152,159], [142, 171], [152, 171]]]
   F125Info.PosAngle = (F125Info.orbit + 1) MOD 2
@@ -489,6 +542,30 @@ PRO tinytimPSF, addAFEM=addAFEM
   chisq = fltarr(N_elements(F125ID))
   IF keyword_set(addAFEM) THEN AFEM0 = 1+randomn(seed, 256, 256)*0.01 $ ;; make an AFEM
   ELSE AFEM0 = [] ;; if keyword is not set, set it as void
+  FOR i=0, N_elements(F125ID) - 1 DO BEGIN
+     id = F125ID[i]
+     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], AFEM=AFEM0)
+  ENDFOR
+
+  ;;; F160W
+  F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  xy = [[[135,161], [145,161], [135,173], [145,173]],$
+      [[142, 159],[152,159], [142, 171], [152, 171]]]
+  F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
+  F160ID = where(F160Info.filter EQ 'F160W')
+  fluxA = fltarr(N_elements(F160ID))
+  fluxB = fltarr(N_elements(F160ID))
+  Primary_x = fltarr(N_elements(F160ID))
+  Primary_y = fltarr(N_elements(F160ID))
+  Secondary_x = fltarr(N_elements(F160ID))
+  Secondary_y = fltarr(N_elements(F160ID)) 
+  sky = fltarr(N_elements(F160ID))
+  chisq = fltarr(N_elements(F160ID))
+  FOR i=0, N_elements(F160ID) - 1 DO BEGIN
+     id = F160ID[i]
+     a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])])
+  ENDFOR
+  combineResidual
   FOR i=0, N_elements(F125ID) - 1 DO BEGIN
      id = F125ID[i]
      a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
@@ -514,21 +591,6 @@ PRO tinytimPSF, addAFEM=addAFEM
   csvFN = dateString()+'TinyTimF125Result.csv'
   spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
 
-  ;;; F160W
-  F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
-  restore, 'F160W_residual.sav'
-  xy = [[[135,161], [145,161], [135,173], [145,173]],$
-      [[142, 159],[152,159], [142, 171], [152, 171]]]
-  F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
-  F160ID = where(F160Info.filter EQ 'F160W')
-  fluxA = fltarr(N_elements(F160ID))
-  fluxB = fltarr(N_elements(F160ID))
-  Primary_x = fltarr(N_elements(F160ID))
-  Primary_y = fltarr(N_elements(F160ID))
-  Secondary_x = fltarr(N_elements(F160ID))
-  Secondary_y = fltarr(N_elements(F160ID)) 
-  sky = fltarr(N_elements(F160ID))
-  chisq = fltarr(N_elements(F160ID))
   FOR i=0, N_elements(F160ID) - 1 DO BEGIN
      id = F160ID[i]
      a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])], /removeResidual)
@@ -540,7 +602,7 @@ PRO tinytimPSF, addAFEM=addAFEM
      Primary_y[i] = a[5]
      Secondary_x[i] = a[6]
      Secondary_y[i] = a[7]
-  ENDFOR
+  ENDFOR  
   F160Info = add_tag(F160Info, 'fluxa', fluxa)
   F160Info = add_tag(F160Info, 'fluxb', fluxb)
   F160Info = add_tag(F160Info, 'sky', sky)
