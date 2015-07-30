@@ -546,7 +546,7 @@ PRO tinytimPSF_fixPosition, addAFEM=addAFEM
   ;; ;;F125W
   F125Info = myReadCSV(F125InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
   xy = [[[135,161], [145,161], [135,173], [145,173]],$
-      [[142, 159],[152,159], [142, 171], [152, 171]]]
+        [[142, 159],[152,159], [142, 171], [152, 171]]]
   F125Info.PosAngle = (F125Info.orbit + 1) MOD 2
   F125ID = where(F125Info.filter EQ 'F125W')
   fluxA = fltarr(N_elements(F125ID))
@@ -558,31 +558,21 @@ PRO tinytimPSF_fixPosition, addAFEM=addAFEM
   sky = fltarr(N_elements(F125ID))
   chisq = fltarr(N_elements(F125ID))
   IF keyword_set(addAFEM) THEN AFEM0 = 1+randomn(seed, 256, 256)*0.01 $ ;; make an AFEM
-  ELSE AFEM0 = [] ;; if keyword is not set, set it as void
-  FOR i=0, N_elements(F125ID) - 1 DO BEGIN
-     id = F125ID[i]
-     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], AFEM=AFEM0)
-  ENDFOR
+  ELSE AFEM0 = []                                                       ;; if keyword is not set, set it as void
+  ;; FOR i=0, N_elements(F125ID) - 1 DO BEGIN
+  ;;    id = F125ID[i]
+  ;;    a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], AFEM=AFEM0)
+  ;; ENDFOR
 
   ;;; F160W
-  F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
-  xy = [[[135,161], [145,161], [135,173], [145,173]],$
-      [[142, 159],[152,159], [142, 171], [152, 171]]]
-  F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
-  F160ID = where(F160Info.filter EQ 'F160W')
-  fluxA = fltarr(N_elements(F160ID))
-  fluxB = fltarr(N_elements(F160ID))
-  Primary_x = fltarr(N_elements(F160ID))
-  Primary_y = fltarr(N_elements(F160ID))
-  Secondary_x = fltarr(N_elements(F160ID))
-  Secondary_y = fltarr(N_elements(F160ID)) 
-  sky = fltarr(N_elements(F160ID))
-  chisq = fltarr(N_elements(F160ID))
-  FOR i=0, N_elements(F160ID) - 1 DO BEGIN
-     id = F160ID[i]
-     a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])])
-  ENDFOR
-  combineResidual
+
+  ;; FOR i=0, N_elements(F160ID) - 1 DO BEGIN
+  ;;    id = F160ID[i]
+  ;;    a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])])
+  ;; ENDFOR
+  ;; combineResidual
+  restore, 'F125W_fixPosResidual.sav'
+  restore, 'F160W_fixPosResidual.sav'
   FOR i=0, N_elements(F125ID) - 1 DO BEGIN
      id = F125ID[i]
      a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
@@ -608,6 +598,19 @@ PRO tinytimPSF_fixPosition, addAFEM=addAFEM
   csvFN = dateString()+'TinyTimF125Result.csv'
   spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
 
+  F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
+  xy = [[[135,161], [145,161], [135,173], [145,173]],$
+        [[142, 159],[152,159], [142, 171], [152, 171]]]
+  F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
+  F160ID = where(F160Info.filter EQ 'F160W')
+  fluxA = fltarr(N_elements(F160ID))
+  fluxB = fltarr(N_elements(F160ID))
+  Primary_x = fltarr(N_elements(F160ID))
+  Primary_y = fltarr(N_elements(F160ID))
+  Secondary_x = fltarr(N_elements(F160ID))
+  Secondary_y = fltarr(N_elements(F160ID)) 
+  sky = fltarr(N_elements(F160ID))
+  chisq = fltarr(N_elements(F160ID))
   FOR i=0, N_elements(F160ID) - 1 DO BEGIN
      id = F160ID[i]
      a = PSFPhotometry1(F160Info.filename[id], F160Info.filter[id], long(F160Info.PosAngle[id]), long(F160Info.dither[id]), xy[*, long(F160Info.dither[id]), long(F160Info.posAngle[id])], /removeResidual)
