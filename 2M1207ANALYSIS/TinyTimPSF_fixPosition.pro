@@ -572,7 +572,7 @@ PRO tinytimPSF_fixPosition, addAFEM=addAFEM
   ;; ENDFOR
   ;; combineResidual
   restore, 'F125W_fixPosResidual.sav'
-  restore, 'F160W_fixPosResidual.sav'
+
   FOR i=0, N_elements(F125ID) - 1 DO BEGIN
      id = F125ID[i]
      a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
@@ -598,6 +598,7 @@ PRO tinytimPSF_fixPosition, addAFEM=addAFEM
   csvFN = dateString()+'TinyTimF125Result.csv'
   spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
 
+  restore, 'F160W_fixPosResidual.sav'
   F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])
   xy = [[[135,161], [145,161], [135,173], [145,173]],$
         [[142, 159],[152,159], [142, 171], [152, 171]]]
