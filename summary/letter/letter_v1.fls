@@ -141,11 +141,11 @@ INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/local/texlive/2014/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm
-INPUT F125_corr.pdf
-INPUT F160_corr.pdf
 INPUT sineCurveFit.pdf
 INPUT /usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
 INPUT /usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
+INPUT F125_corr.pdf
+INPUT F160_corr.pdf
 INPUT letter_v1.bbl
 INPUT letter_v1.bbl
 INPUT letter_v1.aux

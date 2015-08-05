@@ -76,10 +76,9 @@ PSF. In addition, under-sampling of the PSF causes significant
 artifacts when shifting the PSF to register images no matter what
 interpolation method is used.
 
-\begin{figure}[h]
+\begin{figure*}
   \centering
-  \plotone{original}
-  \plotone{subtracted}
+  \plottwo{original}{subtracted}
   \caption{WFC3 F160W images of 2M1207A system. Upper: original image,
     lower: residual model and primary PSF subtracted. The image of
     2M1207 B is overshadowed by the halo of the image of 2M1207A and
@@ -87,7 +86,7 @@ interpolation method is used.
     (residual + Tiny Tim PSF) subtraction, the image of 2M1207 B is
     clearly presented.}
   \label{fig:1}
-\end{figure}
+\end{figure*}
 \subsection{Tiny Tim PSF Photometry}
 To over come the difficulty, we make use of the Tiny Tim PSF simulator
 to pursue high precision photometry under this extreme
@@ -144,24 +143,57 @@ that have the same dithering position and roll angle indivadually --
 we took the median of the fluxes that were measured from these
 exposures as normalization factors and devided them from every flux
 measurement. 
-\subsection{Uncertainty Analysis}
+
+
+\section{Result}
+
+We obtained high signal to noise photometry series for both 2M1207 A
+and B. On average, the photometric contrast is $6.52\pm0.03$ for
+F125W and $5.77\pm0.02$ for F160W. The difference of F125W contrast
+from 7.0 magnitude of J-band contrast \citep{Mohanty2007} and that of
+F160W contrast from 5.60 magnitude of NICMOS F160W contrast
+\citep{Song2006} are due to the different throughput profiles of the
+filters.
+
+Normalized light curves for both filters are presented in Figure
+\ref{fig:2}. Although the light curves are relative noisy and have a
+scattering of $\sim 3\%$, both F125W and F160W light curves for 2M1207
+B demonstrated a significant time variability.
+\begin{figure*}[h]
+  \centering
+  \plotone{sineCurveFit}
+  \caption{Normalized F125W and F160W light curves for 2M1207 B and
+    A. For companion's light curves, gray crosses are unbinned
+    photometric measurements while red circles and blue squares are
+    exposure-set-based binned data representing two halves of the data
+  set. For F160W, green curve is least square fitted sinusoidal wave
+  with period fixed to be same as the fitting result for F125W, and
+  purple curve is the one with no parameter fixed in the fitting routine.}
+  \label{fig:2}
+\end{figure*}
+
+\subsection{Uncertainty analysis}
+\begin{itemize}
+\item the source of the scattering -- 
+\item flat field uncertainty -- adding artificial flat field error mask
+\item validity of the variability\\
+  -- both filter demonstrate similar period of variability\\
+  -- split the data into two half, the trend in two halves of data
+  looks similar.
+  -- fix the position does not change the light curve
+\item uncertainty of sinusoidal curve fit
+  -- carry out a mcmc fit? is it worth doing this.
+\end{itemize}
+
 \begin{figure*}[h]
   \centering
   \plottwo{F125_corr}{F160_corr}
   \caption{Fluxes of the primary and the secondary is correlated with
     the ditheirng positions. Different symbols represent different
     orbits.}
-  \label{fig:fig2}
-\end{figure*}
-\section{Result}
-\begin{figure}[h]
-  \centering
-  \plotone{sineCurveFit}
-  \caption{Normalized light curves for F125W and F160W. Red squares
-    are the phtometric measurment for 2M1207 B, and gray dots are for
-    2M1207 A.}
   \label{fig:3}
-\end{figure}
+\end{figure*}
+
 \section{Discussion }
 \begin{itemize}
 \item a data-reduction pipeline is developed to obtain high precision

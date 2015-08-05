@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{8}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Berta {et~al.}(2012)Berta, Charbonneau, D\'{e}sert,
@@ -21,8 +21,17 @@ Kreidberg, L., Bean, J.~L., D\'{e}sert, J.-M., {et~al.} 2014, Nature, 505, 69
   {et~al.}}]{Mandell2013}
 Mandell, A.~M., Haynes, K., Sinukoff, E., {et~al.} 2013, ApJ, 779, 128
 
+\bibitem[{Mohanty {et~al.}(2007)Mohanty, Jayawardhana, Huelamo, \&
+  Mamajek}]{Mohanty2007}
+Mohanty, S., Jayawardhana, R., Huelamo, N., \& Mamajek, E. 2007, ApJ, 657, 1064
+
 \bibitem[{Patience {et~al.}(2010)Patience, King, {De Rosa}, \&
   Marois}]{Patience2010}
 Patience, J., King, R.~R., {De Rosa}, R.~J., \& Marois, C. 2010, A\&A, 517, A76
+
+\bibitem[{Song {et~al.}(2006)Song, Schneider, Zuckerman, Farihi, Becklin,
+  Bessell, Lowrance, \& Macintosh}]{Song2006}
+Song, I., Schneider, G., Zuckerman, B., Farihi, J., Becklin, E.~E., Bessell,
+  M.~S., Lowrance, P., \& Macintosh, B.~A. 2006, ApJ, 652, 724
 
 \end{thebibliography}

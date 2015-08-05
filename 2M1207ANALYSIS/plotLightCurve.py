@@ -108,8 +108,8 @@ def plotLightCurve(DataFrame125, DataFrame160, applyCorr=False):
 
 
 if __name__ == '__main__':
-    fn125 = '2015_Jun_24TinyTimF125Result.csv'
-    fn160 = '2015_Jun_24TinyTimF160Result.csv'
+    fn125 = '2015_Jul_29TinyTimF125Result.csv'
+    fn160 = '2015_Jul_29TinyTimF160Result.csv'
     applyCorr = True
     plt.close('all')
     df125 = pd.read_csv(

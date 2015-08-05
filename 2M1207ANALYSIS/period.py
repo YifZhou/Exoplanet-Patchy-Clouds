@@ -5,15 +5,27 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import lombscargle  # lomb scargle method
 from plotLightCurve import normFlux
-#from lmfit import Model
+# from lmfit import Model
 from scipy.optimize import leastsq
+import matplotlib as mpl
 plt.style.use('paper')
 """measure the period of light curve
 """
 
 
-# def sinFunc(x, amp, T, phi0):
-#     return amp * np.sin((2 * np.pi / T) * x + phi0) + 1
+def binNorm(df):
+    fA, fB = normFlux(df, normDither=True)
+    df['f0'] = fB  # add one column
+    tBin = []
+    fBin = []
+    for orbit in range(1, 7):
+        subdf = df[df['ORBIT'] == orbit]
+        ditherSet = set(subdf['DITHER'])
+        for dither in ditherSet:
+            fBin.append(subdf[subdf['DITHER'] == dither]['f0'].median())
+            tBin.append(subdf[subdf['DITHER'] == dither]['Time'].mean())
+    return tBin, fBin
+
 
 def fitfunc(p, x):
     return p[0] * np.sin((2 * np.pi / p[1]) * x + p[2]) + 1.0
@@ -51,32 +63,76 @@ if __name__ == '__main__':
     """
     plt.close('all')
     fig = plt.figure()
-    ax125 = fig.add_subplot(211)
-    points125, = ax125.plot(df125['Time'], f125B0, 's', ms=6)
-    ax125.plot(df125['Time'], f125A0, 'o', color='0.8', zorder=0)
+    gs = mpl.gridspec.GridSpec(3, 2)
+    ax125B = fig.add_subplot(gs[0:2, 0])
+    df125_1 = df125[(df125['DITHER'] == 0) | (df125['DITHER'] == 2)]
+    df125_2 = df125[(df125['DITHER'] == 1) | (df125['DITHER'] == 3)]
+    tBin_125_1, fBin_125_1 = binNorm(df125_1)
+    tBin_125_2, fBin_125_2 = binNorm(df125_2)
+    ax125B.plot(tBin_125_1, fBin_125_1, 'o')
+    ax125B.plot(tBin_125_2, fBin_125_2, 's')
     t = np.linspace(df125['Time'].min(), df125['Time'].max(), 500)
     modelFlux = 0.0139 * np.sin(2 * np.pi / 10.9765 * t + 0.5874) + 1.0001
-    line125, = ax125.plot(t, modelFlux, linewidth=1.8)
-    ax125.set_title('F125W')
+    line125, = ax125B.plot(t, modelFlux, linewidth=1.8)
+
+    points125, = ax125B.plot(df125['Time'], f125B0, '+',
+                             ms=8, mec='0.8', zorder=0)
+
+    ax125B.set_title('F125W light curve')
+
+    # split the data
+
+    f125A0_2, f125B0_2 = normFlux(df125_2, normDither=True)
+
+    ax125A = fig.add_subplot(gs[2, 0], sharex=ax125B)
+    ax125A.plot(df125['Time'], f125A0, 'o', color='0.8', zorder=0)
     """For F160B I used two type fit,
     1. free parameter fit
     amp=0.0088    T=9.2692   dphi=-0.1180    baseline=1.0002
     2. fixed parameter fit
     amp=0.0080    T=10.9765  dphi=0.2525    baseline=0.9997
     """
-    ax160 = fig.add_subplot(212, sharex=ax125)
-    points160, = ax160.plot(df160['Time'], f160B0, 's', ms=6)
-    ax160.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
+    ax160B = fig.add_subplot(gs[0:2, 1], sharey=ax125B)
+
+    df160_1 = df160[(df160['DITHER'] == 0) | (df160['DITHER'] == 2)]
+    df160_2 = df160[(df160['DITHER'] == 1) | (df160['DITHER'] == 3)]
+    tBin_160_1, fBin_160_1 = binNorm(df160_1)
+    tBin_160_2, fBin_160_2 = binNorm(df160_2)
+    ax160B.plot(tBin_160_1, fBin_160_1, 'o')
+    ax160B.plot(tBin_160_2, fBin_160_2, 's')
     t = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
     modelFlux1 = 0.0080 * np.sin(2 * np.pi / 10.9765 * t + 0.2525) + 0.9997
     modelFlux2 = 0.0088 * np.sin(2 * np.pi / 9.2692 * t - 0.1180) + 1.0002
-    line160_1, = ax160.plot(t, modelFlux1, label='P=10.9', linewidth=1.8)
-    line160_2, = ax160.plot(t, modelFlux2, label='P=9.3', linewidth=1.8)
-    ax160.set_title('F160W')
-    for ax in [ax125, ax160]:
+    line160_1, = ax160B.plot(t, modelFlux1, label='P=10.9', linewidth=1.8)
+    line160_2, = ax160B.plot(t, modelFlux2, label='P=9.3', linewidth=1.8)
+    points160, = ax160B.plot(df160['Time'], f160B0, '+',
+                             ms=8, mec='0.8', zorder=0)
+    ax160B.set_title('F160W light curve')
+    ax160B.legend()
+    ax160A = fig.add_subplot(gs[2, 1], sharex=ax160B, sharey=ax125A)
+    ax160A.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
+
+    # adjust the labels and gridspec
+    for ax in [ax125B, ax160B]:
+        ax.get_xaxis().set_visible(False)
+    for ax in [ax160A, ax160B]:
+        ax.get_yaxis().set_visible(False)
+    for ax in [ax125A, ax125B]:
+        ax.set_ylabel('Normalized flux')
+    for ax in [ax125A, ax160A]:
         ax.set_xlabel('Time (h)')
-        ax.set_ylabel('Nomalized Flux')
-        ax.legend()
+    for ax in [ax125A, ax160A]:
+        ax.text(0.05, 0.05, 'Host',
+                verticalalignment='bottom', horizontalalignment='left',
+                transform=ax.transAxes)
+
+    for ax in [ax125B, ax160B]:
+        ax.text(0.05, 0.05, 'Companion',
+                verticalalignment='bottom', horizontalalignment='left',
+                transform=ax.transAxes)
+    gs.update(hspace=0, wspace=0)
+    ax125A.set_xticks(ax125A.get_xticks()[0:-1])
+
     fig.tight_layout()
     # plt.show()
     plt.savefig('sineCurveFit.pdf')
