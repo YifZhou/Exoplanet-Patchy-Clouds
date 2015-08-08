@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex letter_v1"] 1438734283 "letter_v1.aux" "letter_v1.bbl" "letter_v1" 1438734285
+["bibtex letter_v1"] 1438814445 "letter_v1.aux" "letter_v1.bbl" "letter_v1" 1438814447
   "./apj.bst" 1436422578 30256 4bddfbcee56ad37e9f226301f7fb0885 ""
-  "letter_v1.aux" 1438734284 4672 47ccb8b18649f6368c57724720c3bd75 ""
+  "letter_v1.aux" 1438814446 4672 4e3117cae7bf7d8ac59edd7cc3fccff5 ""
   "letter_v1.bcf" 0 -1 0 ""
-  "letter_v1Notes.bib" 1438734284 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "letter_v1Notes.bib" 1438814446 0 d41d8cd98f00b204e9800998ecf8427e ""
   "ref.bib" 1438732590 5429 f1f67efc59d9865db5e8c0fe9a191b0a ""
   (generated)
   "letter_v1.bbl"
   "letter_v1.blg"
-["pdflatex"] 1438734283 "letter_v1.tex" "letter_v1.pdf" "letter_v1" 1438734285
+["pdflatex"] 1438814445 "letter_v1.tex" "letter_v1.pdf" "letter_v1" 1438814447
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -86,16 +86,16 @@
   "/usr/local/texlive/2014/texmf.cnf" 1401025936 577 a59edbde8d3a8c549d0eeaab1739e2ff ""
   "F125_corr.pdf" 1436798852 22311 3f8235a477f8f21c67b0fa7ae56cc57a ""
   "F160_corr.pdf" 1436798868 22457 2220d7649255251d9c3c701ead1251a4 ""
-  "letter_v1.aux" 1438734284 4672 47ccb8b18649f6368c57724720c3bd75 ""
-  "letter_v1.bbl" 1438734283 1574 4301e0540a1b1f56ce92fdb1dbd30d1a "bibtex letter_v1"
-  "letter_v1.out" 1438734285 443 912a7021c37942a84a64abb8c3ce00dc ""
-  "letter_v1.tex" 1438734270 9750 a3c686a496a9977ab5ffcbfc4727a6a3 ""
+  "letter_v1.aux" 1438814446 4672 4e3117cae7bf7d8ac59edd7cc3fccff5 ""
+  "letter_v1.bbl" 1438814445 1574 4301e0540a1b1f56ce92fdb1dbd30d1a "bibtex letter_v1"
+  "letter_v1.out" 1438814446 443 912a7021c37942a84a64abb8c3ce00dc ""
+  "letter_v1.tex" 1438814442 9963 b4c1f73c9b864a879847cafe20599036 ""
   "original.pdf" 1438656071 73148 6eb5cbdf22d15f6385e6fe02bd75f33a ""
   "sineCurveFit.pdf" 1438723990 23778 0164a892f389cadacae4767b49b396d1 ""
   "subtracted.pdf" 1438656071 88556 bcab4c0edfc48b40a7bbe9533a2fb0ad ""
   (generated)
-  "letter_v1.log"
-  "letter_v1Notes.bib"
-  "letter_v1.out"
   "letter_v1.pdf"
+  "letter_v1Notes.bib"
   "letter_v1.aux"
+  "letter_v1.out"
+  "letter_v1.log"

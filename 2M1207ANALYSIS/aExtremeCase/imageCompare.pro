@@ -1,0 +1,15 @@
+;;; examine the difference of two images. IDL is applied here since
+;;; atv is better than imshow
+
+FUNCTION Diff, im1, im2
+  return, im1 - im2
+END
+
+PRO imageCompare
+  fn1 = 'icdg04c6q_flt.fits'
+  fn2 = 'icdg04c8q_flt.fits'
+  im1 = mrdfits(fn1, 1)  
+  im2 = mrdfits(fn2, 1)
+  diffIm = diff(im2, im1)
+  atv, diffIm
+END
