@@ -1,0 +1,18 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+plt.style.use('ggplot')
+"""plot the distribution for period and amplitude
+"""
+
+if __name__ == '__main__':
+    pDist125, ampDist125 = np.loadtxt('F125_Distr.csv', delimiter=',')
+    pDist160, ampDist160 = np.loadtxt('F160_Distr.csv', delimiter=',')
+    pBins = np.linspace(6, 15.5, 20)
+    fig_p, ax_p = plt.subplots(111)
+
+    ax_p.hist(pDist125, pBins, normed=1, label='F125W')
+    ax_p.hist(pDist160, pBins, normed=1, label='F160W')
+    plt.show()

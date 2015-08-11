@@ -17,7 +17,7 @@ for i=1:nLoop
     pDistr(i) = pFit(2);
     ampDistr(i) = pFit(1);
 end
-csvwrite(outputFn, [pDistr, ampDistr])
+csvwrite(outputFn, transpose([)
 
 
     
