@@ -108,9 +108,9 @@ def plotLightCurve(DataFrame125, DataFrame160, applyCorr=False):
 
 
 if __name__ == '__main__':
-    fn125 = '2015_Jul_29TinyTimF125Result.csv'
-    fn160 = '2015_Jul_29TinyTimF160Result.csv'
-    applyCorr = True
+    fn125 = '2015_Aug_13TinyTimF125Result.csv'
+    fn160 = '2015_Aug_13TinyTimF160Result.csv'
+    applyCorr = False
     plt.close('all')
     df125 = pd.read_csv(
         fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
@@ -119,3 +119,4 @@ if __name__ == '__main__':
         fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
         index_col='datetime')
     fig125, fig160 = plotLightCurve(df125, df160, applyCorr)
+    plt.show()

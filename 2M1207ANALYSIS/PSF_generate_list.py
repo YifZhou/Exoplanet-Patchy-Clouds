@@ -35,6 +35,10 @@ if __name__ == '__main__':
     yc = int(sys.argv[2]) + 380
     fileName = sys.argv[3]
     MJD = float(sys.argv[4])
+    if len(sys.argv) <= 5:
+        silent = False
+    else:
+        silent = bool(int(sys.argv[5]))
 
     aimDIR = os.path.join('.', 'PSF_temp')
     if not os.path.exists(aimDIR):
@@ -43,7 +47,8 @@ if __name__ == '__main__':
     for jitx in jitxList:
         for jity in jityList:
             psfFN = pyTinyTim(xc, yc, fileName, jitx, jity,
-                              exposureFocus(MJD), outputDIR=aimDIR)
+                              exposureFocus(MJD), outputDIR=aimDIR,
+                              silent=silent)
             PSFFNFile.write(os.path.join(aimDIR, psfFN) + '\n')
 
     PSFFNFile.close()

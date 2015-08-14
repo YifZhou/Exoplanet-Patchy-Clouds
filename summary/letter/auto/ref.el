@@ -2,6 +2,7 @@
  "ref"
  (lambda ()
    (LaTeX-add-bibitems
+    "dressel2012wide"
     "Kreidberg2014"
     "Markwardt2009"
     "Deming2014"

@@ -29,7 +29,8 @@
    (LaTeX-add-labels
     "fig:1"
     "fig:2"
-    "fig:3")
+    "fig:3"
+    "fig:4")
    (LaTeX-add-bibliographies
     "ref.bib")))
 

@@ -424,6 +424,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   PSF1 = PSFList[*, *, minID]
   jitx = jitxList[minID]
   jity = jityList[minID]
+  xy = xyList[*, minID]
   im_subbed = im - PSF1 * ampList[minID] - skyList[minID]
   PSF_box = im_subbed[comp_xy[0]-2:comp_xy[0]+2, comp_xy[1]-2:comp_xy[1]+2]
   maxBox = max(PSF_box, maxID)

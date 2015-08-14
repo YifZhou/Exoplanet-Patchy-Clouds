@@ -1,4 +1,4 @@
-\begin{thebibliography}{8}
+\begin{thebibliography}{9}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Berta {et~al.}(2012)Berta, Charbonneau, D\'{e}sert,
@@ -12,6 +12,9 @@ Biretta, J. 2014, Space Telescope WFC Instrument Science Report, 1, 10
   Pinte, Dumas, \& Homeier}]{Bonnefoy2014}
 Bonnefoy, M., Chauvin, G., Lagrange, A.-M., Rojo, P., Allard, F., Pinte, C.,
   Dumas, C., \& Homeier, D. 2014, A\&A, 562, A127
+
+\bibitem[{Dressel(2012)}]{dressel2012wide}
+Dressel, L. 2012, Wide Field Camera 3, HST Instrument Handbook, 1
 
 \bibitem[{Kreidberg {et~al.}(2014)Kreidberg, Bean, D\'{e}sert,
   {et~al.}}]{Kreidberg2014}

@@ -33,10 +33,15 @@ if __name__ == '__main__':
     MJD = float(sys.argv[6])
     dis = exposureFocus(MJD)
     outfn = sys.argv[7]
+    if len(sys.argv) <= 8:
+        silent = False
+    else:
+        silent = bool(int(sys.argv[8]))
     aimDIR = os.getcwd()
     xc = xc + 380
     yc = yc + 380
     if not os.path.exists(aimDIR):
         os.mkdir(aimDIR)
     psfDIR = pyTinyTim(
-        xc, yc, fileName, jitx, jity, dis, outputDIR=aimDIR, outputRoot=outfn)
+        xc, yc, fileName, jitx, jity, dis, outputDIR=aimDIR, outputRoot=outfn,
+        silent=silent)

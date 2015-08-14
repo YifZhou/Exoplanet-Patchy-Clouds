@@ -396,7 +396,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   xy1 = findpeak(im_fixed, 13, 13, range=5)
   IF angle EQ 0 THEN comp_xy = [18,10] ELSE comp_xy = [16, 8]  
   spawn, 'python PSF_generate_list.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
-         + ' ' + primaryTTFN + ' ' + ' ' + strn(MJD)  ;; use tinytim to generate a PSF file that works for  companion
+         + ' ' + primaryTTFN + ' ' + ' ' + strn(MJD) + ' 1'  ;; use tinytim to generate a PSF file that works for  companion
   readcol, 'fn.dat', PSF_fn, format = 'a', /silent            ;; read in all fits file names
   nPSFs = N_elements(PSF_fn)
   ampList = fltarr(nPSfs)
@@ -435,7 +435,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   print, 'Best optimazed Jitter:', jitx, jity
   spawn, 'python PSF_generator.py ' + strn(comp_xy0[0]) + ' ' + strn(comp_xy0[1])$
          + ' ' + companionTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
-         + ' ' + strn(MJD) + ' comp_PSF' ;; use tinytim to generate a PSF file that works for  companion
+         + ' ' + strn(MJD) + ' comp_PSF 1' ;; use tinytim to generate a PSF file that works for  companion
 
   PSF02 = mrdfits('comp_PSF00.fits',/silent)
   mask3 = mask
@@ -456,6 +456,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
 
   ;;print,'opimized rms residual: ', amps[3]
   print, amps
+  ;;print, total(PSF1), total(PSF2)
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
   ;; writefits, './fitsResult/example.fits', im
@@ -465,7 +466,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
   ;; p.Close
   
-  return, [amps[0:3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
+  return, [amps[0]/total(PSF1), amps[1]/total(PSF2), amps[2], amps[3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
 END
 
 PRO tinytimPSF, addAFEM=addAFEM
