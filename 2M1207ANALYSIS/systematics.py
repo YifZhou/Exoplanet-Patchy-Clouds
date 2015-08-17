@@ -125,3 +125,5 @@ if __name__ == '__main__':
     fig.tight_layout()
     plt.show()
     plt.savefig('systematics.pdf')
+    chisq125 = (((f125B0 - 1.0) / 0.015)**2).sum()
+    print(chisq125)

@@ -235,9 +235,11 @@ FUNCTION fit2PSFs_res, im, PSF1, PSF2, residual, mask, weight = weight
        [total(mask*(PSF1*residual*weight)), total(mask*(PSF2*residual*weight)), total(mask*(residual^2*weight)),total(mask*(residual*weight))],$
        [total(mask*(PSF1*weight)), total(mask*(PSF2*weight)), total(mask*(residual*weight)),total(mask*weight)]]
   b = [[total(mask*(PSF1*im*weight))], [total(mask*(PSF2*im*weight))], [total(mask*(residual*im*weight))], [total(mask*(im*weight))]]
-  amp = LA_invert(A) ## b
+  invA = LA_invert(A)
+  amp = invA ## b
+  err = sqrt(diag_matrix(invA))
   res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- residual * amp[2] - amp[3])^2))/total(mask)
-  return, [amp[0], amp[1], amp[3], res, amp[2]] ;; put the amplitude for residual at th end
+  return, [amp[0], amp[1], amp[3], res, amp[2], err[0], err[1]] ;; put the amplitude for residual at th end
 END
 
 FUNCTION register2PSFs, im, PSF1, PSF02, mask, gc, weight = weight
@@ -466,7 +468,7 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
   ;; p.Close
   
-  return, [amps[0]/total(PSF1), amps[1]/total(PSF2), amps[2], amps[3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13]]
+  return, [amps[0]/total(PSF1), amps[1]/total(PSF2), amps[2], amps[3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13], amps[5], amps[6]]
 END
 
 PRO tinytimPSF, addAFEM=addAFEM
@@ -482,7 +484,9 @@ PRO tinytimPSF, addAFEM=addAFEM
   F125Info.PosAngle = (F125Info.orbit + 1) MOD 2
   F125ID = where(F125Info.filter EQ 'F125W')
   fluxA = fltarr(N_elements(F125ID))
+  fluxErrA = fltarr(N_elements(F125ID))
   fluxB = fltarr(N_elements(F125ID))
+  fluxErrB = fltarr(N_elements(F125ID))
   Primary_x = fltarr(N_elements(F125ID))
   Primary_y = fltarr(N_elements(F125ID))
   Secondary_x = fltarr(N_elements(F125ID))
@@ -502,9 +506,13 @@ PRO tinytimPSF, addAFEM=addAFEM
      Primary_y[i] = a[5]
      Secondary_x[i] = a[6]
      Secondary_y[i] = a[7]
+     fluxErrA[i] = a[8]
+     fluxErrB[i] = a[9]
   ENDFOR
   F125Info = add_tag(F125Info, 'fluxa', fluxa)
+  F125Info = add_tag(F125Info, 'fluxErrA', fluxErrA)
   F125Info = add_tag(F125Info, 'fluxb', fluxb)
+  F125Info = add_tag(F125Info, 'fluxErrB', fluxErrB)
   F125Info = add_tag(F125Info, 'sky', sky)
   F125Info = add_tag(F125Info, 'Primary_x', Primary_x)
   F125Info = add_tag(F125Info, 'Primary_y', Primary_y)
@@ -524,7 +532,9 @@ PRO tinytimPSF, addAFEM=addAFEM
   F160Info.PosAngle = (F160Info.orbit + 1) MOD 2
   F160ID = where(F160Info.filter EQ 'F160W')
   fluxA = fltarr(N_elements(F160ID))
+  fluxErrA = fltarr(N_elements(F160ID))
   fluxB = fltarr(N_elements(F160ID))
+  fluxErrB = fltarr(N_elements(F160ID))
   Primary_x = fltarr(N_elements(F160ID))
   Primary_y = fltarr(N_elements(F160ID))
   Secondary_x = fltarr(N_elements(F160ID))
@@ -542,8 +552,12 @@ PRO tinytimPSF, addAFEM=addAFEM
      Primary_y[i] = a[5]
      Secondary_x[i] = a[6]
      Secondary_y[i] = a[7]
+     fluxErrA[i] = a[8]
+     fluxErrB[i] = a[9]
   ENDFOR
   F160Info = add_tag(F160Info, 'fluxa', fluxa)
+  F160Info = add_tag(F160Info, 'fluxErrA', fluxErrA)
+  F160Info = add_tag(F160Info, 'fluxErrB', fluxErrB)
   F160Info = add_tag(F160Info, 'fluxb', fluxb)
   F160Info = add_tag(F160Info, 'sky', sky)
   F160Info = add_tag(F160Info, 'Primary_x', Primary_x)
