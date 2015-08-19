@@ -14,28 +14,31 @@ def gauss(x, a, x0, sigma):
 
 if __name__ == '__main__':
     plt.close('all')
-    pDist125, ampDist125 = np.loadtxt('F125W_Distr.csv', delimiter=',',
-                                      unpack=True)
-    pDist160, ampDist160 = np.loadtxt('F160W_Distr.csv', delimiter=',',
-                                      unpack=True)
+    # pDist125, ampDist125 = np.loadtxt('F125W_Distr.csv', delimiter=',',
+    #                                   unpack=True)
+    # pDist160, ampDist160 = np.loadtxt('F160W_Distr.csv', delimiter=',',
+    #                                   unpack=True)
 
+    pDist, ampDist125, ampDist160 = np.loadtxt('fixP_fitResult.csv',
+                                               delimiter=',', unpack=True)
     pBins = np.linspace(6, 20, 57)
     fig_p, ax_p = plt.subplots()
 
-    countP125, binP125 = np.histogram(pDist125, bins=pBins, normed=1)
-    countP160, binP160 = np.histogram(pDist160, bins=pBins, normed=1)
+    # countP125, binP125 = np.histogram(pDist125, bins=pBins, normed=1)
+    # countP160, binP160 = np.histogram(pDist160, bins=pBins, normed=1)
+    countP, binP = np.histogram(pDist, bins=pBins, normed=1)
     ax_p.bar(
-        binP125[:-1], countP125, pBins[1] - pBins[0],
-        alpha=0.8, label='F125W')
-    ax_p.bar(
-        binP160[:-1], countP160, pBins[1] - pBins[0],
-        label='F160W', alpha=0.8, fc='#e41a1c')
-    ax_p.legend()
+        (pBins[:-1] + pBins[1:]) / 2, countP, pBins[1] - pBins[0],
+        alpha=0.8, fc='#e41a1c')
+    # ax_p.bar(
+    #     binP160[:-1], countP160, pBins[1] - pBins[0],
+    #     label='F160W', alpha=0.8, fc='#377eb8')
+    # ax_p.legend()
     ax_p.set_xlabel('Period (hour)')
     ax_p.set_ylabel('Probability density (hour$^{-1}$)')
 
-    ampBins = np.linspace(0.003, 0.026, 47)
-    fineAmpBins = np.linspace(0.003, 0.026, 470)
+    ampBins = np.linspace(0.00, 0.025, 51)
+    fineAmpBins = np.linspace(0.00, 0.025, 510)
     fig_amp, ax_amp = plt.subplots()
     countAmp125, binAmp125 = np.histogram(ampDist125, bins=ampBins, normed=1)
     countAmp160, binAmp160 = np.histogram(ampDist160, bins=ampBins, normed=1)
@@ -45,7 +48,7 @@ if __name__ == '__main__':
                                  countAmp160, p0=[150, 0.008, 0.005])
     bars125 = ax_amp.bar(
         binAmp125[:-1], countAmp125, ampBins[1] - ampBins[0],
-        alpha=0.8, label='F125W')
+        alpha=0.8, label='F125W', fc='#377eb8')
     ax_amp.plot(fineAmpBins, gauss(fineAmpBins, *gpAmp125),
                 color=bars125[0].get_facecolor(), lw=2)
     bars160 = ax_amp.bar(
@@ -60,6 +63,6 @@ if __name__ == '__main__':
     ax_amp.set_ylabel('Probability density')
     print(gpAmp125)
     print(gpAmp160)
-    fig_p.savefig('periodDistr.pdf')
-    fig_amp.savefig('amplitudeDistr.pdf')
+    # fig_p.savefig('periodDistr.pdf')
+    # fig_amp.savefig('amplitudeDistr.pdf')
     plt.show()

@@ -1,0 +1,7 @@
+;Computed offsets
+icdg01zdq_flt_1fits      6.6570     -2.2650
+icdg01zeq_flt_1fits      0.0000      0.0000
+icdg02agq_flt_1fits      0.0000      0.0000
+icdg01zdq_flt_1fits      6.6570     -2.2650
+icdg01zeq_flt_1fits      0.0000      0.0000
+icdg02agq_flt_1fits      0.0000      0.0000

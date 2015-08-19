@@ -25,10 +25,10 @@ PRO collectKlipPSF
   ;; shift the star image so that the center OF the primary star image
   ;; is located at pixel center
   ;;;; F125W
-  df = myreadcsv('2015_Jun_17TinyTimF125Result.csv',$
+  df = myreadcsv('2015_Jun_24TinyTimF125Result.csv',$
                  ['FILENAME', 'FILTER', 'ORBIT', 'POSANGLE', 'DITHER', 'EXPOSURESET',$
                   'OBSDATE', 'OBSTIME', 'EXPOTIME', 'FLUXA', 'FLUXB', 'SKY',$
-                  'PRIMARY_X', 'PRIMARY_Y', 'SECONDARY_X', 'SECONDARY_Y'])
+                  'PRIMARY_X', 'PRIMARY_Y', 'SECONDARY_X', 'SECONDARY_Y', 'CHISQ'])
   dataDIR = '../data/2M1207B/'
   angle0ID = where(df.posangle EQ 0)
   angle1ID = where(df.posangle EQ 1)                ;; save two angle seperately
@@ -66,10 +66,10 @@ PRO collectKlipPSF
   save, angle0cube, angle1cube, file = 'F125W_KLIP_PSF_library.sav'
   
   ;;; F160W
-  df = myreadcsv('2015_Jun_17TinyTimF160Result.csv',$
+  df = myreadcsv('2015_Jun_24TinyTimF160Result.csv',$
                  ['FILENAME', 'FILTER', 'ORBIT', 'POSANGLE', 'DITHER', 'EXPOSURESET',$
                   'OBSDATE', 'OBSTIME', 'EXPOTIME', 'FLUXA', 'FLUXB', 'SKY',$
-                  'PRIMARY_X', 'PRIMARY_Y', 'SECONDARY_X', 'SECONDARY_Y'])
+                  'PRIMARY_X', 'PRIMARY_Y', 'SECONDARY_X', 'SECONDARY_Y', 'CHISQ'])
   dataDIR = '../data/2M1207B/'
   angle0ID = where(df.posangle EQ 0)
   angle1ID = where(df.posangle EQ 1)                ;; save two angle seperately

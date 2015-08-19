@@ -32,7 +32,8 @@
 We took high contrast direct imaging observation of 2M1207 system on
 UT 2014 April 11 using HST.  (\textit{HST} Proposal GO-13418, PI:
 D. Apai). The data were acquired with the Wide Field Camera 3 (WFC3)
-in filter F125W ($\lambda_{\mbox{pivot}}$ = 1245.9 nm. FWHM = 301.5
+in filter F125W ($\lambda_{\mbox{pivot}}$ = 1245.9 nm, full width at
+half maximum (FWHM) = 301.5
 nm) and F160W ($\lambda_{\mbox{pivot}}$ 1540.52, FWHM = 287.9 nm)
 using the $256\times256$ sub-array mode. We observed 2M1207 system in
 six contiguous HST orbits and obtained a data-set that have a temporal
@@ -41,33 +42,35 @@ minutes, interrupted by Earth occultaions of 58 minutes every  94 minutes.
 
 
 The observations was initially designed to apply two-roll
-PSF-subtraction (e.g. \cite{Song2006}) to remove the background light from the primary star. The
-telescope roll angles for data taken in orbit 1, 3, 5 and those taken
-in orbit 2, 4, 6 differed by $25^{\circ}$, thus the roll displacement
-of the companion is 0.34 .  In
-each orbit we took a sequence of 13 SPARS25 exposures with NSAMP=10,
-alternating between F160W and F125W filters, with 2-3 identical
-exposures in one exposure sequence. To improve PSF sampling and reduce
-the risk caused by bad pixels, we applied standard 4 point
+point spread function (PSF) subtraction (e.g. \cite{Song2006}) to remove the background light
+from the primary star. The telescope roll angles for data taken in
+orbit 1, 3, 5 and those taken in orbit 2, 4, 6 differed by
+$25^{\circ}$, thus the roll displacement of the companion is $0.34''$
+that is 2.75 and 2.30 resolution elements in F125W and F160W respectively.
+In each orbit we took a sequence of 13 SPARS10 exposures with
+NSAMP=10, alternating between F160W and F125W filters, with 2-3
+identical exposures in one exposure sequence. To improve PSF sampling
+and reduce the risk caused by bad pixels, we applied standard 4 point
 dithering. In each orbit, exposures were taken with dithering position
-1 -- 4 sequently. To sum, we obtained 70 multi-acuum images for filter
+1 -- 4 sequently. Over the 6 orbits, we obtained 70 multi-acuum images for filter
 F125W and 64 images for filter F160W with exposure time of 88.4
 seconds for both two filters.
 
 
 \section{Data Reduction}
 
-Through the whole analysis, we used the \flt that were
-produced by WFC3's \texttt{calwfc3} pipeline. The \flt were reduced
-with calibration steps including dark current correction, non-linearity
+Through the whole analysis, we used the \flt that were produced by
+WFC3's \texttt{calwfc3} pipeline. The \flt were reduced with
+calibration steps including dark current correction, non-linearity
 correction, and flat field correction. A further step of up-the-ramp
 fit was applied to combine all non-destructive reads and remove cosmic
 rays. Although \cite{Mandell2013} stated that WFC3 IR time series
 extract from {\flt} have a rms 1.3 times larger than that obtained
 from {\ima}, \flt keeps all pixels of the image of 2M1207 A
-unsaturated, while in 80\% of non-destructive reads the cores of 2M1207
-A are saturated. Thus \flt help better align the images for primary
-subtraction, and separate the flux of 2M1207 B from that of 2M1207A. 
+unsaturated, while in 80\% of non-destructive reads the cores of
+2M1207 A are saturated. Thus \flt help better align the images for
+primary subtraction, and separate the flux of 2M1207 B from that of
+2M1207A.
 
 The small angular separation of 2M1207 A and B (as shown in Figure
 \ref{fig:1}) makes precise primary star subtraction and photometry
@@ -152,13 +155,12 @@ greatly decreased to around unity.
 \subsection{Uncertainty analysis}
 
 \subsubsection{White noise}
-The difficulties of high contrast photometry is finally exhibited by
-the error bars of the measurement. The scatterings of the photometric
-measurements are dominated by photon noise.  We estimated the photon
-noise by calculating the total flux within a 3-pixel (0.39 arcsec)
-aperture centered on 2M1207 B. The photon noises for F125W and F160W photometry are
-2.1\% and 1.2\%. These calculation results are at the same level of
-the scattering of the photometric time series.
+The scatters of the photometric measurements are dominated by photon
+noise. Uncertainties of one photometric measurement was combined by
+photon noise of every pixel during the PSF fit. The photon noises for
+2M1207B photometry in F125W and F160W are 1.33\% and 1.02\%,
+respectively, and are at the same level of the scatter of the
+photometric time series.
 
 \subsubsection{Flat field uncertainties}
 In our observation, 2M1207 B were taken exposure at 8 different spots
@@ -168,13 +170,13 @@ is $\sim 1\%$ \citep{dressel2012wide} and our time resolved observation for anot
 demonstrate that aperture photometry for exposures taken at different
 dithering position have scatterings at the same level.
 
-Flat field uncertainties have smaller effects on PSF photometry since
-multiple pixels are fitted simultaneously. To verify this, we multiplied
-an artificial flat field error mask that is a uniform distributed
-Gaussian noise array with mean of 1 and sigma of 1\% to every image,
-and repeat the PSF photometry routine with the error-applied
-images. We obtained almost same photometry measurements as the
-original.
+Flat field uncertainties have smaller effects on PSF photometry than
+aperture photometry since multiple pixels are fitted
+simultaneously. To verify this, we multiplied an artificial flat field
+error mask that is a uniform distributed Gaussian noise array with
+mean of 1 and sigma of 1\% to every image, and repeat the PSF
+photometry routine with the error-applied images. We obtained almost
+same photometry measurements as the original.
 
 However, PSF profile changes with different exposure positions due to
 pixelation, especially for the case that WFC3 IR is significantly

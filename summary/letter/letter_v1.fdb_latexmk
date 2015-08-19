@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex letter_v1"] 1439789289 "letter_v1.aux" "letter_v1.bbl" "letter_v1" 1439789350
+["bibtex letter_v1"] 1439789289 "letter_v1.aux" "letter_v1.bbl" "letter_v1" 1439923552
   "./apj.bst" 1436422578 30256 4bddfbcee56ad37e9f226301f7fb0885 ""
-  "letter_v1.aux" 1439789349 6396 6109dd1c0f6ab4c327f06da4cb84fc62 ""
+  "letter_v1.aux" 1439923551 6396 6109dd1c0f6ab4c327f06da4cb84fc62 ""
   "letter_v1.bcf" 0 -1 0 ""
-  "letter_v1Notes.bib" 1439789349 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "letter_v1Notes.bib" 1439923551 0 d41d8cd98f00b204e9800998ecf8427e ""
   "ref.bib" 1439405977 5638 34bf990a0a181ca245d53f80b875587e ""
   (generated)
-  "letter_v1.blg"
   "letter_v1.bbl"
-["pdflatex"] 1439789348 "letter_v1.tex" "letter_v1.pdf" "letter_v1" 1439789350
+  "letter_v1.blg"
+["pdflatex"] 1439923550 "letter_v1.tex" "letter_v1.pdf" "letter_v1" 1439923552
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -87,18 +87,18 @@
   "/usr/local/texlive/2014/texmf-var/web2c/xetex/xelatex.fmt" 1412616994 3441596 11595ad155f36b0fd3da8876b898d921 ""
   "/usr/local/texlive/2014/texmf.cnf" 1401025936 577 a59edbde8d3a8c549d0eeaab1739e2ff ""
   "amplitudeDistr.pdf" 1439338420 16467 f9cf04fa7e11c161c64dc9d1029fbcc6 ""
-  "letter_v1.aux" 1439789349 6396 6109dd1c0f6ab4c327f06da4cb84fc62 ""
+  "letter_v1.aux" 1439923551 6396 6109dd1c0f6ab4c327f06da4cb84fc62 ""
   "letter_v1.bbl" 1439789290 1684 5a9b0ab36fd568b0c4bb98b2673f4a28 "bibtex letter_v1"
-  "letter_v1.out" 1439789350 708 e5e0ab48ba65b1250c20920c1d609c0e ""
-  "letter_v1.tex" 1439789348 16684 0cdb8ab013389e799faa8fdd1fd5c833 ""
+  "letter_v1.out" 1439923552 708 e5e0ab48ba65b1250c20920c1d609c0e ""
+  "letter_v1.tex" 1439923550 16719 abaa5e6e0b418f30eef6a6c7264b5a13 ""
   "original.pdf" 1438656071 73148 6eb5cbdf22d15f6385e6fe02bd75f33a ""
   "periodDistr.pdf" 1439338420 19037 bf6548f2456c5c37807c4359667c532f ""
   "sineCurveFit_binCombined.pdf" 1439326710 22158 a6f842024f52342e8e7d42aaba408497 ""
   "subtracted.pdf" 1438656071 88556 bcab4c0edfc48b40a7bbe9533a2fb0ad ""
   "systematics.pdf" 1439410767 20066 4c354702764bf2d2bfc7d45ae7042652 ""
   (generated)
-  "letter_v1.log"
-  "letter_v1.pdf"
   "letter_v1Notes.bib"
-  "letter_v1.out"
+  "letter_v1.log"
   "letter_v1.aux"
+  "letter_v1.pdf"
+  "letter_v1.out"

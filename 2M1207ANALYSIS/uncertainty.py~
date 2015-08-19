@@ -1,0 +1,30 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+import pandas as pd
+import numpy as np
+
+from plotLightCurve import normFlux
+"""uncertainty analysis for the photometry
+"""
+
+if __name__ == '__main__':
+    fn125 = '2015_Aug_16TinyTimF125Result.csv'
+    fn160 = '2015_Aug_16TinyTimF160Result.csv'
+    df125 = pd.read_csv(
+        fn125, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125 = df125.sort_index()
+    # time in ns
+    df125['Time'] = np.float32(
+        df125.index.values - df125.index.values[0]) / (60 * 60 * 1e9)
+
+    df160 = pd.read_csv(
+        fn160, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df160 = df160.sort_index()
+    # time in ns
+    df160['Time'] = np.float32(
+        df160.index.values - df160.index.values[0]) / (60 * 60 * 1e9)
+
+    df125['err0'] = df125['FLUXERRB'] / df125['FLUXB']
+    df160['err0'] = df160['FLUXERRB'] / df160['FLUXB']

@@ -1,0 +1,12 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+import numpy as np
+import pandas as pd
+
+"""calculate the  range of the period fitting result
+"""
+
+if __name__ == '__main__':
+    pBins = np.linspace(6, 20, 57)
+    countP125, binP125 = np.histogram(pDist125, bins=pBins, normed=1)
+    countP160, binP160 = np.histogram(pDist160, bins=pBins, normed=1)

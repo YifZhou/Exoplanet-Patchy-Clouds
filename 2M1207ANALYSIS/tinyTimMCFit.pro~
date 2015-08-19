@@ -1,0 +1,121 @@
+FUNCTION maskoutdq, dq, flagList=flaglist
+  ;;; caculate the mask using data quality array. to exclude certain
+  ;;; pixels.
+  ;;; the default flags to exclude are:
+  ;;; flat 4, 32, and 512
+  IF N_elements(flagList) EQ 0 THEN flagList = [4, 32, 512]
+  dq = long(dq)
+  mask = dq-dq+1 ;;initialize mask as a zero array
+  FOR k=0, n_elements(flagList) - 1 DO BEGIN
+     mask = mask * (1- dq/flagList[k] MOD 2) ;;; mask out each flags, if (dq/flag) mod 2 == 1,
+                                             ;;; then that dq value contains the flag     
+  ENDFOR 
+  return, mask
+END
+
+function PSFPhotometry, im, err, dq, PSF01, PSF02
+  ;;; use tinytim PSF to measure the photometry
+  ;;; input parameter:
+  ;;; fn: filename of the input flt file\
+  ;;; angle: position angle of HST for the exposure
+  ;;; dither: dither position for the exposure
+  ;;; xy0: position for the peak pixel of the PSF
+
+  ;;; after this, the center of the image went to [13, 13]
+  mask = maskoutdq(dq)
+  fixpix, im, mask, im_fixed, /silent
+  xy1 = findpeak(im_fixed, 13, 13, range=5)
+  xy = registerPSF(im, psf0, mask1, xy1, weight = 1/err^2)
+  dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
+  PSF1= shiftPSF(PSF01, dxy[0], dxy[1], factor = 9)
+  mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 5]])
+  opt_paras = fit1PSF(im, PSF, mask2, weight = 1/err^2)
+  amp = opt_paras[0]
+  sky = opt_paras[1]
+  im_subbed = im - PSF1 * amp - sky
+  comp_xy = [18, 10]
+  PSF_box = im_subbed[comp_xy[0]-2:comp_xy[0]+2, comp_xy[1]-2:comp_xy[1]+2]
+  maxBox = max(PSF_box, maxID)
+  PSF_x_cood = maxID MOD 5
+  PSF_y_cood = maxID/5
+  comp_xy = comp_xy - [2, 2] + [PSF_x_cood, PSF_y_cood] ;; use the peak pixel in a 5x5 box as the initial guess for the center of the companion obj.
+  comp_xy0 = comp_xy - [13,13] + xy0                    ;;; the peak pixel of the companion obj in original image
+  print, 'Best optimazed Jitter:', jitx, jity
+  spawn, 'python PSF_generator.py ' + strn(comp_xy0[0]) + ' ' + strn(comp_xy0[1])$
+         + ' ' + companionTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
+         + ' ' + strn(MJD) + ' comp_PSF 1' ;; use tinytim to generate a PSF file that works for  companion
+
+  PSF02 = mrdfits('comp_PSF00.fits',/silent)
+  mask3 = mask
+  mask3 = fltarr(27, 27)
+  mask3[comp_xy[0]-1:comp_xy[0]+1, comp_xy[1]-1:comp_xy[1]+1] = 1           ;; only use the center 9 pixel to locate the companion obj
+  comp_xy = registerPSF(im_subbed, PSF02, mask3, comp_xy, weight = 1/err^2) ;; caluate the center of secondary coarsely
+
+  ;;; fit two PSFs
+  mask40 = fltarr(27, 27)
+  ;;mask40[11:26,0:15] = 1 ;;; only calculate the fourth quadrant
+  mask4 = make_mask(mask, [[xy[0], xy[1], 0, 3.5]]) ;;*mask40
+  
+  ;;mask4 = make_mask(mask, [[xy[0], xy[1], 11, 100]])*mask40
+  comp_xy = register2PSFs(im, PSF1, PSF02, mask4, comp_xy, weight = 1/err^2)
+  PSF2 = shiftPSF(psf02, comp_xy[0] - 13, comp_xy[1] - 13, factor = 9)
+  ;;amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
+  amps = fit2PSFs_res(im + residual0, PSF1, PSF2, residual0, mask4, weight=1/err^2)
+
+  ;;print,'opimized rms residual: ', amps[3]
+  print, amps
+  ;;print, total(PSF1), total(PSF2)
+  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
+  writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+  ;; writefits, './fitsResult/example.fits', im
+  ;; writefits, './fitsResult/example.fits', PSF1*amps[0] + amps[2], /append
+  ;; Set_Plot, 'Z', /COPY
+  ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
+  ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
+  ;; p.Close
+  
+  return, [amps[0]/total(PSF1), amps[1]/total(PSF2), amps[2], amps[3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13], amps[5], amps[6]]
+END
+
+
+PRO tinyTimMCFit, nLoop
+  imagePath = '../data/2M1207B/'
+  fn = 'icdg01a1q_flt.fits'
+  
+  primaryTTFN = '2massA_F125W.in' ;; primary Tinytim parameter input file
+  companionTTFN = '2massB_F125W.in' ;; companion Tinytim parameter input file
+  
+  xy0 = [145, 173]
+  comp_xy0 = [150, 169]
+  restore, 'F125W_residual.sav'
+  im = mrdfits(imagePath + fn, 1, /silent)
+  im = [xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  im = im - residual[*, *, 3]
+  imhd= mrdfits(imagePath +fn, 0, hd, /silent)
+  MJD = fxpar(hd, 'EXPSTART')
+  err = mrdfits(imagePath + fn, 2,/silent)
+  err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+  dq = mrdfits(imagePath + fn, 3,/silent)
+  dq = dq[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
+
+  jitx = 20
+  jity = 20 ;; previous fitting result
+
+  spawn, 'python PSF_generator.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
+         + ' ' + primaryTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
+         + ' ' + strn(MJD) + ' primary_PSF 1' ;; use tinytim to generate a PSF file that works for  companion
+  PSF1 = mrdfits('primary_PSF00.fits', /silent)
+  spawn, 'python PSF_generator.py ' + strn(comp_xy0[0]) + ' ' + strn(comp_xy0[1])$
+         + ' ' + companionTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
+         + ' ' + strn(MJD) + ' comp_PSF 1' ;; use tinytim to generate a PSF file that works for  companion
+  PSF2 = mrdfits('comp_PSF00.fits', /silent)
+  primary_X = fltarr(nLoop)
+  primary_Y = fltarr(nLoop)
+  primary_f = fltarr(nLoop)
+  secondary_X = fltarr(nLoop)
+  secondary_Y = fltarr(nLoop)
+  secondary_f = fltarr(nLoop)  
+  FOR i=0, nLoop - 1 DO BEGIN
+     
+  ENDFOR
+END

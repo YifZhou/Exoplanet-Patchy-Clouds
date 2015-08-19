@@ -102,3 +102,4 @@ if __name__ == '__main__':
     labels = [l.get_label() for l in ls]
     ax_res.legend(ls, labels)
     plt.show()
+    fits.writeto('KLIP_test.fits', resIm, clobber=True)

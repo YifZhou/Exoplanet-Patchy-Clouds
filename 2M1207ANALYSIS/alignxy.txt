@@ -1,0 +1,3 @@
+icdg01zdq_flt_1fits      137.000      137.000      0.00000      0.00000
+icdg01zdq_flt_1fits      0.0000      0.0000
+icdg02agq_flt_1fits      0.0000      0.0000
