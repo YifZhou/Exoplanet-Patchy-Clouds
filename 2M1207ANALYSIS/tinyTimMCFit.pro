@@ -252,14 +252,16 @@ END
 
 PRO tinyTimMCFit, nLoop
   imagePath = '../data/2M1207B/'
-  fn = 'icdg01a1q_flt.fits'
-  
-  primaryTTFN = '2massA_F125W.in' ;; primary Tinytim parameter input file
-  companionTTFN = '2massB_F125W.in' ;; companion Tinytim parameter input file
+  ;;fn = 'icdg01a1q_flt.fits' ;; F125W
+  fn = 'icdg01a2q_flt.fits' ;; F160W
+  filter = 'F160W'
+  primaryTTFN = '2massA_'+filter+'.in' ;; primary Tinytim parameter input file
+  companionTTFN = '2massB_'+filter+'.in' ;; companion Tinytim parameter input file
   
   xy0 = [145, 173]
   comp_xy0 = [150, 169]
-  restore, 'F125W_residual.sav'
+  comp_xy = comp_xy0 - xy0 + [13, 13]
+  restore, filter+'_residual.sav'
   im = mrdfits(imagePath + fn, 1, /silent)
   im = im[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   im = im - residual[*, *, 3]
@@ -269,10 +271,40 @@ PRO tinyTimMCFit, nLoop
   err = err[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
   dq = mrdfits(imagePath + fn, 3,/silent)
   dq = dq[xy0[0]-13:xy0[0]+13, xy0[1]-13:xy0[1]+13]
-
-  jitx = 20
-  jity = 20 ;; previous fitting result
-
+  
+  spawn, 'python PSF_generate_list.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
+         + ' ' + primaryTTFN + ' ' + ' ' + strn(MJD) + ' 1'  ;; use tinytim to generate a PSF file that works for  companion
+  readcol, 'fn.dat', PSF_fn, format = 'a', /silent            ;; read in all fits file names
+  nPSFs = N_elements(PSF_fn)
+  ampList = fltarr(nPSfs)
+  skyList = fltarr(nPSFs)
+  resList = fltarr(nPSFs)
+  PSFList = fltarr(27, 27, nPSFs)
+  xyList = fltarr(2, nPSFs)
+  jitxList = [0,0,0,0,0,10,10,10,10,10,20,20,20,20,20,30,30,30,30,30,40,40,40,40,40]
+  jityList = [0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40]
+  mask = maskoutdq(dq)
+  xy1 = findpeak(im, 13, 13, range=5)
+  FOR i = 0, nPSFs - 1 DO begin
+     psf0 = mrdfits(PSF_fn[i],/silent)
+     mask1 = make_mask(mask,[[comp_xy[0], comp_xy[1], 0, 5]])
+     xy = registerPSF(im, psf0, mask1, xy1, weight = 1/err^2)
+     dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
+     xyList[*, i] = xy
+     PSF= shiftPSF(psf0, dxy[0], dxy[1], factor = 9)
+     mask2 = make_mask(mask, [[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 5]])
+     opt_paras = fit1PSF(im, PSF, mask2, weight = 1/err^2)
+     PSFList[*, *, i] = PSF
+     ampList[i] = opt_paras[0]
+     skyList[i] = opt_paras[1]
+     resList[i] = opt_paras[2]
+  ENDFOR
+  minID = (where(resList EQ min(resList)))[0]
+  PSF1 = PSFList[*, *, minID]
+  jitx = jitxList[minID]
+  jity = jityList[minID]
+  xy = xyList[*, minID]
+  print, jitx, jity
   spawn, 'python PSF_generator.py ' + strn(xy0[0]) + ' ' + strn(xy0[1])$
          + ' ' + primaryTTFN + ' ' + strn(jitx) + ' ' + strn(jity)$
          + ' ' + strn(MJD) + ' primary_PSF 1' ;; use tinytim to generate a PSF file that works for  companion
@@ -296,7 +328,8 @@ PRO tinyTimMCFit, nLoop
      primary_y[i] = a[3]
      secondary_x[i] = a[4]
      secondary_y[i] = a[5]
+     print, i
   ENDFOR
-  forprint, primary_f, secondary_f, primary_x, primary_y, secondary_x, secondary_y, textout='TinyTimMCFit_result.dat', /nocomment
+  forprint, primary_f, secondary_f, primary_x, primary_y, secondary_x, secondary_y, textout='TinyTimMCFit_'+filter+'result.dat', /nocomment
 END
 
