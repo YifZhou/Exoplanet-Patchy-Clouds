@@ -27,6 +27,10 @@ def binNorm(df):
     return tBin, fBin
 
 
+def normedSin(t, p):
+    return p[0] * np.sin((2 * np.pi / p[1]) * t + p[2]) + 1
+
+
 def fitfunc(p, x):
     return p[0] * np.sin((2 * np.pi / p[1]) * x + p[2]) + 1.0
 
@@ -54,6 +58,7 @@ if __name__ == '__main__':
         df160.index.values - df160.index.values[0]) / (60 * 60 * 1e9)
     f125A0, f125B0 = normFlux(df125, normDither=True)
     f160A0, f160B0 = normFlux(df160, normDither=True)
+
     # I quit, trying matlab ...
     np.savetxt('F125Result.dat', np.c_[df125['Time'].values, f125A0, f125B0])
     np.savetxt('F160Result.dat', np.c_[df160['Time'].values, f160A0, f160B0])
@@ -62,8 +67,11 @@ if __name__ == '__main__':
     For F125B amp=0.0139   T=10.9765    dphi=0.5874    baseline=1.0001
     """
     plt.close('all')
-    fig = plt.figure(figsize=(8, 4))
-    gs = mpl.gridspec.GridSpec(1, 2)
+    fig = plt.figure(figsize=(12, 9))
+    gs = mpl.gridspec.GridSpec(3, 2)
+    axOut = fig.add_subplot(gs[:, :])
+    axOut.set_xlabel('Time (h)', labelpad=24)
+    axOut.set_ylabel('Normalized flux', labelpad=42)
     ax125B = fig.add_subplot(gs[0, 0])
     df125_1 = df125[(df125['DITHER'] == 0) | (df125['DITHER'] == 2)]
     df125_2 = df125[(df125['DITHER'] == 1) | (df125['DITHER'] == 3)]
@@ -81,10 +89,43 @@ if __name__ == '__main__':
                              ms=8, mec='0.8', zorder=0)
 
     ax125B.set_title('F125W light curve')
+    # remove the data from the first orbit
+    df125 = df125[df125['ORBIT'] > 1]
+    f125A0, f125B0 = normFlux(df125, normDither=True)
+    f160A0, f160B0 = normFlux(df160, normDither=True)
+    tBin_125_no1, fBin_125_no1 = binNorm(df125)
+    t125 = np.linspace(df125['Time'].min(), df125['Time'].max(), 500)
+    ax125_no1 = fig.add_subplot(gs[1, 0])
+    f125A0, f125B0 = normFlux(df125, normDither=True)
+    ax125_no1.plot(tBin_125_no1, fBin_125_no1, 'o')
+    ax125_no1.plot(df125['Time'], f125B0, '+',
+                   ms=8, mec='0.8', zorder=0, label='no orbit 1')
 
-    # split the data
+    ax125_no1.plot(t, normedSin(t, [0.0139, 12.03, 0.7069]), lw=1.8)
+    lg = ax125_no1.legend()
+    lg.draw_frame(False)
 
-    f125A0_2, f125B0_2 = normFlux(df125_2, normDither=True)
+    fn125_AFEM = '2015_Jul_14TinyTimF125Result.csv'  # apply AFEM
+    df125_AFEM = pd.read_csv(
+        fn125_AFEM, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df125_AFEM = df125_AFEM.sort_index()
+    # time in ns
+    df125_AFEM['Time'] = np.float32(
+        df125_AFEM.index.values - df125_AFEM.index.values[0]) / (60 * 60 * 1e9)
+    ax125_AFEM = fig.add_subplot(gs[2, 0])
+    tBin_125_AFEM, fBin_125_AFEM = binNorm(df125_AFEM)
+    t125_AFEM = np.linspace(df125_AFEM['Time'].min(),
+                            df125_AFEM['Time'].max(), 500)
+
+    f125A0_AFEM, f125B0_AFEM = normFlux(df125_AFEM, normDither=True)
+    ax125_AFEM.plot(tBin_125_AFEM, fBin_125_AFEM, 'o')
+    ax125_AFEM.plot(df125_AFEM['Time'], f125B0_AFEM, '+',
+                    ms=8, mec='0.8', zorder=0, label="AFEM")
+
+    ax125_AFEM.plot(t, normedSin(t, [0.0139, 10.97, 0.59]), lw=1.8)
+    lg = ax125_AFEM.legend()
+    lg.draw_frame(False)
 
     """For F160B I used two type fit,
     1. free parameter fit
@@ -105,25 +146,66 @@ if __name__ == '__main__':
     t = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
     modelFlux1 = 0.0080 * np.sin(2 * np.pi / 10.9765 * t + 0.2525) + 0.9997
     modelFlux2 = 0.0088 * np.sin(2 * np.pi / 9.2692 * t - 0.1180) + 1.0002
-    line160_1, = ax160B.plot(t, modelFlux1, label='P=10.9', linewidth=1.8)
-    line160_2, = ax160B.plot(t, modelFlux2, label='P=9.3', linewidth=1.8)
+    line160_1, = ax160B.plot(t, modelFlux1, label='P=10.45', linewidth=1.8)
+    line160_2, = ax160B.plot(t, modelFlux2, label='P=9.0', linewidth=1.8)
     points160, = ax160B.plot(df160['Time'], f160B0, '+',
                              ms=8, mec='0.8', zorder=0)
     ax160B.set_title('F160W light curve')
     ax160B.legend()
+
+    df160 = df160[df160['ORBIT'] > 1]
+    tBin_160_no1, fBin_160_no1 = binNorm(df160)
+    t160 = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
+    ax160_no1 = fig.add_subplot(gs[1, 1])
+    f160A0, f160B0 = normFlux(df160, normDither=True)
+    ax160_no1.plot(tBin_160_no1, fBin_160_no1, 'o')
+    ax160_no1.plot(df160['Time'], f160B0, '+',
+                   ms=8, mec='0.8', zorder=0, label='no orbit 1')
+
+    ax160_no1.plot(t, normedSin(t, [0.0085, 9.6673, 0.0294]))
+    lg = ax160_no1.legend()
+    lg.draw_frame(False)
+
+    fn160_AFEM = '2015_Jul_14TinyTimF160Result.csv'  # apply AFEM
+    df160_AFEM = pd.read_csv(
+        fn160_AFEM, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},
+        index_col='datetime')
+    df160_AFEM = df160_AFEM.sort_index()
+    # time in ns
+    df160_AFEM['Time'] = np.float32(
+        df160_AFEM.index.values - df160_AFEM.index.values[0]) / (60 * 60 * 1e9)
+    ax160_AFEM = fig.add_subplot(gs[2, 1])
+    tBin_160_AFEM, fBin_160_AFEM = binNorm(df160_AFEM)
+    t160_AFEM = np.linspace(df160_AFEM['Time'].min(),
+                            df160_AFEM['Time'].max(), 500)
+    f160A0_AFEM, f160B0_AFEM = normFlux(df160_AFEM, normDither=True)
+    ax160_AFEM.plot(tBin_160_AFEM, fBin_160_AFEM, 'o')
+    ax160_AFEM.plot(df160_AFEM['Time'], f160B0_AFEM, '+',
+                    ms=8, mec='0.8', zorder=0, label="AFEM")
+
+    ax160_AFEM.plot(t, normedSin(t, [0.0088, 9.27, -0.12]), lw=1.8)
+    lg = ax160_AFEM.legend()
+    lg.draw_frame(False)
     # ax160A = fig.add_subplot(gs[2, 1], sharex=ax160B)
     # ax160A.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
     # gs.update(hspace=0, wspace=0)
     # ax125A.set_xticks(ax125A.get_xticks()[0:-1])
     gs.update(hspace=0, wspace=0)
-    ax125B.set_xticks(ax125B.get_xticks()[0:-1])
-    ax160B.set_yticks([])
+    ax125_AFEM.set_xticks(ax125_AFEM.get_xticks()[0:-1])
+    for ax in [ax160B, ax160_no1, ax160_AFEM, axOut]:
+        ax.set_yticks([])
+    for ax in [ax125B, ax160B, ax125_no1, ax160_no1, axOut]:
+        ax.set_xticks([])
+    # for ax in [ax125B, ax125_no1, ax125_AFEM]:
+    #     ax.set_ylabel('Normalized flux')
     for ax in fig.axes:
+        ax.set_xlim([0, 9])
         ax.set_ylim([0.95, 1.05])
-        ax.set_xlabel('Time (h)')
-    ax125B.set_ylabel('Normalized flux')
+    # for ax in[ax125_AFEM, ax160_AFEM]:
+    #     ax.set_xlabel('Time (h)')
+    # ax125B.set_ylabel('Normalized flux')
     fig.tight_layout()
     plt.show()
     plt.savefig('systematics.pdf')
-    chisq125 = (((f125B0 - 1.0) / 0.015)**2).sum()
-    print(chisq125)
+    # chisq125 = (((f125B0 - 1.0) / 0.015)**2).sum()
+    # print(chisq125)

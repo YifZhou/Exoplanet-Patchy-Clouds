@@ -4,6 +4,7 @@ import numpy as np
 from scipy.io import readsav  # read IDL save file
 import matplotlib.pyplot as plt
 from astropy.io import fits
+import pandas as pd
 """KLIP pipe line
    reference:  Sourmer 2012
 adapted from Neil Zimmerman's code
@@ -68,10 +69,26 @@ def getEffCoord(imShape, annulusList):
     return np.where(mask == 1)
 
 
+def getRelativePos(DF, imageIndex):
+    """get the relative position of companion from the dataframe"""
+    return DF[['SECONDARY_X', 'SECONDARY_Y']].values[imageIndex] -\
+        DF[['PRIMARY_X', 'PRIMARY_Y']].values[imageIndex]
+
+
+def KLIP_Photometry(im, im_KLIP, pos1, pos2):
+    """im: original image
+       im_KLIP: klip combined image, to be subtracted
+       pos1
+    """
+
 if __name__ == '__main__':
     savFile = readsav('F125W_KLIP_PSF_library.sav')
+    infoDF = pd.read_csv('2015_Jun_24TinyTimF125Result.csv')
+    angle0DF = infoDF[infoDF['POSANGLE'] == 0]
+    angle1DF = infoDF[infoDF['POSANGLE'] == 1]
     cube0 = savFile['angle0cube']
     cube1 = savFile['angle1cube']
+    imageIndex = 0  # image to process
     # get effective coordinate
     coord_eff = getEffCoord(cube0[0].shape, [[17, 9, 0, 4], [17, 9, 10, 100],
                                              [13, 13, 0, 3]])
@@ -79,27 +96,31 @@ if __name__ == '__main__':
     Z = KLtrans(cube0, id_eff)
     residual = np.zeros((cube1.shape[0], cube0.shape[0] - 3))
     maxValue = np.zeros((cube1.shape[0], cube0.shape[0] - 3))
-    klipList = range(3, cube0.shape[0])
-    for i in range(cube1.shape[0]):
-        for j, klip in enumerate(klipList):
-            im = KLIP(cube1[i], Z, id_eff, klip)
-            resIm = cube1[i] - im
-            residual[i, j] = np.sqrt((resIm[coord_eff]**2).sum())
-            maxValue[i, j] = resIm[8, 16]
-    residual0 = np.mean(residual, axis=0)
-    maxValue0 = np.mean(maxValue, axis=0)
-    plt.close('all')
-    fig = plt.figure()
-    ax_res = fig.add_subplot(111)
-    ax_max = ax_res.twinx()
-    l_res, = ax_res.plot(klipList, residual0, label='residual')
-    ax_res.set_xlabel('klip')
-    ax_res.set_ylabel('Residual')
-    l_max, = ax_max.plot(klipList, maxValue0 / maxValue0.max(),
-                         label='max value', color='b')
-    ax_max.set_ylabel('Max value')
-    ls = [l_res, l_max]
-    labels = [l.get_label() for l in ls]
-    ax_res.legend(ls, labels)
-    plt.show()
-    fits.writeto('KLIP_test.fits', resIm, clobber=True)
+    klip = 5  # number of image used to compose klip image
+    im = cube1[imageIndex]
+    comp_pos1 = 13.0 + getRelativePos(angle0DF, imageIndex)
+    comp_pos2 = (13.0 + getRelativePos(angle1DF, range(len(angle1DF))))\
+        .mean(axis=0)
+    im_klip = KLIP(im, Z, id_eff, klip)
+    # klip combined image, to be subtracted
+    # resIm = cube1[in] - im
+    _ = KLIP_Photometry(im, im_klip, comp_pos1, comp_pos2)
+    # return esidual[i, j] = np.sqrt((resIm[coord_eff]**2).sum())
+    # maxValue[i, j] = resIm[8, 16]
+    # residual0 = np.mean(residual, axis=0)
+    # maxValue0 = np.mean(maxValue, axis=0)
+    # plt.close('all')
+    # fig = plt.figure()
+    # ax_res = fig.add_subplot(111)
+    # ax_max = ax_res.twinx()
+    # l_res, = ax_res.plot(klipList, residual0, label='residual')
+    # ax_res.set_xlabel('klip')
+    # ax_res.set_ylabel('Residual')
+    # l_max, = ax_max.plot(klipList, maxValue0 / maxValue0.max(),
+    #                      label='max value', color='b')
+    # ax_max.set_ylabel('Max value')
+    # ls = [l_res, l_max]
+    # labels = [l.get_label() for l in ls]
+    # ax_res.legend(ls, labels)
+    # plt.show()
+    # fits.writeto('KLIP_test.fits', resIm, clobber=True)

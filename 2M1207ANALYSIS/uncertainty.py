@@ -30,8 +30,8 @@ if __name__ == '__main__':
     df160['err0'] = df160['FLUXERRB'] / df160['FLUXB']
     f125A0, f125B0 = normFlux(df125, normDither=True)
     f160A0, f160B0 = normFlux(df160, normDither=True)
-    chisq125 = (((f125B0 - 1.0) / df125['err0'])**2).sum()
-    chisq160 = (((f160B0 - 1.0) / df160['err0'])**2).sum()
+    chisq125 = (((f125B0 - 1.0) / 0.0134)**2).sum()
+    chisq160 = (((f160B0 - 1.0) / 0.0112)**2).sum()
     print(chisq125 / (len(f125B0) - 1))
     print(chisq160 / (len(f160B0) - 1))
     model125 = 0.0139 * np.sin(2 * np.pi / 10.9765 * df125['Time'] + 0.5874)\
@@ -39,9 +39,9 @@ if __name__ == '__main__':
     model160 = 0.0088 * np.sin(2 * np.pi / 9.2692 * df160['Time'] - 0.1180)\
         + 1.0002
     chisq125_1 = (((f125B0 - model125) /
-                   df125['err0'])**2).sum()
+                   0.0134)**2).sum()
     chisq160_1 = (((f160B0 - model160) /
-                   df160['err0'])**2).sum()
+                   0.0112)**2).sum()
     print(chisq125_1 / (len(f125B0) - 3))
     print(chisq160_1 / (len(f160B0) - 3))
     df125['FLUXB'] = f125B0

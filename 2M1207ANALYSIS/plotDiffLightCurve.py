@@ -6,9 +6,9 @@ import pandas as pd
 import numpy as np
 
 if __name__ == '__main__':
-    fn125_1 = '2015_Jun_24TinyTimF125Result.csv'
-    fn125_2 = '2015_Jul_14TinyTimF125Result.csv'
-    fn125_3 = '2015_Jul_16TinyTimF125Result.csv'
+    fn125_1 = '2015_Jun_24TinyTimF125Result.csv'  # original
+    fn125_2 = '2015_Jul_14TinyTimF125Result.csv'  # AFEM
+#    fn125_3 = '2015_Jul_16TinyTimF125Result.csv'
 
     df125_1 = pd.read_csv(
         fn125_1, parse_dates={'datetime': ['OBSDATE', 'OBSTIME']},

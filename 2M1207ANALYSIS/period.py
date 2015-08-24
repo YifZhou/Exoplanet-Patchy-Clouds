@@ -64,6 +64,9 @@ if __name__ == '__main__':
     plt.close('all')
     fig = plt.figure()
     gs = mpl.gridspec.GridSpec(3, 2)
+    axOut = fig.add_subplot(gs[:, :])
+    axOut.set_xlabel('Time (h)', labelpad=24)
+    axOut.set_ylabel('Normalized flux', labelpad=42)
     ax125B = fig.add_subplot(gs[0:2, 0])
     df125_1 = df125[(df125['DITHER'] == 0) | (df125['DITHER'] == 2)]
     df125_2 = df125[(df125['DITHER'] == 1) | (df125['DITHER'] == 3)]
@@ -86,7 +89,7 @@ if __name__ == '__main__':
 
     f125A0_2, f125B0_2 = normFlux(df125_2, normDither=True)
 
-    ax125A = fig.add_subplot(gs[2, 0], sharex=ax125B)
+    ax125A = fig.add_subplot(gs[2, 0])
     ax125A.plot(df125['Time'], f125A0, 'o', color='0.8', zorder=0)
     """For F160B I used two type fit,
     1. free parameter fit
@@ -94,7 +97,7 @@ if __name__ == '__main__':
     2. fixed parameter fit
     amp=0.0080    T=10.9765  dphi=0.2525    baseline=0.9997
     """
-    ax160B = fig.add_subplot(gs[0:2, 1], sharey=ax125B)
+    ax160B = fig.add_subplot(gs[0:2, 1])
 
     df160_1 = df160[(df160['DITHER'] == 0) | (df160['DITHER'] == 2)]
     df160_2 = df160[(df160['DITHER'] == 1) | (df160['DITHER'] == 3)]
@@ -113,19 +116,21 @@ if __name__ == '__main__':
                              ms=8, mec='0.8', zorder=0)
     ax160B.set_title('F160W light curve')
     # ax160B.legend()
-    ax160A = fig.add_subplot(gs[2, 1], sharex=ax160B)
+    ax160A = fig.add_subplot(gs[2, 1])
     ax160A.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
 
     # adjust the labels and gridspec
-    for ax in [ax125B, ax160B]:
-        ax.get_xaxis().set_visible(False)
+    for ax in [ax125B, ax160B, axOut]:
+        # ax.get_xaxis().set_visible(False)
+        ax.set_xticks([])
         ax.set_ylim([0.95, 1.05])
-    for ax in [ax160A, ax160B]:
-        ax.get_yaxis().set_visible(False)
-    for ax in [ax125A, ax125B]:
-        ax.set_ylabel('Normalized flux')
+    for ax in [ax160A, ax160B, axOut]:
+        #        ax.get_yaxis().set_visible(False)
+        ax.set_yticks([])
+    # for ax in [ax125A, ax125B]:
+    #     ax.set_ylabel('Normalized flux')
     for ax in [ax125A, ax160A]:
-        ax.set_xlabel('Time (h)')
+        #        ax.set_xlabel('Time (h)')
         ax.set_ylim([0.975, 1.025])
     for ax in [ax125A, ax160A]:
         ax.text(0.05, 0.05, 'Host',
@@ -139,7 +144,10 @@ if __name__ == '__main__':
                 transform=ax.transAxes)
     gs.update(hspace=0, wspace=0)
     ax125A.set_xticks(ax125A.get_xticks()[0:-1])
+    for ax in fig.axes:
+        if ax is not axOut:
+            ax.axhline(1, color='k', lw=1.8, ls='--')
 
     fig.tight_layout()
-    # plt.show()
+    plt.show()
     plt.savefig('sineCurveFit_binCombined.pdf')

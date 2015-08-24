@@ -1,0 +1,47 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Berta {et~al.}(2012)Berta, Charbonneau, D\'{e}sert,
+  {et~al.}}]{Berta2012}
+Berta, Z.~K., Charbonneau, D., D\'{e}sert, J.-M., {et~al.} 2012, ApJ, 747, 35
+
+\bibitem[{Biretta(2014)}]{Biretta2014}
+Biretta, J. 2014, Space Telescope WFC Instrument Science Report, 1, 10
+
+\bibitem[{Bonnefoy {et~al.}(2014)Bonnefoy, Chauvin, Lagrange, Rojo, Allard,
+  Pinte, Dumas, \& Homeier}]{Bonnefoy2014}
+Bonnefoy, M., Chauvin, G., Lagrange, A.-M., Rojo, P., Allard, F., Pinte, C.,
+  Dumas, C., \& Homeier, D. 2014, A\&A, 562, A127
+
+\bibitem[{Dressel(2012)}]{dressel2012wide}
+Dressel, L. 2012, Wide Field Camera 3, HST Instrument Handbook, 1
+
+\bibitem[{{Kimble} {et~al.}(2008){Kimble}, {MacKenty}, {O'Connell}, \&
+  {Townsend}}]{Kimble2008}
+{Kimble}, R.~A., {MacKenty}, J.~W., {O'Connell}, R.~W., \& {Townsend}, J.~A.
+  2008, in Society of Photo-Optical Instrumentation Engineers (SPIE) Conference
+  Series, Vol. 7010, Society of Photo-Optical Instrumentation Engineers (SPIE)
+  Conference Series, 1
+
+\bibitem[{Kreidberg {et~al.}(2014)Kreidberg, Bean, D\'{e}sert,
+  {et~al.}}]{Kreidberg2014}
+Kreidberg, L., Bean, J.~L., D\'{e}sert, J.-M., {et~al.} 2014, Nature, 505, 69
+
+\bibitem[{Krist(1995)}]{Krist1995}
+Krist, J. 1995, in Astronomical Data Analysis Software and Systems IV, Vol.~77,
+  349
+
+\bibitem[{Mohanty {et~al.}(2007)Mohanty, Jayawardhana, Huelamo, \&
+  Mamajek}]{Mohanty2007}
+Mohanty, S., Jayawardhana, R., Huelamo, N., \& Mamajek, E. 2007, ApJ, 657, 1064
+
+\bibitem[{Patience {et~al.}(2010)Patience, King, {De Rosa}, \&
+  Marois}]{Patience2010}
+Patience, J., King, R.~R., {De Rosa}, R.~J., \& Marois, C. 2010, A\&A, 517, A76
+
+\bibitem[{Song {et~al.}(2006)Song, Schneider, Zuckerman, Farihi, Becklin,
+  Bessell, Lowrance, \& Macintosh}]{Song2006}
+Song, I., Schneider, G., Zuckerman, B., Farihi, J., Becklin, E.~E., Bessell,
+  M.~S., Lowrance, P., \& Macintosh, B.~A. 2006, ApJ, 652, 724
+
+\end{thebibliography}

@@ -1,16 +1,17 @@
-function pDistr=MCFit_fixP(fn1, fn2, nLoop, outputFN)
+function pDistr=MCFit_fixP(fn1, fn2, err1, err2, nLoop, outputFN)
 M1 = csvread(fn1, 1);
 t1 = M1(:, 1);
 fB1 = M1(:, 2);
-err1 = M1(:, 3);
 
 M2 = csvread(fn2, 1);
 t2 = M2(:, 1);
 fB2 = M2(:, 2);
-err2 = M2(:, 3);
+
 pDistr = zeros(nLoop, 1);
 amp125 = zeros(nLoop, 1);
 amp160 = zeros(nLoop, 1);
+phase125 = zeros(nLoop, 1);
+phase160 = zeros(nLoop, 1);
 p0 = [0.01 10.0, 0, 0.01, 0];
 for i=1:nLoop
     err1_1 = err1 .* randn(size(fB1));
@@ -23,5 +24,7 @@ for i=1:nLoop
     pDistr(i) = p(2);
     amp125(i) = p(1);
     amp160(i) = p(4);
+    phase125(i) = p(3);
+    phase160(i) = p(5);
 end
-csvwrite(outputFN, [pDistr, amp125, amp160]);
+csvwrite(outputFN, [pDistr, amp125, phase125, amp160, phase160]);
