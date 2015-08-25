@@ -1,0 +1,4 @@
+PRO residualError
+  restore, 'F125W_residual.sav'
+  print, size(residual)
+END
