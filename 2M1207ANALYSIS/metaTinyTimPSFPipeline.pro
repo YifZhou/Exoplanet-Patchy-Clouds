@@ -563,11 +563,13 @@ function combineResidual
     ENDFOREACH
     ENDFOREACH
     residualFN[1] = dateString()+'F160W_residual.sav'
-  save, residual, file = residualFN[1]
+    save, residual, file = residualFN[1]
+    return, residualFN
 END
      
 PRO metaTinyTimPSFPipeline
-  tinytimPSF, 0, ['', ''] ;; do not remove residual
-  residualFN = combineResidual()
+  ;; tinytimPSF, 0, ['', ''] ;; do not remove residual
+  ;; residualFN = combineResidual()
+  residualFN = ['2015_Aug_26F125W_residual.sav', '2015_Aug_26F160W_residual.sav']
   tinytimPSF, 1, residualFN
 END
