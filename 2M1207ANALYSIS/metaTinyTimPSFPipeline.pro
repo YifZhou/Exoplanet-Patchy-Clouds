@@ -401,8 +401,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0, removeResidual=remov
   ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
   ;; p.Close
-  
-  return, [amps[0]/total(PSF1), amps[1]/total(PSF2), amps[2], amps[3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13], amps[5], amps[6]]
+  return, [amps[0]/total(PSF1), amps[1]/total(PSF2), amps[2], amps[3], xyList[*, minID] + xy0 - [13, 13], comp_xy + xy0 - [13, 13], amps[4], amps[5]]
 END
 
 PRO tinytimPSF, removeResidual, residualFN
