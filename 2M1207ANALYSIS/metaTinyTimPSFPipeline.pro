@@ -224,9 +224,11 @@ FUNCTION fit2PSFs, im, PSF1, PSF2, mask, weight = weight
        [total(mask*(PSF1*PSF2*weight)), total(mask*(PSF2^2*weight)), total(mask*(PSF2*weight))],$
        [total(mask*(PSF1*weight)), total(mask*(PSF2*weight)), total(mask*weight)]]
   b = [[total(mask*(PSF1*im*weight))], [total(mask*(PSF2*im*weight))], total(mask*(im*weight))]
-  amp = LA_invert(A) ## b
-  res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- amp[2])^2))/total(mask)
+
+  invA = LA_invert(A)
   err = sqrt(diag_matrix(invA))
+  amp = invA ## b
+  res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- amp[2])^2))/total(mask)
   return, [amp[0], amp[1], amp[2], res, err[0], err[1]]
 END
 
