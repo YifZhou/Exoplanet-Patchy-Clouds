@@ -335,7 +335,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0, removeResidual=remov
   jityList = [0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40,0,10,20,30,40]
   FOR i = 0, nPSFs - 1 DO begin
      psf0 = mrdfits(PSF_fn[i],/silent)
-     mask1 = make_mask(mask,[[xy[0], xy[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 5]])
+     mask1 = make_mask(mask,[[xy1[0], xy1[1], 0, 3.0], [comp_xy[0], comp_xy[1], 0, 5]])
      xy = registerPSF(im, psf0, mask1, xy1, weight = 1/err^2)
      dxy = xy - [13, 13] ;; the displacement of the center of the image to the center of the psf
      xyList[*, i] = xy
