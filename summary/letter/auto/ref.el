@@ -18,5 +18,13 @@
     "Patience2010"
     "Bonnefoy2014"
     "Mohanty2007"
-    "Song2006")))
+    "Song2006"
+    "Buenzli2015"
+    "Buenzli2012"
+    "Yang2014"
+    "Radigan2012"
+    "Snellen2014"
+    "Metchev2015"
+    "Apai2013"
+    "Burgasser2013")))
 

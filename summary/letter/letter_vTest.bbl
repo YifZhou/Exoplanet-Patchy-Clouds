@@ -1,4 +1,4 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Berta {et~al.}(2012)Berta, Charbonneau, D\'{e}sert,
@@ -31,11 +31,6 @@ Kreidberg, L., Bean, J.~L., D\'{e}sert, J.-M., {et~al.} 2014, Nature, 505, 69
 Krist, J. 1995, in Astronomical Data Analysis Software and Systems IV, Vol.~77,
   349
 
-\bibitem[{Metchev {et~al.}(2015)Metchev, Heinze, Apai, Flateau, Radigan,
-  Burgasser, Marley, Artigau, Plavchan, \& Goldman}]{Metchev2015}
-Metchev, S.~A., Heinze, A., Apai, D., Flateau, D., Radigan, J., Burgasser, A.,
-  Marley, M.~S., Artigau, E., Plavchan, P., \& Goldman, B. 2015, ApJ, 799, 154
-
 \bibitem[{Mohanty {et~al.}(2007)Mohanty, Jayawardhana, Huelamo, \&
   Mamajek}]{Mohanty2007}
 Mohanty, S., Jayawardhana, R., Huelamo, N., \& Mamajek, E. 2007, ApJ, 657, 1064
@@ -43,11 +38,6 @@ Mohanty, S., Jayawardhana, R., Huelamo, N., \& Mamajek, E. 2007, ApJ, 657, 1064
 \bibitem[{Patience {et~al.}(2010)Patience, King, {De Rosa}, \&
   Marois}]{Patience2010}
 Patience, J., King, R.~R., {De Rosa}, R.~J., \& Marois, C. 2010, A\&A, 517, A76
-
-\bibitem[{Snellen {et~al.}(2014)Snellen, Brandl, de~Kok, Brogi, Birkby, \&
-  Schwarz}]{Snellen2014}
-Snellen, I. A.~G., Brandl, B.~R., de~Kok, R.~J., Brogi, M., Birkby, J., \&
-  Schwarz, H. 2014, Nature, 509, 63
 
 \bibitem[{Song {et~al.}(2006)Song, Schneider, Zuckerman, Farihi, Becklin,
   Bessell, Lowrance, \& Macintosh}]{Song2006}

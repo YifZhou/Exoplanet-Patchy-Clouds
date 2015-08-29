@@ -16,7 +16,8 @@
 \newcommand{\eps}{$\mathrm{e}^{-}/\mathrm{s}$}
 \newcommand{\tinytim}{\textit{Tiny Tim}}
 \newcommand{\bpic}{$\beta$ Pic}
-
+\newcommand{\vsini}{$v\sin i$}
+\newcommand{\mjup}{M$_{\mbox{Jup}}$}
 \begin{document}
 
 \title{Variability of Planetary Mass Companion 2M1207 B}
@@ -416,11 +417,10 @@ periods and the amplitudes for F125W and F160W light curves are
 shown in Figure \ref{fig:4}.
 
 
-\section{Result}
-
 \begin{figure*}
   \centering
-  \plottwo{periodDistr}{amplitudeDistr}
+  \includegraphics[width=0.45\textwidth]{periodDistr}
+  \includegraphics[width=0.45\textwidth]{amplitudeDistr}
   \caption{Distributions for periods (left) and amplitudes(right) for the light
     curve of F125W and F160W. The bin size for histograms of period is
   0.25 hour and for that of amplitude is 0.5\%. Histograms are
@@ -429,6 +429,10 @@ shown in Figure \ref{fig:4}.
   histograms and plotted in solid lines.}
   \label{fig:4}
 \end{figure*}
+
+\section{Result}
+
+
 
 \label{Results}
 We present the first high-contrast, high-resolution, high-cadence, and
@@ -487,28 +491,37 @@ of F125W light curve is 1.67 times of that of F160W light curve.
 \begin{figure*}
   \centering
   \plottwo{rotationDiagram}{JH}
-  \caption{.}
+  \caption{comparison of 2M1207's rotation period and color change with brown
+    dwarfs, \bpic{} b, and solar system planets. {\em Left}: period vs. mass
+  plot for 2M1207b (red square), solar system planets, and \bpic{} b
+  (blue squares) and brown dwarfs (black circles). The mass of brown
+  dwarfs are assumed to be 30 \mjup{}. The brown rectangle
+  ranging from 15 \mjup{} to 50 \mjup{} in $x$, and $\pm\sigma$
+  centered at mean rotation period of brown dwarfs in $y$, indicates a
+region that brown dwarf most likely to appear. {\em Right}: difference
+of variation amplitude in J and H band vs. spectral type for 2M1207b
+and brown dwarfs. Points are
+color coded with their J$-$H colors. }
   \label{fig:5}
 \end{figure*}
+
 A fundamental result of our study is the direct determination of the
 rotation period of a directly imaged planetary-mass object. In
-Figure~\ref{} we compare the rotation period and estimated {\em v sin
-  i} of 2M1207b to the solar system planets, field brown dwarfs from
-the study of \citep[][]{Metchev2015}, and \bpic b the only other
-directly imaged planet with an estimated period and measured {\em v sin i}.
-The study by \citep[][]{Snellen2014} succeeded in mesuring {\em v sin
-  i} for \bpic b and demonstrated that it fits a trend defined by
+Figure~\ref{fig:5} we compare the rotation period  of 2M1207b to the solar system planets, field brown dwarfs from
+the study of \citep[][]{Metchev2015}, and \bpic{} b the only other
+directly imaged planet with an estimated period and measured \vsini{}.
+The study by \citep[][]{Snellen2014} succeeded in mesuring \vsini{} for \bpic{} b and demonstrated that it fits a trend defined by
 Solar System planets in which more massive planets
-have faster rotation rates. The interesting finding that \bpic b, an exoplanet that formed in a
+have faster rotation rates. The interesting finding that \bpic{} b, an exoplanet that formed in a
 protoplanetary disk, follows this trend suggests a possibly connection
 between planet mass, initial angular momentum, and formation in a
 disk.
 
 Excitingly, our measurement of the rotation period of 2M1207b, an
 object with similar mass and age to \bpic b, show that their rotation
-periods are very similar, {\em in spite } of the fact that 2M1207b has
+periods are very similar, {\em in spite } of the fact that 2M1207b 
 most likely not formed in a circumstellar (or circumsubstellar) disk
-but is a result of gravitational fragmentation. This finding suggests
+but is a result of gravitational fragmentation. This suggests
 that rotation periods are not good tracers of the formation pathways
 and may not contribute important evidence for a formation in a disk
 vs. in a cloud core environment.
@@ -516,52 +529,63 @@ vs. in a cloud core environment.
 Our observations, furthermore, allow us to compare the relative
 amplitudes in the J- and H-bands between the handful of brown dwarfs
 for which high-quality near-infrared time-resolved observations have
-been obtained. In Figure~.. we plot the ... (provide references for
-the other objects). Which of these objects are high gravity
+been obtained. In the right panel of Figure \ref{fig:5}, we plot the
+relative amplitude of J- and H-bands of 2M1207b with brown dwarfs
+\citep{Apai2013,Buenzli2012,Buenzli2015,Radigan2012,Yang2014} that
+have different spectral types and J$-$H colors.
 
-This figure shows a strong correlation between the spectral type of
+This plot shows a strong correlation between the spectral type of
 the object and the J to H relative amplitude. The finding that earlier
-spectral type objects -- whether high or low gravity (XX: expand on
+spectral type objects -- independent of their surface gravity (XX: expand on
 this) -- have larger
 variations at shorter wavelength than at longer wavelengths demonstrates the
 spectral type-dependence of the heterogeneity in the atmospheres that
 introduce the variations.
 
-Importantly, although the J-H color of 2M1207b is very different from
-the other L5 dwarf and very similar to the redder 2M2139?? we note
-that the relative amplitude change is clearly more similar to the
-matching spectral type mid-L dwarfs. This suggests that the upper
+Importantly, although the J$-$H color of 2M1207b is very different from
+the other L5 dwarfs, we note that its relative amplitude change is clearly more similar to the
+matching spectral type mid-L dwarf 2M1821. This suggests that the upper
 cloud layers, probed through variability, may be more influenced by
 spectral type and less by cloud thickness, which is thought to
-influence the J-H color.
+influence the J$-$H color.
 
-
-Finally, we note that the observations presented here open an exciting
-new window on directly imaged exoplanets and planetary-mass
-objects. Our study is a  successful demonstration of high-cadence,
-high-precision, high-contrast photometry, a key for exoplanet mapping.
-We also show that these observations can be carried out simultaneously
-at multiple wavelengths, allowing us to prove multiple pressure
-levels.
 
 
 \section{Conclusions}
-\begin{itemize}
-\item a data-reduction pipeline is developed to obtain high precision
-  photometry measurement from high contrast WFC3 IR data. For a
-  contrast of $\sim 7$ magnitudes at an angular separation of
-  $\sim0.7''$, we obtained photometry measurement for 2M1207 B at
-  precision of about 2-3\%. 
-\item time variability for 2M1207 B was discovered, the light curve of
-  2M1207 B for both two colors can be fitted with a T=10.7 hr
-  sinusoidal curve.
-\item constrain on the amplitude of the amplitude of the
-  variability. Large amplitude can be excluded. Constraints on the
-  inhomogeniety of the cloud coverage can be inferred -- small
-  thickness variance...
-\item ? The atmosphere and cloud structure of 2M1207 B. How does it
-  compare to the brown dwarf.
-\end{itemize}
+In summary, we for the first time obtained 2-color high precision,
+high cadence photometric time series with planetary mass object
+2M1207b and discovered modulation in the light curves of both
+J and Hbands. We measured the modulation period to be $10.2^{+0.9}_{-0.8}$
+that is similar to direct imaged exoplanet \bpic{} b and longer than
+most field brown dwarfs with rotation period measurements. The
+relative modulation amplitude of J and H band is almost identical to
+one matching spectral type L5 dwarf, although they have very different
+J$-$H colors.
+
+Finally, we note that the observations presented here open an exciting
+new window on directly imaged exoplanets and planetary-mass
+objects. Our study demonstrates a successful application of high-cadence,
+high-precision, high-contrast photometry with planetary mass
+companion. We also show that these observations can be carried out simultaneously
+at multiple wavelengths, allowing us to prove multiple pressure
+levels. With observation of larger sample and more bands, we will be
+able to unveil the detailed structures of atmospheres of exoplanets.
+% % \begin{itemize}
+% % \item a data-reduction pipeline is developed to obtain high precision
+% %   photometry measurement from high contrast WFC3 IR data. For a
+% %   contrast of $\sim 7$ magnitudes at an angular separation of
+% %   $\sim0.7''$, we obtained photometry measurement for 2M1207 B at
+% %   precision of about 2-3\%. 
+% % \item time variability for 2M1207 B was discovered, the light curve of
+% %   2M1207 B for both two colors can be fitted with a T=10.7 hr
+% %   sinusoidal curve.
+% % \item constrain on the amplitude of the amplitude of the
+% %   variability. Large amplitude can be excluded. Constraints on the
+% %   inhomogeniety of the cloud coverage can be inferred -- small
+% %   thickness variance...
+% % \item ? The atmosphere and cloud structure of 2M1207 B. How does it
+% %   compare to the brown dwarf.
+% \end{itemize}
 
 
 \bibliography{ref.bib}

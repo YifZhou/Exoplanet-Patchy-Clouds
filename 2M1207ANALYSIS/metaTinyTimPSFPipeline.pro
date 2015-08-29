@@ -245,7 +245,7 @@ FUNCTION fit2PSFs_res, im, PSF1, PSF2, residual, mask, weight = weight
   b = [[total(mask*(PSF1*im*weight))], [total(mask*(PSF2*im*weight))], [total(mask*(residual*im*weight))], [total(mask*(im*weight))]]
   invA = LA_invert(A)
   amp = invA ## b
-
+  err = sqrt(diag_matrix(invA))
   res = total(mask * (weight*(im - PSF1*amp[0] -PSF2*amp[1]- residual * amp[2] - amp[3])^2))/total(mask)
   return, [amp[0], amp[1], amp[3], res, err[0], err[1]] ;; put the amplitude for residual at th end
 END

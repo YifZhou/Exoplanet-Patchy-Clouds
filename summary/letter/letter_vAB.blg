@@ -4,44 +4,44 @@ The top-level auxiliary file: letter_vAB.aux
 The style file: apj.bst
 Database file #1: letter_vABNotes.bib
 Database file #2: ref.bib.bib
-You've used 10 entries,
+You've used 12 entries,
             2947 wiz_defined-function locations,
-            717 strings with 6550 characters,
-and the built_in function-call counts, 4820 in all, are:
-= -- 392
-> -- 346
+            732 strings with 7180 characters,
+and the built_in function-call counts, 6141 in all, are:
+= -- 489
+> -- 482
 < -- 5
-+ -- 127
-- -- 117
-* -- 416
-:= -- 922
-add.period$ -- 10
-call.type$ -- 10
-change.case$ -- 77
-chr.to.int$ -- 10
-cite$ -- 10
-duplicate$ -- 197
-empty$ -- 279
-format.name$ -- 141
-if$ -- 924
++ -- 177
+- -- 165
+* -- 551
+:= -- 1179
+add.period$ -- 12
+call.type$ -- 12
+change.case$ -- 101
+chr.to.int$ -- 12
+cite$ -- 12
+duplicate$ -- 235
+empty$ -- 332
+format.name$ -- 195
+if$ -- 1165
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 8
-newline$ -- 34
-num.names$ -- 40
-pop$ -- 78
+missing$ -- 10
+newline$ -- 40
+num.names$ -- 48
+pop$ -- 103
 preamble$ -- 1
-purify$ -- 77
+purify$ -- 101
 quote$ -- 0
-skip$ -- 167
+skip$ -- 197
 stack$ -- 0
-substring$ -- 185
+substring$ -- 224
 swap$ -- 11
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 90
+type$ -- 108
 warning$ -- 0
-while$ -- 39
+while$ -- 47
 width$ -- 0
-write$ -- 103
+write$ -- 123

@@ -1,5 +1,10 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{18}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Apai {et~al.}(2013)Apai, Radigan, Buenzli, Burrows, Reid, \&
+  Jayawardhana}]{Apai2013}
+Apai, D., Radigan, J., Buenzli, E., Burrows, A., Reid, I.~N., \& Jayawardhana,
+  R. 2013, ApJ, 768, 121
 
 \bibitem[{Berta {et~al.}(2012)Berta, Charbonneau, D\'{e}sert,
   {et~al.}}]{Berta2012}
@@ -12,6 +17,20 @@ Biretta, J. 2014, Space Telescope WFC Instrument Science Report, 1, 10
   Pinte, Dumas, \& Homeier}]{Bonnefoy2014}
 Bonnefoy, M., Chauvin, G., Lagrange, A.-M., Rojo, P., Allard, F., Pinte, C.,
   Dumas, C., \& Homeier, D. 2014, A\&A, 562, A127
+
+\bibitem[{Buenzli {et~al.}(2012)Buenzli, Apai, Morley, Flateau, Showman,
+  Burrows, Marley, Lewis, \& Reid}]{Buenzli2012}
+Buenzli, E., Apai, D., Morley, C.~V., Flateau, D., Showman, A.~P., Burrows, A.,
+  Marley, M.~S., Lewis, N.~K., \& Reid, I.~N. 2012, ApJ, 760, L31
+
+\bibitem[{Buenzli {et~al.}(2015)Buenzli, Saumon, Marley, Apai, Radigan, Bedin,
+  Reid, \& Morley}]{Buenzli2015}
+Buenzli, E., Saumon, D., Marley, M.~S., Apai, D., Radigan, J., Bedin, L.~R.,
+  Reid, I.~N., \& Morley, C.~V. 2015, ApJ, 798, 127
+
+\bibitem[{{Burgasser} {et~al.}(2013){Burgasser}, {Sheppard}, \&
+  {Luhman}}]{Burgasser2013}
+{Burgasser}, A.~J., {Sheppard}, S.~S., \& {Luhman}, K.~L. 2013, ApJ, 772, 129
 
 \bibitem[{Dressel(2012)}]{dressel2012wide}
 Dressel, L. 2012, Wide Field Camera 3, HST Instrument Handbook, 1
@@ -44,6 +63,11 @@ Mohanty, S., Jayawardhana, R., Huelamo, N., \& Mamajek, E. 2007, ApJ, 657, 1064
   Marois}]{Patience2010}
 Patience, J., King, R.~R., {De Rosa}, R.~J., \& Marois, C. 2010, A\&A, 517, A76
 
+\bibitem[{Radigan {et~al.}(2012)Radigan, Jayawardhana, Lafreni\`{e}re, Artigau,
+  Marley, \& Saumon}]{Radigan2012}
+Radigan, J., Jayawardhana, R., Lafreni\`{e}re, D., Artigau, E., Marley, M., \&
+  Saumon, D. 2012, ApJ, 750, 105
+
 \bibitem[{Snellen {et~al.}(2014)Snellen, Brandl, de~Kok, Brogi, Birkby, \&
   Schwarz}]{Snellen2014}
 Snellen, I. A.~G., Brandl, B.~R., de~Kok, R.~J., Brogi, M., Birkby, J., \&
@@ -53,5 +77,13 @@ Snellen, I. A.~G., Brandl, B.~R., de~Kok, R.~J., Brogi, M., Birkby, J., \&
   Bessell, Lowrance, \& Macintosh}]{Song2006}
 Song, I., Schneider, G., Zuckerman, B., Farihi, J., Becklin, E.~E., Bessell,
   M.~S., Lowrance, P., \& Macintosh, B.~A. 2006, ApJ, 652, 724
+
+\bibitem[{Yang {et~al.}(2014)Yang, Apai, Marley, Saumon, Morley, Buenzli,
+  Artigau, Radigan, Metchev, Burgasser, Mohanty, Lowrance, Showman, Karalidi,
+  Flateau, \& Heinze}]{Yang2014}
+Yang, H., Apai, D., Marley, M.~S., Saumon, D., Morley, C.~V., Buenzli, E.,
+  Artigau, E., Radigan, J., Metchev, S., Burgasser, A.~J., Mohanty, S.,
+  Lowrance, P.~J., Showman, A.~P., Karalidi, T., Flateau, D., \& Heinze, A.~N.
+  2014, ApJ, 798, L13
 
 \end{thebibliography}

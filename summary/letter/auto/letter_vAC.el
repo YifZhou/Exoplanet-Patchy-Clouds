@@ -1,5 +1,5 @@
 (TeX-add-style-hook
- "letter_vAB"
+ "letter_vAC"
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-class-options
                      '(("emulateapj" "apj")))
@@ -27,7 +27,9 @@
     "flt"
     "eps"
     "tinytim"
-    "bpic")
+    "bpic"
+    "vsini"
+    "mjup")
    (LaTeX-add-labels
     "fig:1"
     "fig:2"

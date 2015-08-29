@@ -7,7 +7,6 @@
 \usepackage{natbib}
 \bibliographystyle{apj}
 \usepackage[breaklinks,colorlinks,citecolor=blue,linkcolor=magenta]{hyperref}
-\shorttitle{Short Title}
 \shortauthors{Zhou et al.}
 
 %%% new command %%%
@@ -16,7 +15,8 @@
 \newcommand{\eps}{$\mathrm{e}^{-}/\mathrm{s}$}
 \newcommand{\tinytim}{\textit{Tiny Tim}}
 \newcommand{\bpic}{$\beta$ Pic}
-
+\newcommand{\vsini}{$v\sin i$}
+\newcommand{\mjup}{M$_{\mbox{Jup}}$}
 \begin{document}
 
 \title{Variability of Planetary Mass Companion 2M1207 B}
@@ -154,7 +154,8 @@ by image interpolation and shifting. On the other hand, \tinytim{} PSF
 simulator\citep{Krist1995} offers a solution by providing Nyquist
 sampled PSF, but significant systematic errors of \tinytim{} PSF
  limits its ability in high precision
-photometry\citep{Biretta2014}. However, 6 orbits of observation provides us a chance to
+photometry\citep{Biretta2014}. However, 6 orbits of observation
+provides us an opportunity to
 fully characterize the difference of model and observed PSFs. To obtain
 robust \tinytim{} PSF photometry,  we designed a 2-round PSF fitting strategy: 1. calculating
 correction map for \tinytim{}; 2. hybrid PSF photometry.
@@ -170,7 +171,8 @@ website\footnote{\url{http://www.stsci.edu/hst/observatory/focus/FocusModel}}.
 We determined the exact position of 2M1207A first by fitting the PSF
 on a dynamic coordinate grid and minimizing the difference in the
 observed and modeled PSFs at a region centered on 2M1207 A with a
-5-pixel-radius aperture centered 2M1207 b excluded.Then we fit the
+5-pixel-radius aperture centered on 2M1207 b excluded. Then introduce
+another \tinytim{} PSF for 2M1207b and  fit the
 position of 2M1207 b and the photometries of 2M1207 A and b together
 by least square optimization. From our data set, we discovered that
 the difference of observed PSFs and model PSFs are very stable for
@@ -182,12 +184,12 @@ empirical correction maps for each filter:
 \end{equation}
 where $\mathrm{PSF_{model}}$ is a combination of two \tinytim{} PSFs
 for 2M1207 A and b. In the second round, we combined the correction
-term linearly with the two \tinytim{} PSFs to generate hybrid PSFs, and fitted for their
-amplitudes together. We found that by including the correction term,
+term linearly with the two \tinytim{} PSFs to generate hybrid PSFs,
+and scaled the three component together to get best fit. We found that by including the correction term,
 the reduced $\chi^{2}$ of PSF fitting is decreased from $\sim 10$ to
 around unity. Because the total fluxes of the model PSFs were
 normalized to unity as default, the fluxes of 2M1207 A and B were
-solely represented by the amplitude of the two PSFs coordinately.
+solely represented by the amplitude of the two PSFs.
 
 However, PSF profiles change with different exposure positions due to
 pixelation, especially for the case that WFC3 IR is significantly
@@ -284,9 +286,9 @@ dominated by photon noise.
   \centering
   \plotone{systematics}
   \caption{F125W (left) and F160W (right) light curves under different
-  verification tests. Individual measurements are plotted with gray
+  variability verification tests. Individual measurements are plotted with gray
   crosses. Photometries of the same exposure sequence are binned, and
-  binned data are plotted with points and squares. Fitted sinusoidal
+  binned data are plotted with points or squares. Fitted sinusoidal
   waves are plotted with solid lines. {\em Upper}: binned photometries taken
 in dithering position 1 and 3 (red points) and that taken in 2 and 4
 (blue squares) are plotted differently. They demonstrate same trend of
@@ -407,28 +409,31 @@ data set (\ref{fig:2}, upper panel).
 \subsection{Amplitude and Period Measurements}
 
 To constrain the uncertainties of the least square optimization
-results, we used a Monte Carlo(MC) method to improve the fitting. We
+results, we used a MC method to improve the fitting. We
 generated a series of random Gaussian noises with the standard deviation same as
 the photon noise, added them to the original light curves, and applied
-least square fit to the new light curves. We repeated above routine for 10000 times and obtained
+least square fit to the new light curves. We repeated above routine for 100,000 times and obtained
 the distribution of the fitting parameters. The distributions for the
 periods and the amplitudes for F125W and F160W light curves are
 shown in Figure \ref{fig:4}.
 
 
-\section{Result}
-
 \begin{figure*}
   \centering
-  \plottwo{periodDistr}{amplitudeDistr}
+  \includegraphics[width=0.45\textwidth]{periodDistr}
+  \includegraphics[width=0.45\textwidth]{amplitudeDistr}
   \caption{Distributions for periods (left) and amplitudes(right) for the light
     curve of F125W and F160W. The bin size for histograms of period is
   0.25 hour and for that of amplitude is 0.5\%. Histograms are
   normalized in the way that total area of the histogram equals to
   1. In the right panel, Gaussian profiles are fitted to the
-  histograms and plotted in solid lines.}
+  histograms of periods and plotted in solid lines.}
   \label{fig:4}
 \end{figure*}
+
+\section{Result}
+
+
 
 \label{Results}
 We present the first high-contrast, high-resolution, high-cadence, and
@@ -436,8 +441,8 @@ high-precision photometry of a directly imaged planet or
 planetary-mass companion. Our observations reveal a modulation in the
 light curve of the 5--7~M$_{J}$ companion 2M1207b, the first detection
 of modulations in directly imaged ultracool objects.  The best fit
-periods for F125W and F160W are 10.4 and 9.0 hour correspondingly. The
-amplitudes for the normalized light curves are 1.4\% and 0.9\% for
+periods for F125W and F160W are 10.5 and 9.1 hour correspondingly. The
+amplitudes for the normalized light curves are 1.45\% and 0.92\% for
 F125W and F160W light curves. 
 
 We obtained high signal to noise photometry series for both 2M1207 A
@@ -449,28 +454,28 @@ F160W contrast from that measured with NICMOS F160W
 \citep{Song2006} is due to the different throughput profiles of the
 filters.
 
-In the following we will discuss the amplitude and period of 2M1207B
-and place this object in the broader context of ultracool atmospheres.
+% In the following we will discuss the amplitude and period of 2M1207B
+% and place this object in the broader context of ultracool atmospheres.
 
 The distributions for the periods demonstrate long tail shaped towards
-long period, with core region roughly Gaussian. With probability range
-of 64\%(1-$\sigma$ Gaussian), we estimated the 1-$\sigma$ range for
-the periods of F125W and F160W to be  $10.5_{-1.2}^{+1.3}$ and
-$9.1_{-1.0}^{+1.1}$ h, respectively. The period for best
-fitted sine wave of F125W light curve is longer than that of F160W for
-1.5 h that is slight larger 1-$\sigma$ standard deviation. We also
-performed a joint MC fit with the two light curves with the assumption
-that the periods of the variation of the two bands are the same. We
-derived a period of $10.2^{+0.9}_{-0.8}$ h. 
+long period, with core region roughly Gaussian. With 64\% confidence,
+we estimated the 1-$\sigma$ range for the periods of F125W and F160W
+to be $10.5_{-1.2}^{+1.3}$ and $9.1_{-1.0}^{+1.1}$ h,
+respectively. The period of best fitted sine wave of F125W light
+curve is 1.5h longer than that of F160W  that is slight larger
+1-$\sigma$ standard deviation. We also jointly fit the two band light
+curve together forcing the periods of two sine waves to be the
+same. We derived a modulation period of $10.2^{+0.9}_{-0.8}$ h in this
+circumstance. 
 
-The variation amplitudes in the two bands have significant
-difference. The distributions of the amplitudes are well described by
-Gaussian profiles. Fitting the histogram to a Gaussian function, we
-determined that amplitude distribution of F125W peaks at 1.5\% with a
-standard deviation of 0.3\%, and that of F160W have mean and standard
-deviation of 0.9\% and 0.2\%, respectively. The peaks of the two
+We discovered that  the variation amplitudes in the two bands were significantly
+different. The distributions of the amplitudes are well described by
+Gaussian profiles. By fitting a Gaussian function to the distribution, we
+determined that amplitude distribution of F125W peaks at 1.45\% with a
+standard deviation of 0.22\%, and that of F160W have mean and standard
+deviation of 0.92\% and 0.20\%, respectively. The peaks of the two
 histograms separated by more than 2-$\sigma$. The variation amplitude
-of F125W light curve is 1.67 times of that of F160W light curve.
+of F125W light curve is 1.58 times of that of F160W light curve.
 
 
 %Although the photometric time series demonstrate relatively large
@@ -480,35 +485,45 @@ of F125W light curve is 1.67 times of that of F160W light curve.
 %periods and variation amplitudes.
 
 
-
-
 \section{Discussion}
 
 \begin{figure*}
   \centering
   \plottwo{rotationDiagram}{JH}
-  \caption{.}
+  \caption{comparison of 2M1207's rotation period and color change with brown
+    dwarfs, \bpic{} b, and solar system planets. {\em Left}: period vs. mass
+  plot for 2M1207b (red square), solar system planets and \bpic{} b
+  (blue squares), and brown dwarfs (black circles, gray shade). The mass of brown
+  dwarfs are assumed to be 30 \mjup{}. The gray rectangle
+  ranging from 15 \mjup{} to 50 \mjup{} in $x$, and $\pm\sigma$
+  with the center at mean rotation period of brown dwarfs in $y$, indicates a
+region where brown dwarfs most likely to appear in this diagram. {\em Right}: ratio
+of variation amplitude in J and H band vs. spectral type for 2M1207b
+and brown dwarfs. Points are
+color coded with their J$-$H colors. }
   \label{fig:5}
 \end{figure*}
+
 A fundamental result of our study is the direct determination of the
 rotation period of a directly imaged planetary-mass object. In
-Figure~\ref{} we compare the rotation period and estimated {\em v sin
-  i} of 2M1207b to the solar system planets, field brown dwarfs from
-the study of \citep[][]{Metchev2015}, and \bpic b the only other
-directly imaged planet with an estimated period and measured {\em v sin i}.
-The study by \citep[][]{Snellen2014} succeeded in mesuring {\em v sin
-  i} for \bpic b and demonstrated that it fits a trend defined by
-Solar System planets in which more massive planets
-have faster rotation rates. The interesting finding that \bpic b, an exoplanet that formed in a
+Figure~\ref{fig:5} we compare the rotation period of 2M1207b to the
+solar system planets, field brown dwarfs that have well defined
+rotation period from the study of
+\citep[][]{Metchev2015}, and \bpic{} b the only other directly imaged
+planet with an estimated period from measured \vsini{}.  The study by
+\citep[][]{Snellen2014} succeeded in mesuring \vsini{} for \bpic{} b
+and demonstrated that it fits a trend defined by Solar System planets
+in which more massive planets have faster rotation rates. The
+interesting finding that \bpic{} b, an exoplanet that formed in a
 protoplanetary disk, follows this trend suggests a possibly connection
 between planet mass, initial angular momentum, and formation in a
 disk.
 
 Excitingly, our measurement of the rotation period of 2M1207b, an
-object with similar mass and age to \bpic b, show that their rotation
-periods are very similar, {\em in spite } of the fact that 2M1207b has
+object with similar mass and age to \bpic{} b, show that their rotation
+periods are very similar, {\em in spite } of the fact that 2M1207b 
 most likely not formed in a circumstellar (or circumsubstellar) disk
-but is a result of gravitational fragmentation. This finding suggests
+but is a result of gravitational fragmentation. This suggests
 that rotation periods are not good tracers of the formation pathways
 and may not contribute important evidence for a formation in a disk
 vs. in a cloud core environment.
@@ -516,52 +531,67 @@ vs. in a cloud core environment.
 Our observations, furthermore, allow us to compare the relative
 amplitudes in the J- and H-bands between the handful of brown dwarfs
 for which high-quality near-infrared time-resolved observations have
-been obtained. In Figure~.. we plot the ... (provide references for
-the other objects). Which of these objects are high gravity
+been obtained. In the right panel of Figure \ref{fig:5}, we plot the
+relative amplitude of J- and H-bands of 2M1207b with brown dwarfs
+\citep{Apai2013,Buenzli2012,Buenzli2015,Burgasser2013,Radigan2012,Yang2014} that
+have different spectral types and J$-$H colors.
 
-This figure shows a strong correlation between the spectral type of
-the object and the J to H relative amplitude. The finding that earlier
-spectral type objects -- whether high or low gravity (XX: expand on
-this) -- have larger
-variations at shorter wavelength than at longer wavelengths demonstrates the
-spectral type-dependence of the heterogeneity in the atmospheres that
-introduce the variations.
+We found a strong correlation between the spectral type of the object
+and the J to H variation amplitude ratio. Figure \ref{fig:5}
+demonstrates that earlier spectral type objects -- independent of
+their surface gravity -- have larger variations at shorter wavelength
+than at longer wavelengths. Importantly, although the J$-$H color of
+2M1207b is significantly redder the other L5 dwarfs, we note that its
+relative variation amplitude ratio is almost identical to the matching
+spectral type mid-L dwarf 2M1821. This suggests that the upper cloud
+layers, probed through variability, may be more influenced by spectral
+type and less by cloud thickness, which is thought to influence the
+J$-$H color.
 
-Importantly, although the J-H color of 2M1207b is very different from
-the other L5 dwarf and very similar to the redder 2M2139?? we note
-that the relative amplitude change is clearly more similar to the
-matching spectral type mid-L dwarfs. This suggests that the upper
-cloud layers, probed through variability, may be more influenced by
-spectral type and less by cloud thickness, which is thought to
-influence the J-H color.
 
+{\bf Two questions: What processes sets the relative J vs H amplitude
+  and why is it tied to the pectral type and not to the NIR colors or
+  surface gravity? What does this tell us about the cloud structure
+  as a function of spectral type / gravity (even if speculation)?}
+
+\section{Conclusions}
+In summary from our J- and H-band high precision,
+high-cadence lightcurves we discovered sinusoidal modulations in the  planetary mass object
+2M1207b. This is the first detection of rotational modulations in a
+directly imaged planetary mass object.  
+The period is  $10.2^{+0.9}_{-0.8}$, very similar to that derived from
+{\em v sin i} measurements for  the direct imaged exoplanet \bpic{} b and significantly longer than
+most field brown dwarfs with known rotation periods. The
+relative modulation amplitude of J and H band is almost identical to
+one matching spectral type L5 dwarf, although they have very different
+J$-$H colors, and it is markedly different form later spectral type
+brown dwarfs.
 
 Finally, we note that the observations presented here open an exciting
 new window on directly imaged exoplanets and planetary-mass
-objects. Our study is a  successful demonstration of high-cadence,
-high-precision, high-contrast photometry, a key for exoplanet mapping.
-We also show that these observations can be carried out simultaneously
+objects. Our study demonstrates a successful application of high-cadence,
+high-precision, high-contrast photometry with planetary mass
+companion. We also show that these observations can be carried out simultaneously
 at multiple wavelengths, allowing us to prove multiple pressure
-levels.
-
-
-\section{Conclusions}
-\begin{itemize}
-\item a data-reduction pipeline is developed to obtain high precision
-  photometry measurement from high contrast WFC3 IR data. For a
-  contrast of $\sim 7$ magnitudes at an angular separation of
-  $\sim0.7''$, we obtained photometry measurement for 2M1207 B at
-  precision of about 2-3\%. 
-\item time variability for 2M1207 B was discovered, the light curve of
-  2M1207 B for both two colors can be fitted with a T=10.7 hr
-  sinusoidal curve.
-\item constrain on the amplitude of the amplitude of the
-  variability. Large amplitude can be excluded. Constraints on the
-  inhomogeniety of the cloud coverage can be inferred -- small
-  thickness variance...
-\item ? The atmosphere and cloud structure of 2M1207 B. How does it
-  compare to the brown dwarf.
-\end{itemize}
+levels. With observation of a larger sample and at multiple wavelengths, we will be
+able to explore  the detailed structures of atmospheres of directly
+imaged exoplanets, and identify the key parameters that determine these.
+% % \begin{itemize}
+% % \item a data-reduction pipeline is developed to obtain high precision
+% %   photometry measurement from high contrast WFC3 IR data. For a
+% %   contrast of $\sim 7$ magnitudes at an angular separation of
+% %   $\sim0.7''$, we obtained photometry measurement for 2M1207 B at
+% %   precision of about 2-3\%. 
+% % \item time variability for 2M1207 B was discovered, the light curve of
+% %   2M1207 B for both two colors can be fitted with a T=10.7 hr
+% %   sinusoidal curve.
+% % \item constrain on the amplitude of the amplitude of the
+% %   variability. Large amplitude can be excluded. Constraints on the
+% %   inhomogeniety of the cloud coverage can be inferred -- small
+% %   thickness variance...
+% % \item ? The atmosphere and cloud structure of 2M1207 B. How does it
+% %   compare to the brown dwarf.
+% \end{itemize}
 
 
 \bibliography{ref.bib}
