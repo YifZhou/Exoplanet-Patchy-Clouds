@@ -21,8 +21,10 @@
 
 \title{Variability of Planetary Mass Companion 2M1207 B}
 \shorttitle{Variability of 2M1207 B}
-\author{Yifan Zhou, Daniel Apai, Glenn Schneider, ...}
-\affil{The University of Arizona}
+\author{Yifan Zhou, Daniel Apai, Glenn Schneider}
+\affil{Steward Observatory, the University of Arizona}
+\author{Mark Marley}
+\affil{NASA Ames Research Center}
 
 \begin{abstract} Rotational modulations in disk-integrated light of
 brown dwarfs have recently provided powerful constraints on the
@@ -94,9 +96,12 @@ orbits 2, 4, and 6 differed by $25^{\circ}$. At the separation of
 $0.34''$ or 2.75 and 2.30 resolution elements in F125W and F160W,
 respectively. In each orbit we took thirteen SPARS10 non-destructive
 read-outs with NSAMP=10, alternating between F160W and F125W filters,
-with 2--3 identical exposures in one exposure sequence. To improve PSF
-sampling and reduce the risk caused by bad pixels, we applied standard
-4 point dithering. Over the 6 orbits, we obtained 70 images with 10
+with 2--3 identical exposures in one exposure sequence. To improve
+sampling and reduce the risk that point spread funciton (PSF) lays on
+bad pixels, we applied a 4-point dither patternwith differential "X/Y"
+offsets of 1.375" in the detector frame, providing optimal
+non-integral (half pixel) stepping of 10.5 and 8.5 pixels in F125W and
+F160W, respectively.. Over the 6 orbits, we obtained 70 images with 10
 non-destructive read-outs in F125W and 64 images in F160W with
 exposure time of 88.4~s in each filters.
 
@@ -125,8 +130,10 @@ exposure time of 88.4~s in each filters.
 \begin{figure*}
   \centering
   \plottwo{original}{subtracted}
-  \caption{WFC3 F160W images of 2M1207A system. {\em Upper panel}: In the original image 
-    2M1207 B is hidden in the halo of the bright 2M1207A.   {\em Lower panel:} In the residual image -- after the subtraction of the hybrid PSF -- 2M1207 B is detected at a high significant level.}
+  \caption{WFC3 F160W images for 2M1207 system. {\em Upper panel}:
+    original image, the position of 2M1207b is indicated using white
+    circle.   {\em Lower panel:} residual image -- after the
+    subtraction of the hybrid PSF, 2M1207 B is detected at a high significant level.}
   \label{fig:1}
 \end{figure*}
 
@@ -140,8 +147,8 @@ are results of basic calibration, including dark current correction,
 non-linearity correction, flat field correction, as well as
 up-the-ramp fit on the non-destructive read-outs also considering
 cosmic rays. From the beginning, pixels with data quality flags ``bad
-detector pixels'' (DQ = 4), ``unstable response'' (DQ = 32), and ``bad
-or uncertain flat value'' (DQ = 512) were masked out and excluded from
+detector pixels'', ``unstable response'', and ``bad
+or uncertain flat value'' were masked out and excluded from
 further analysis as suggested by previous transit exoplanet
 spectroscopic observations\citep[e.g.][]{Berta2012, Kreidberg2014}.
 
@@ -151,55 +158,54 @@ is significant under-sampling of the detector.  2M1207 A and b are
 only separated by $\sim6$ pixels or $\sim$5 FWHM of the PSF. When
 applying roll subtraction, notable artifact structures are generated
 by image interpolation and shifting. On the other hand, \tinytim{} PSF
-simulator\citep{Krist1995} offers a solution by providing Nyquist
-sampled PSF, but significant systematic errors of \tinytim{} PSF
- limits its ability in high precision
-photometry\citep{Biretta2014}. However, 6 orbits of observation
-provides us an opportunity to
-fully characterize the difference of model and observed PSFs. To obtain
-robust \tinytim{} PSF photometry,  we designed a 2-round PSF fitting strategy: 1. calculating
+simulator\citep{Krist1995} offers a solution by providing Nyquist or better
+sampled PSF, but systematic errors of \tinytim{} PSF for WFC3 limits
+its ability in high precision photometry\citep{Biretta2014}. However,
+we are able to fully characterize the difference of model and observed
+PSFs with 6 orbits time-resolved observation data. To obtain robust \tinytim{} PSF
+photometry, we designed a 2-round PSF fitting strategy: 1. calculating
 correction map for \tinytim{}; 2. hybrid PSF photometry.
 
 For both of 2 rounds, we used {\em Tiny Tim} to calculate 10$\times$
-over-sampled model PSFs based the filters, the spectra 
+over-sampled model PSFs based on the filters, the spectra 
 \citep{Bonnefoy2014, Patience2010}, the telescope's actual focus, and
 the telescope jitter.  We used the new set of Tiny Tim parameters
-provided by \cite{Biretta2014} to better model the cold mask,
-diffraction spikes, and the coma. The focus parameters were calculated
+provided by \cite{Biretta2014} to improve model of the cold mask,
+OTA spikes, and the coma. The focus parameters were calculated
 using the model listed on the STScI
-website\footnote{\url{http://www.stsci.edu/hst/observatory/focus/FocusModel}}.
-We determined the exact position of 2M1207A first by fitting the PSF
-on a dynamic coordinate grid and minimizing the difference in the
-observed and modeled PSFs at a region centered on 2M1207 A with a
-5-pixel-radius aperture centered on 2M1207 b excluded. Then introduce
+website\footnote{\url{http://www.stsci.edu/hst/observatory/focus/FocusModel}}. To
+register \tinytim{} PSF to observed PSF of 2M1207A, we moved the
+over-sampled PSF over a coordinate grid (gird size=0.001 pixel) using
+cubic interpolation and minimize the rms difference of the
+observed and re-binned \tinytim{} PSFs over a region centered on 2M1207A with a
+5-pixel-radius aperture centered on 2M1207b excluded. Then we introduce
 another \tinytim{} PSF for 2M1207b and  fit the
-position of 2M1207 b and the photometries of 2M1207 A and b together
+position of 2M1207 b and the photometries of 2M1207 A and b simultaneously
 by least square optimization. From our data set, we discovered that
-the difference of observed PSFs and model PSFs are very stable for
-given PSF position. Therefore at the end of the first round PSF
+the difference of observed PSFs and model PSFs were very stable for
+given PSF positions. Therefore at the end of the first round PSF
 fitting, we derived 8 (2 roll angles $\times$ 4 dithering positions)
-empirical correction maps for each filter:
+observationally derived correction maps for each filter:
 \begin{equation}
-  \mathrm{Corr = Median(PSF_{model} - PSF_{obs} )}
+  \mathrm{Corr = Median(PSF_{obs.} - PSF_{model} )}
 \end{equation}
 where $\mathrm{PSF_{model}}$ is a combination of two \tinytim{} PSFs
 for 2M1207 A and b. In the second round, we combined the correction
 term linearly with the two \tinytim{} PSFs to generate hybrid PSFs,
-and scaled the three component together to get best fit. We found that by including the correction term,
+and fitted the three components together. We found that by including the correction term,
 the reduced $\chi^{2}$ of PSF fitting is decreased from $\sim 10$ to
-around unity. Because the total fluxes of the model PSFs were
-normalized to unity as default, the fluxes of 2M1207 A and B were
-solely represented by the amplitude of the two PSFs.
+around unity. Relative photometry is acquired from the scaling
+parameters of the model PSFs.
 
-However, PSF profiles change with different exposure positions due to
+PSF profiles change with exposure positions due to
 pixelation, especially for the case that WFC3 IR is significantly
 under-sampled. Also, the flat fields may potentially have large scale
-structures \citep{dressel2012wide}. Because of these factors, the
-fluxes for both 2M1207 A and B are correlated with the dithering
-position. To break the correlation, we normalize each group of
+structures \citep{dressel2012wide}. We found a correlation of
+photometry with PSF positions on detector frame for both 2M1207 A and
+b. Correction were made by normalizing each group of
 exposures that have the same dithering position and roll angle
 individually -- we took the median of the fluxes that were measured
-from these exposures as normalization factors and devided them from
+from these exposures as normalization factors and divided them from
 every photometric measurement. Because the normalization factor for
 each group of exposures is calculated across the whole observation,
 this normalization step have negligible impacts on variability
@@ -255,60 +261,55 @@ analysis.
 % listed above. Using this extra-step, the reduced $\chi^{2}$
 % greatly decreased to around unity.
 
-
-
-
-% %\section{Uncertainty analysis}
-
-\subsection{Uncertainty Analysis: White noise}
-We consider the primary source of uncertainty for every measurement is
-photon noise. We propagated the photon noises of every single pixel
-that were calculated from count rates and detector gain, to the PSF
-fitting results. The photon noises for photometry in F125W and F160W
-are 1.33\% and 1.02\%, respectively.
-
-Since the primary and secondary PSFs were fitted simultaneously in our
-PSF photometry procedure, the uncertainties of photometry and position
-for the primary and secondary are coupled with each other. The second
-order uncertainty could also contribute to the overall uncertainty,
-e.g. the imperfection of position measurement of 2M1207A can affect
-the photometry of 2M1207b. We used a Monte Carlo (MC) method to evaluate the complete systematic of the
-PSF fitting. We applied the PSF photometry to images that
-were added with random Poisson noise and repeat the procedure for 1000
-time. From the distribution of the result, the uncertainty for F125W
-and F160W photometry are found to be 1.34\% and 1.12\%,
-respectively. We conclude that the white noise of our observation is
-dominated by photon noise. 
-
-\subsection{Uncertainty Analysis: Flat field uncertainties}
-
  \begin{figure*}
   \centering
   \plotone{systematics}
   \caption{F125W (left) and F160W (right) light curves under different
   variability verification tests. Individual measurements are plotted with gray
   crosses. Photometries of the same exposure sequence are binned, and
-  binned data are plotted with points or squares. Fitted sinusoidal
-  waves are plotted with solid lines. {\em Upper}: binned photometries taken
+  binned photometry are  plotted with points or squares. Best fitted sinusoidal
+  curves are plotted with solid lines. {\em Upper}: binned photometries taken
 in dithering position 1 and 3 (red points) and that taken in 2 and 4
-(blue squares) are plotted differently. They demonstrate same trend of
-variation. In upper left panel, sinusoidal wave fitted with all
-parameter set free, and that fitted with period set the same as that
-of F125W are plotted with green and purple lines, respectively. {\em
+(blue squares) are plotted with different symbols. They demonstrate same trend of
+variation. In upper left panel, green line is sinusoidal wave fitted with all
+parameter set free, and purple line is sinusoidal wave fitted with period set the same as that
+of F125W. {\em
   Middle}: sinusoidal waves fitted without using the data taken in
-Orbit 1 are plotted. These curves are almost identical to the curves
+Orbit \#1. These curves are almost identical to the curves
 plotted in upper panel. {\em Lower}: photometry measured with
-AFEM-applied images and their best fitted sinusoidal curves are
-plotted. These photometries and curves are also almost identical to
-those plotted in upper panel.}
+AFEM-added images and best fitted sinusoidal curves. These photometries and curves are also almost identical to
+those plotted in the upper panel.}
   \label{fig:2}
 \end{figure*}
 
-In our observations 2M1207 B were observed at 8 different spots on the
+
+\subsection{Uncertainty Analysis: White noise}
+First we estimated the photon noises for the photometry of 2M1207b. We
+propagated the photon noises of every single pixel that were
+calculated from count rates and detector gain, to the PSF fitting
+results. The photon noises for photometry in F125W and F160W are
+1.33\% and 1.02\%, respectively.
+
+Since the PSFs for the 2M1207 A and b were fitted simultaneously in our
+PSF photometry procedure, the uncertainties of photometry and position
+for the primary and secondary are coupled. Imperfection of position
+measurement of 2M1207A could potentially affect the photometry of
+2M1207b. We used a Monte Carlo (MC) method to
+evaluate the overall systematic of the PSF fitting. We applied the
+PSF photometry to images that were added with random Poisson noises and
+repeat the photometry procedure for 1000 times. From the distribution of the
+result, the uncertainty for F125W and F160W photometry are 
+1.34\% and 1.12\%, respectively. We conclude that the white noise of
+our observation is dominated by photon noise.
+
+\subsection{Uncertainty Analysis: Flat field uncertainties}
+
+
+2M1207b were observed at 8 different spots on the
 detector (2 rolls $\times$ 4 dithering positions). Imperfect flat
 field correction are potential sources of variation as they may
 introduce position-dependent differences in the count rates. The
-uncertainty of WFC3 IR pipeline flat field is $\sim 1\%$
+uncertainty of WFC3 IR pipeline flat field is typically $\sim 1\%$
 \citep{dressel2012wide}.
 % and our time resolved observations for another target
 %demonstrate that aperture photometry for exposures taken at different
