@@ -1,0 +1,264 @@
+\message{ !name(ms_vAA.tex)}% Use only LaTeX2e, calling the article.cls class and 12-point type.
+
+\documentclass[12pt]{article}
+
+% Users of the {thebibliography} environment or BibTeX should use the
+% scicite.sty package, downloadable from *Science* at
+% www.sciencemag.org/about/authors/prep/TeX_help/ .
+% This package should properly format in-text
+% reference calls and reference-list numbers.
+
+\usepackage{scicite}
+
+% Use times if you have the font installed; otherwise, comment out the
+% following line.
+
+\usepackage{times}
+
+% The preamble here sets up a lot of new/revised commands and
+% environments.  It's annoying, but please do *not* try to strip these
+% out into a separate .sty file (which could lead to the loss of some
+% information when we convert the file to other formats).  Instead, keep
+% them in the preamble of your main LaTeX source file.
+
+
+% The following parameters seem to provide a reasonable page setup.
+
+\topmargin 0.0cm
+\oddsidemargin 0.2cm
+\textwidth 16cm 
+\textheight 21cm
+\footskip 1.0cm
+
+
+%The next command sets up an environment for the abstract to your paper.
+
+\newenvironment{sciabstract}{%
+\begin{quote} \bf}
+{\end{quote}}
+
+
+% If your reference list includes text notes as well as references,
+% include the following line; otherwise, comment it out.
+
+\renewcommand\refname{References and Notes}
+
+% The following lines set up an environment for the last note in the
+% reference list, which commonly includes acknowledgments of funding,
+% help, etc.  It's intended for users of BibTeX or the {thebibliography}
+% environment.  Users who are hand-coding their references at the end
+% using a list environment such as {enumerate} can simply add another
+% item at the end, and it will be numbered automatically.
+
+\newcounter{lastnote}
+\newenvironment{scilastnote}{%
+\setcounter{lastnote}{\value{enumiv}}%
+\addtocounter{lastnote}{+1}%
+\begin{list}%
+{\arabic{lastnote}.}
+{\setlength{\leftmargin}{.22in}}
+{\setlength{\labelsep}{.5em}}}
+{\end{list}}
+
+
+% Include your paper's title here
+
+\title{First discovery of variability of direct imaged exoplanet 2M1207b} 
+
+
+% Place the author information here.  Please hand-code the contact
+% information and notecalls; do *not* use \footnote commands.  Let the
+% author contact information appear immediately below the author names
+% as shown.  We would also prefer that you don't change the type-size
+% settings shown here.
+
+\author
+{Yifan Zhou,$^{1\ast}$ Daniel Apai,$^{1}$ Glenn Schneider$^{1}$ Mark
+  Marley$^{2}$ Adam Showman$^{3}$\\
+\\
+\normalsize{$^{1}$Department of Astronomy, the University of Arizona}\\
+\normalsize{933 N. Cherry Ave., Tucson 85721, USA}\\
+\normalsize{$^{2}$NASA Ames Research Center}\\
+\normalsize{$^{3}$Department of Planetary Science, the University of Arizona}\\
+\\
+\normalsize{$^\ast$To whom correspondence should be addressed; E-mail:
+  yifzhou@email.arizona.edu.}
+}
+
+% Include the date command, but leave its argument blank.
+
+\date{}
+
+
+
+%%%%%%%%%%%%%%%%% END OF PREAMBLE %%%%%%%%%%%%%%%%
+
+
+
+\begin{document} 
+
+\message{ !name(ms_vAA.tex) !offset(-3) }
+ 
+
+% Double-space the manuscript.
+
+\baselineskip24pt
+
+% Make the title.
+
+\maketitle 
+
+
+
+% Place your abstract within the special {sciabstract} environment.
+
+\begin{sciabstract}
+Rotational modulations in disk-integrated light of
+brown dwarfs have recently provided powerful constraints on the
+properties of ultracool atmospheres, including longitudinal and
+vertical cloud structures and cloud evolution. Furthermore, detection
+of periodic light curve variations can directly probe the rotational
+periods of ultracool objects. We present here, for the first time, time-resolved high-precision
+photometric measurements of a planetary-mass companion, 2MASS1207b, to
+a brown dwarf primary. Using HST/WFC3 and point spread function %in
+combination with two spacecraft roll angles we detect photometric
+modulations in the light curve. The amplitude is 0.9\% in the F160W
+and 1.5\% in the F125W filters; we find a consistent period and
+similar phase in both bands. Joint fit to the lightcurve in both bands
+suggest a period of $10.2^{+0.9}_{-0.8}$ h. The relative amplitudes in the two
+filters are very similar to that found in a recent study of a field
+(high-gravity) L-dwarf, suggesting that the cloud structures that
+introduce the photometric modulations are similar in high- and
+low-gravity objects. Importantly, our study also measures, for the
+first time, the rotational period for directly imaged planetary-mass
+companion.
+\end{sciabstract}
+
+\textbf{Introduction}
+
+\textbf{Observation}We obtained direct images of the 2M1207A+b
+system on UT 2014 April 11from 08:07:47 to 16:53:18 using the Hubble
+Space Telescope (HST) and its Wide Field Camera 3 \citep[WFC3,
+][]{Kimble2008} in the frame of the HST Proposal GO-13418 (PI:
+D. Apai). We acquired the observations in filters F125W
+($\lambda_{\mbox{pivot}}$ = 1245.9 nm, full width at half maximum
+(FWHM) = 301.5 nm) and F160W ($\lambda_{\mbox{pivot}}$ 1540.52, FWHM =
+287.9 nm), roughly corresponding to the J and H bands. The WFC3 pixel
+scale is $\approx$13mas. We used the $256\times256$ pixels sub-array
+mode to avoid memory dumps during the observations.  In order to
+provide a near-continuous coverage for detecting modulations we
+observed the 2M1207 system in six consecutive HST orbits, obtaining
+data with cadence of $\sim1.5$ minutes over a baseline of 8 hours and
+40 minutes. The observations were interrupted by 58 minute-long Earth
+occultations every 94 minutes.
+
+\textbf{Data reduction}
+\textbf{Hybrid PSF photometry}
+
+One major challenge of high contrast imaging observation using WFC3/IR
+is significant under-sampling of the detector.  2M1207 A and b are
+only separated by $\sim6$ pixels or $\sim$5 FWHM of the PSF. When
+applying roll subtraction, notable artifact structures are generated
+by image interpolation and shifting. On the other hand, \tinytim{} PSF
+simulator\citep{Krist1995} offers a solution by providing Nyquist or better
+sampled PSF, but systematic errors of \tinytim{} PSF for WFC3 limits
+its ability in high precision photometry\citep{Biretta2014}. However,
+we are able to fully characterize the difference of model and observed
+PSFs with 6 orbits time-resolved observation data. To obtain robust \tinytim{} PSF
+photometry, we designed a 2-round PSF fitting strategy: 1. calculating
+correction map for \tinytim{}; 2. hybrid PSF photometry.
+
+For both of 2 rounds, we used {\em Tiny Tim} to calculate 10$\times$
+over-sampled model PSFs based on the filters, the spectra 
+\citep{Bonnefoy2014, Patience2010}, the telescope's actual focus, and
+the telescope jitter.  We used the new set of Tiny Tim parameters
+provided by \cite{Biretta2014} to improve model of the cold mask,
+OTA spikes, and the coma. The focus parameters were calculated
+using the model listed on the STScI
+website\footnote{\url{http://www.stsci.edu/hst/observatory/focus/FocusModel}}. To
+register \tinytim{} PSF to observed PSF of 2M1207A, we moved the
+over-sampled PSF over a coordinate grid (gird size=0.001 pixel) using
+cubic interpolation and minimize the rms difference of the
+observed and re-binned \tinytim{} PSFs over a region centered on 2M1207A with a
+5-pixel-radius aperture centered on 2M1207b excluded. Then we introduce
+another \tinytim{} PSF for 2M1207b and  fit the
+position of 2M1207 b and the photometries of 2M1207 A and b simultaneously
+by least square optimization. From our data set, we discovered that
+the difference of observed PSFs and model PSFs were very stable for
+given PSF positions. Therefore at the end of the first round PSF
+fitting, we derived 8 (2 roll angles $\times$ 4 dithering positions)
+observationally derived correction maps for each filter:
+\begin{equation}
+  \mathrm{Corr = Median(PSF_{obs.} - PSF_{model} )}
+\end{equation}
+where $\mathrm{PSF_{model}}$ is a combination of two \tinytim{} PSFs
+for 2M1207 A and b. In the second round, we combined the correction
+term linearly with the two \tinytim{} PSFs to generate hybrid PSFs,
+and fitted the three components together. We found that by including the correction term,
+the reduced $\chi^{2}$ of PSF fitting is decreased from $\sim 10$ to
+around unity. Relative photometry is acquired from the scaling
+parameters of the model PSFs.
+
+PSF profiles change with exposure positions due to
+pixelation, especially for the case that WFC3 IR is significantly
+under-sampled. Also, the flat fields may potentially have large scale
+structures \citep{dressel2012wide}. We found a correlation of
+photometry with PSF positions on detector frame for both 2M1207 A and
+b. Correction were made by normalizing each group of
+exposures that have the same dithering position and roll angle
+individually -- we took the median of the fluxes that were measured
+from these exposures as normalization factors and divided them from
+every photometric measurement. Because the normalization factor for
+each group of exposures is calculated across the whole observation,
+this normalization step have negligible impacts on variability
+analysis.
+
+
+% In setting up this template for *Science* papers, we've used both
+% the \section* command and the \paragraph* command for topical
+% divisions.  Which you use will of course depend on the type of paper
+% you're writing.  Review Articles tend to have displayed headings, for
+% which \section* is more appropriate; Research Articles, when they have
+% formal topical divisions at all, tend to signal them with bold text
+% that runs into the paragraph, for which \paragraph* is the right
+% choice.  Either way, use the asterisk (*) modifier, as shown, to
+% suppress numbering.
+
+
+
+\bibliography{ref.bib}
+
+\bibliographystyle{Science}
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+\message{ !name(ms_vAA.tex) !offset(-264) }

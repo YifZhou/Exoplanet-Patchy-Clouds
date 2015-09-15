@@ -11,9 +11,11 @@ def JHratio1(jlc, hlc, jerr, herr):
     jarg = np.argsort(jlc)
     harg = np.argsort(hlc)
     jlc = jlc[jarg]
-    jerr = jerr[jarg]  # relative uncertainty
+    # jerr = jerr[jarg]  # relative uncertainty
+    jerr = jlc * jerr
     hlc = hlc[harg]
-    herr = herr[harg]  # relative uncertainty
+    # herr = herr[harg]  # relative uncertainty
+    herr = hlc * herr
     Jmin = jlc[0:5].mean()  # mean value of maximum 5
     Jmin_err = (jerr[0:5]**2).mean()**0.5
     Jmax = jlc[-5:].mean()  # mean value of maximum 5
@@ -35,10 +37,10 @@ def JHratio1(jlc, hlc, jerr, herr):
 if __name__ == '__main__':
     M2139 = readsav('2MASSJ2139_spec_bin.sav')
     jh2139 = JHratio1(M2139['jlc'], M2139['hlc'],
-                      M2139['jlcerr'], M2139['hlcerr'])
+                      0.0027, 0.0027)
     S0136 = readsav('SIMP0136_spec_bin.sav')
     jh0136 = JHratio1(S0136['jlc'], S0136['hlc'],
-                      S0136['jlcerr'], S0136['hlcerr'])
+                      0.0011, 0.0011)
 
     M1821 = readsav('2m1821spectralratio.sav')
     min1821spec = M1821.minspec5est[M1821.xxx]

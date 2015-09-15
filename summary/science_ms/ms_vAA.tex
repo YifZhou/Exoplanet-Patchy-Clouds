@@ -1,0 +1,343 @@
+% Use only LaTeX2e, calling the article.cls class and 12-point type.
+
+\documentclass[12pt]{article}
+
+% Users of the {thebibliography} environment or BibTeX should use the
+% scicite.sty package, downloadable from *Science* at
+% www.sciencemag.org/about/authors/prep/TeX_help/ .
+% This package should properly format in-text
+% reference calls and reference-list numbers.
+
+\usepackage{scicite}
+
+% Use times if you have the font installed; otherwise, comment out the
+% following line.
+
+\usepackage{times}
+\usepackage{hyperref}
+% The preamble here sets up a lot of new/revised commands and
+% environments.  It's annoying, but please do *not* try to strip these
+% out into a separate .sty file (which could lead to the loss of some
+% information when we convert the file to other formats).  Instead, keep
+% them in the preamble of your main LaTeX source file.
+
+
+% The following parameters seem to provide a reasonable page setup.
+
+\topmargin 0.0cm
+\oddsidemargin 0.2cm
+\textwidth 16cm 
+\textheight 21cm
+\footskip 1.0cm
+
+
+%The next command sets up an environment for the abstract to your paper.
+
+\newenvironment{sciabstract}{%
+\begin{quote} \bf}
+{\end{quote}}
+
+
+% If your reference list includes text notes as well as references,
+% include the following line; otherwise, comment it out.
+
+\renewcommand\refname{References and Notes}
+
+% The following lines set up an environment for the last note in the
+% reference list, which commonly includes acknowledgments of funding,
+% help, etc.  It's intended for users of BibTeX or the {thebibliography}
+% environment.  Users who are hand-coding their references at the end
+% using a list environment such as {enumerate} can simply add another
+% item at the end, and it will be numbered automatically.
+
+\newcounter{lastnote}
+\newenvironment{scilastnote}{%
+\setcounter{lastnote}{\value{enumiv}}%
+\addtocounter{lastnote}{+1}%
+\begin{list}%
+{\arabic{lastnote}.}
+{\setlength{\leftmargin}{.22in}}
+{\setlength{\labelsep}{.5em}}}
+{\end{list}}
+
+\newcommand{\ima}{\texttt{ima} files }
+\newcommand{\flt}{\texttt{flt} files }
+\newcommand{\eps}{$\mathrm{e}^{-}/\mathrm{s}$}
+\newcommand{\tinytim}{\textit{Tiny Tim}}
+\newcommand{\bpic}{$\beta$ Pic}
+\newcommand{\vsini}{$v\sin i$}
+\newcommand{\mjup}{M$_{\mbox{Jup}}$}
+% Include your paper's title here
+
+\title{First discovery of variability of direct imaged exoplanet 2M1207b} 
+
+
+% Place the author information here.  Please hand-code the contact
+% information and notecalls; do *not* use \footnote commands.  Let the
+% author contact information appear immediately below the author names
+% as shown.  We would also prefer that you don't change the type-size
+% settings shown here.
+
+\author
+{Yifan Zhou,$^{1\ast}$ Daniel Apai,$^{1}$ Glenn Schneider$^{1}$ Mark
+  Marley$^{2}$ Adam Showman$^{3}$\\
+\\
+\normalsize{$^{1}$Department of Astronomy, the University of Arizona}\\
+\normalsize{933 N. Cherry Ave., Tucson 85721, USA}\\
+\normalsize{$^{2}$NASA Ames Research Center}\\
+\normalsize{$^{3}$Department of Planetary Science, the University of Arizona}\\
+\\
+\normalsize{$^\ast$To whom correspondence should be addressed; E-mail:
+  yifzhou@email.arizona.edu.}
+}
+
+% Include the date command, but leave its argument blank.
+
+\date{}
+
+
+
+%%%%%%%%%%%%%%%%% END OF PREAMBLE %%%%%%%%%%%%%%%%
+
+
+
+\begin{document} 
+
+% Double-space the manuscript.
+
+\baselineskip24pt
+
+% Make the title.
+
+\maketitle 
+
+
+
+% Place your abstract within the special {sciabstract} environment.
+
+\begin{sciabstract}
+Rotational modulations in disk-integrated light of
+brown dwarfs have recently provided powerful constraints on the
+properties of ultracool atmospheres, including longitudinal and
+vertical cloud structures and cloud evolution. Furthermore, detection
+of periodic light curve variations can directly probe the rotational
+periods of ultracool objects. We present here, for the first time, time-resolved high-precision
+photometric measurements of a planetary-mass companion, 2MASS1207b, to
+a brown dwarf primary. Using HST/WFC3 and point spread function %in
+combination with two spacecraft roll angles we detect photometric
+modulations in the light curve. The amplitude is 0.9\% in the F160W
+and 1.5\% in the F125W filters; we find a consistent period and
+similar phase in both bands. Joint fit to the lightcurve in both bands
+suggest a period of $10.2^{+0.9}_{-0.8}$ h. The relative amplitudes in the two
+filters are very similar to that found in a recent study of a field
+(high-gravity) L-dwarf, suggesting that the cloud structures that
+introduce the photometric modulations are similar in high- and
+low-gravity objects. Importantly, our study also measures, for the
+first time, the rotational period for directly imaged planetary-mass
+companion.
+\end{sciabstract}
+
+\textbf{Introduction}
+
+\textbf{Observation}We obtained direct images of the 2M1207A+b
+system on UT 2014 April 11from 08:07:47 to 16:53:18 using the Hubble
+Space Telescope (HST) and its Wide Field Camera 3 \cite[WFC3,
+][]{Kimble2008} in the frame of the HST Proposal GO-13418 (PI:
+D. Apai). We acquired the observations in filters F125W
+($\lambda_{\mbox{pivot}}$ = 1245.9 nm, full width at half maximum
+(FWHM) = 301.5 nm) and F160W ($\lambda_{\mbox{pivot}}$ 1540.52, FWHM =
+287.9 nm), roughly corresponding to the J and H bands. The WFC3 pixel
+scale is $\approx$13mas. We used the $256\times256$ pixels sub-array
+mode to avoid memory dumps during the observations.  In order to
+provide a near-continuous coverage for detecting modulations we
+observed the 2M1207 system in six consecutive HST orbits, obtaining
+data with cadence of $\sim1.5$ minutes over a baseline of 8 hours and
+40 minutes. The observations were interrupted by 58 minute-long Earth
+occultations every 94 minutes.
+
+\textbf{Data reduction}
+\textbf{Hybrid PSF photometry}
+
+One major challenge of high contrast imaging observation using WFC3/IR
+is significant under-sampling of the detector.  2M1207 A and b are
+only separated by $\sim6$ pixels or $\sim$5 FWHM of the PSF. When
+applying roll subtraction, notable artifact structures are generated
+by image interpolation and shifting. On the other hand, \tinytim{} PSF
+simulator\cite{Krist1995} offers a solution by providing Nyquist or better
+sampled PSF, but systematic errors of \tinytim{} PSF for WFC3 limits
+its ability in high precision photometry\cite{Biretta2014}. However,
+we are able to fully characterize the difference of model and observed
+PSFs with 6 orbits time-resolved observation data. To obtain robust \tinytim{} PSF
+photometry, we designed a 2-round PSF fitting strategy: 1. calculating
+correction map for \tinytim{}; 2. hybrid PSF photometry.
+
+For both of 2 rounds, we used {\em Tiny Tim} to calculate 10$\times$
+over-sampled model PSFs based on the filters, the spectra 
+\cite{Bonnefoy2014, Patience2010}, the telescope's actual focus, and
+the telescope jitter.  We used the new set of Tiny Tim parameters
+provided by \cite{Biretta2014} to improve model of the cold mask,
+OTA spikes, and the coma. The focus parameters were calculated
+using the model listed on the STScI
+website\footnote{\url{http://www.stsci.edu/hst/observatory/focus/FocusModel}}. To
+register \tinytim{} PSF to observed PSF of 2M1207A, we moved the
+over-sampled PSF over a coordinate grid (gird size=0.001 pixel) using
+cubic interpolation and minimize the rms difference of the
+observed and re-binned \tinytim{} PSFs over a region centered on 2M1207A with a
+5-pixel-radius aperture centered on 2M1207b excluded. Then we introduce
+another \tinytim{} PSF for 2M1207b and  fit the
+position of 2M1207 b and the photometries of 2M1207 A and b simultaneously
+by least square optimization. From our data set, we discovered that
+the difference of observed PSFs and model PSFs were very stable for
+given PSF positions. Therefore at the end of the first round PSF
+fitting, we derived 8 (2 roll angles $\times$ 4 dithering positions)
+observationally derived correction maps for each filter:
+\begin{equation}
+  \mathrm{Corr = Median(PSF_{obs.} - PSF_{model} )}
+\end{equation}
+where $\mathrm{PSF_{model}}$ is a combination of two \tinytim{} PSFs
+for 2M1207 A and b. In the second round, we combined the correction
+term linearly with the two \tinytim{} PSFs to generate hybrid PSFs,
+and fitted the three components together. We found that by including the correction term,
+the reduced $\chi^{2}$ of PSF fitting is decreased from $\sim 10$ to
+around unity. Relative photometry is acquired from the scaling
+parameters of the model PSFs.
+
+PSF profiles change with exposure positions due to
+pixelation, especially for the case that WFC3 IR is significantly
+under-sampled. Also, the flat fields may potentially have large scale
+structures \cite{dressel2012wide}. We found a correlation of
+photometry with PSF positions on detector frame for both 2M1207 A and
+b. Correction were made by normalizing each group of
+exposures that have the same dithering position and roll angle
+individually -- we took the median of the fluxes that were measured
+from these exposures as normalization factors and divided them from
+every photometric measurement. Because the normalization factor for
+each group of exposures is calculated across the whole observation,
+this normalization step have negligible impacts on variability
+analysis.
+
+\textbf{Result}
+We present the first high-contrast, high-resolution, high-cadence, and
+high-precision photometry of a directly imaged planet or
+planetary-mass companion. Our observations reveal a modulation in the
+light curve of the 5--7~M$_{J}$ companion 2M1207b, the first detection
+of modulations in directly imaged ultracool objects.  The best fit
+periods for F125W and F160W are 10.5 and 9.1 hour correspondingly. The
+amplitudes for the normalized light curves are 1.45\% and 0.92\% for
+F125W and F160W light curves.
+
+The distributions for the periods demonstrate long tail shaped towards
+long period, with core region roughly Gaussian. With 64\% confidence,
+we estimated the 1-$\sigma$ range for the periods of F125W and F160W
+to be $10.5_{-1.2}^{+1.3}$ and $9.1_{-1.0}^{+1.1}$ h,
+respectively. The period of best fitted sine wave of F125W light
+curve is 1.5h longer than that of F160W  that is slight larger
+1-$\sigma$ standard deviation. We also jointly fit the two band light
+curve together forcing the periods of two sine waves to be the
+same. We derived a modulation period of $10.2^{+0.9}_{-0.8}$ h in this
+circumstance. 
+
+We discovered that  the variation amplitudes in the two bands were significantly
+different. The distributions of the amplitudes are well described by
+Gaussian profiles. By fitting a Gaussian function to the distribution, we
+determined that amplitude distribution of F125W peaks at 1.45\% with a
+standard deviation of 0.22\%, and that of F160W have mean and standard
+deviation of 0.92\% and 0.20\%, respectively. The peaks of the two
+histograms separated by more than 2-$\sigma$. The variation amplitude
+of F125W light curve is 1.58 times of that of F160W light curve.
+
+\textbf{Discussion}
+A fundamental result of our study is the direct determination of the
+rotation period of a directly imaged planetary-mass object. We
+convert the rotation period to equatorial velocity  by adopting a radius of 1 -- 1.4
+$R_{\mathrm{Jup}}$ for 2M1207b, and 1 $R_{\mathrm{Jup}}$ for field
+brown dwarfs with well defined rotation period from the study of
+\cite{Metchev2015}, and compare their rotation velocities with solar
+system planets and \bpic{} b in the left
+panel of Figure \ref{fig:5}.  The study by
+\cite[][]{Snellen2014} succeeded in measuring \vsini{} for \bpic{} b
+and demonstrated that it fits a trend defined by Solar System planets
+in which more massive planets have faster rotation rates. They suggested
+that this relation is linked to the accretion processes during planet formation.
+
+Excitingly, our measurement of the rotation period demonstrates that
+2M1207b, a planetary mass companion  with similar age to \bpic{} b, has a rotation velocity
+that fits in the same trend, as well as majority of brown
+dwarfs.
+% % Periods are converted to equatorial rotation velocity by adopting a radius of 1 -- 1.4
+% % $R_{\mathrm{Jup}}$ for 2M1207b, and 1 $R_{\mathrm{Jup}}$ for brown dwarfs with rotation period
+% % measurement listed in \cite{Metchev2015}.
+% In left panel of Figure \ref{fig:5}, we demonstrate that 2M1207b and
+% most of the brown dwarfs falls on the same linear relationship with
+% solar system planets and \bpic{} b on a
+% $\log-\log$ plot of equatorial relationship vs. mass. 
+We note that 2M1207b is most likely formed in the same way as brown
+dwarfs by gravitational fragmentation, which suggests
+that rotation periods are not good tracers of the formation pathways
+and may not contribute important evidence for a formation in a disk
+vs. in a cloud core environment.
+
+Furthermore, our observations allow us to compare the relative
+amplitudes in the J- and H-bands between the handful of brown dwarfs
+for which high-quality near-infrared time-resolved observations have
+been obtained. In the right panel of Figure \ref{fig:5}, we plot the
+relative amplitude of J- and H-bands of 2M1207b with brown dwarfs
+\cite{Apai2013,Buenzli2012,Buenzli2015,Burgasser2013,Radigan2012,Yang2014} that
+have different spectral types and J$-$H colors.
+
+We found a strong correlation between the spectral type of the object
+and the J to H variation amplitude ratio. Figure \ref{fig:5}
+demonstrates that earlier spectral type objects -- independent of
+their surface gravity -- have larger variations at shorter wavelength
+than at longer wavelengths. Importantly, although the J$-$H color of
+2M1207b is significantly redder the other L5 dwarfs, we note that its
+relative variation amplitude ratio is almost identical to the matching
+spectral type mid-L dwarf 2M1821. 
+
+
+% In setting up this template for *Science* papers, we've used both
+% the \section* command and the \paragraph* command for topical
+% divisions.  Which you use will of course depend on the type of paper
+% you're writing.  Review Articles tend to have displayed headings, for
+% which \section* is more appropriate; Research Articles, when they have
+% formal topical divisions at all, tend to signal them with bold text
+% that runs into the paragraph, for which \paragraph* is the right
+% choice.  Either way, use the asterisk (*) modifier, as shown, to
+% suppress numbering.
+
+\textbf{Summary}In summary from our J- and H-band high precision,
+high-cadence lightcurves we discovered sinusoidal modulations in the  planetary mass object
+2M1207b. This is the first detection of rotational modulations in a
+directly imaged planetary mass object.  
+The period is  $10.2^{+0.9}_{-0.8}$, very similar to that derived from
+{\em v sin i} measurements for  the direct imaged exoplanet \bpic{} b and significantly longer than
+most field brown dwarfs with known rotation periods. The
+relative modulation amplitude of J and H band is almost identical to
+one matching spectral type L5 dwarf, although they have very different
+J$-$H colors, and it is markedly different form later spectral type
+brown dwarfs.
+
+Finally, we note that the observations presented here open an exciting
+new window on directly imaged exoplanets and planetary-mass
+objects. Our study demonstrates a successful application of high-cadence,
+high-precision, high-contrast photometry with planetary mass
+companion. We also show that these observations can be carried out simultaneously
+at multiple wavelengths, allowing us to prove multiple pressure
+levels. With observation of a larger sample and at multiple wavelengths, we will be
+able to explore  the detailed structures of atmospheres of directly
+imaged exoplanets, and identify the key parameters that determine these.
+
+\bibliography{ref.bib}
+
+\bibliographystyle{Science}
+
+
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

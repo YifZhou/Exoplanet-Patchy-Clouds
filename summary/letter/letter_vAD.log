@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.10.6)  9 SEP 2015 22:50
+This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.10.6)  14 SEP 2015 18:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**letter_vAC.tex
-(./letter_vAC.tex
+**letter_vAD.tex
+(./letter_vAD.tex
 LaTeX2e <2014/05/01>
 Babel <3.9l> and hyphenation patterns for 79 languages loaded.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/emulateapj/emulateapj.cls
@@ -400,8 +400,8 @@ Class revtex4-1 Info: cite was not loaded (OK!) on input line 20.
 Class revtex4-1 Info: mcite was not loaded (OK!) on input line 20.
 Class revtex4-1 Info: multicol was not loaded (OK!) on input line 20.
 
-(./letter_vAC.aux)
-\openout1 = `letter_vAC.aux'.
+(./letter_vAD.aux)
+\openout1 = `letter_vAD.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
@@ -443,29 +443,29 @@ LaTeX Info: Redefining \ref on input line 20.
 LaTeX Info: Redefining \pageref on input line 20.
 LaTeX Info: Redefining \nameref on input line 20.
 
-(./letter_vAC.out) (./letter_vAC.out)
+(./letter_vAD.out) (./letter_vAD.out)
 \@outlinefile=\write4
-\openout4 = `letter_vAC.out'.
+\openout4 = `letter_vAD.out'.
 
 Class revtex4-1 Info: Taking \maketitle back from hyperref on input line 20.
-\openout3 = `letter_vACNotes.bib'.
+\openout3 = `letter_vADNotes.bib'.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 43.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 46.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 43.
+LaTeX Font Info:    Try loading font information for U+msa on input line 46.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 43.
+LaTeX Font Info:    Try loading font information for U+msb on input line 46.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -479,39 +479,39 @@ File: systematics.pdf Graphic file (type QTm)
  <use  "systematics.pdf" >
 [2]
 File: sineCurveFit_binCombined.pdf Graphic file (type QTm)
- <use  "sineCurveFit_binCombined.pdf" >
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 347.
+ <use  "sineCurveFit_binCombined.pdf" > [3]
+File: periodDistr.pdf Graphic file (type QTm)
+ <use  "periodDistr.pdf" >
+File: amplitudeDistr.pdf Graphic file (type QTm)
+
+<use  "amplitudeDistr.pdf" >
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 346.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 347.
- [3]
-File: periodDistr.pdf Graphic file (type QTm)
-
-<use  "periodDistr.pdf" >
-File: amplitudeDistr.pdf Graphic file (type QTm)
- <use  "amplitudeDistr.pdf" > [4]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 346.
+ [4]
 File: rotationDiagram.pdf Graphic file (type QTm)
 
 <use  "rotationDiagram.pdf" >
 File: JH.pdf Graphic file (type QTm)
- <use  "JH.pdf" > [5] (./letter_vAC.bbl) [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 603.
-
-(./letter_vAC.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 603.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 603.
+ <use  "JH.pdf" > [5] (./letter_vAD.bbl [6])
+[7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 586.
+ (./letter_vAD.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 586.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 586.
  ) 
 Here is how much of TeX's memory you used:
- 11413 strings out of 493724
- 155310 string characters out of 6145899
- 249994 words of memory out of 5000000
- 14642 multiletter control sequences out of 15000+600000
+ 11456 strings out of 493724
+ 156071 string characters out of 6145899
+ 258299 words of memory out of 5000000
+ 14685 multiletter control sequences out of 15000+600000
  11572 words of font info for 48 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 32i,7n,45p,1157b,394s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,7n,45p,1196b,507s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on letter_vAC.pdf (6 pages).
+Output written on letter_vAD.pdf (7 pages).

@@ -26,5 +26,15 @@
     "Snellen2014"
     "Metchev2015"
     "Apai2013"
-    "Burgasser2013")))
+    "Burgasser2013"
+    "Stephens2009"
+    "Ackerman2001"
+    "Helling2008"
+    "Allard2012"
+    "Marley2010"
+    "Skemer2011"
+    "Skemer2012"
+    "Barman2011"
+    "Kostov2013"
+    "Chauvin2005")))
 

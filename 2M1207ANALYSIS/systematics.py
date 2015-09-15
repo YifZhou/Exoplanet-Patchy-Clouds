@@ -88,7 +88,7 @@ if __name__ == '__main__':
     points125, = ax125B.plot(df125['Time'], f125B0, '+',
                              ms=8, mec='0.8', zorder=0)
 
-    ax125B.set_title('F125W light curve')
+    ax125B.set_title('Validation Test: F125W')
     # remove the data from the first orbit
     df125 = df125[df125['ORBIT'] > 1]
     f125A0, f125B0 = normFlux(df125, normDither=True)
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     line160_2, = ax160B.plot(t, modelFlux2, label='P=9.0', linewidth=1.8)
     points160, = ax160B.plot(df160['Time'], f160B0, '+',
                              ms=8, mec='0.8', zorder=0)
-    ax160B.set_title('F160W light curve')
+    ax160B.set_title('Validation Test: F160W')
     ax160B.legend()
 
     df160 = df160[df160['ORBIT'] > 1]
