@@ -65,8 +65,8 @@ if __name__ == '__main__':
     fig = plt.figure()
     gs = mpl.gridspec.GridSpec(3, 2)
     axOut = fig.add_subplot(gs[:, :])
-    axOut.set_xlabel('Time (h)', labelpad=24)
-    axOut.set_ylabel('Normalized flux', labelpad=42)
+    axOut.set_xlabel('Time (h)', labelpad=30)
+    axOut.set_ylabel('Normalized flux', labelpad=56)
     ax125B = fig.add_subplot(gs[0:2, 0])
     df125_1 = df125[(df125['DITHER'] == 0) | (df125['DITHER'] == 2)]
     df125_2 = df125[(df125['DITHER'] == 1) | (df125['DITHER'] == 3)]
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     points125, = ax125B.plot(df125['Time'], f125B0, '+',
                              ms=8, mec='0.8', zorder=0)
 
-    ax125B.set_title('F125W light curve')
+    ax125B.set_title('F125W Light Curve')
 
     # split the data
 
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     line160_2, = ax160B.plot(t, modelFlux2, label='P=9.3', linewidth=1.8)
     points160, = ax160B.plot(df160['Time'], f160B0, '+',
                              ms=8, mec='0.8', zorder=0)
-    ax160B.set_title('F160W light curve')
+    ax160B.set_title('F160W Light Curve')
     # ax160B.legend()
     ax160A = fig.add_subplot(gs[2, 1])
     ax160A.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
@@ -133,13 +133,13 @@ if __name__ == '__main__':
         #        ax.set_xlabel('Time (h)')
         ax.set_ylim([0.975, 1.025])
     for ax in [ax125A, ax160A]:
-        ax.text(0.05, 0.05, 'Host',
+        ax.text(0.05, 0.05, '2M1207 A',
                 verticalalignment='bottom', horizontalalignment='left',
                 transform=ax.transAxes)
 
     ax125A.yaxis.set_ticks([0.98, 1.00, 1.02])
     for ax in [ax125B, ax160B]:
-        ax.text(0.05, 0.05, 'Companion',
+        ax.text(0.05, 0.05, '2M1207 b',
                 verticalalignment='bottom', horizontalalignment='left',
                 transform=ax.transAxes)
     gs.update(hspace=0, wspace=0)

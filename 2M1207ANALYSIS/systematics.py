@@ -68,6 +68,7 @@ if __name__ == '__main__':
     """
     plt.close('all')
     fig = plt.figure(figsize=(12, 9))
+
     gs = mpl.gridspec.GridSpec(3, 2)
     axOut = fig.add_subplot(gs[:, :])
     axOut.set_xlabel('Time (h)', labelpad=24)
@@ -88,7 +89,7 @@ if __name__ == '__main__':
     points125, = ax125B.plot(df125['Time'], f125B0, '+',
                              ms=8, mec='0.8', zorder=0)
 
-    ax125B.set_title('Validation Test: F125W')
+    # ax125B.set_title('Validation Test: F125W')
     # remove the data from the first orbit
     df125 = df125[df125['ORBIT'] > 1]
     f125A0, f125B0 = normFlux(df125, normDither=True)
@@ -102,8 +103,8 @@ if __name__ == '__main__':
                    ms=8, mec='0.8', zorder=0, label='no orbit 1')
 
     ax125_no1.plot(t, normedSin(t, [0.0139, 12.03, 0.7069]), lw=1.8)
-    lg = ax125_no1.legend()
-    lg.draw_frame(False)
+#    lg = ax125_no1.legend()
+#    lg.draw_frame(False)
 
     fn125_AFEM = '2015_Jul_14TinyTimF125Result.csv'  # apply AFEM
     df125_AFEM = pd.read_csv(
@@ -124,8 +125,8 @@ if __name__ == '__main__':
                     ms=8, mec='0.8', zorder=0, label="AFEM")
 
     ax125_AFEM.plot(t, normedSin(t, [0.0139, 10.97, 0.59]), lw=1.8)
-    lg = ax125_AFEM.legend()
-    lg.draw_frame(False)
+    # lg = ax125_AFEM.legend()
+    # lg.draw_frame(False)
 
     """For F160B I used two type fit,
     1. free parameter fit
@@ -146,11 +147,11 @@ if __name__ == '__main__':
     t = np.linspace(df160['Time'].min(), df160['Time'].max(), 500)
     modelFlux1 = 0.0080 * np.sin(2 * np.pi / 10.9765 * t + 0.2525) + 0.9997
     modelFlux2 = 0.0088 * np.sin(2 * np.pi / 9.2692 * t - 0.1180) + 1.0002
-    line160_1, = ax160B.plot(t, modelFlux1, label='P=10.45', linewidth=1.8)
-    line160_2, = ax160B.plot(t, modelFlux2, label='P=9.0', linewidth=1.8)
+    line160_1, = ax160B.plot(t, modelFlux1, label='P=10.45 h', linewidth=1.8)
+    line160_2, = ax160B.plot(t, modelFlux2, label='P=9.0 h', linewidth=1.8)
     points160, = ax160B.plot(df160['Time'], f160B0, '+',
                              ms=8, mec='0.8', zorder=0)
-    ax160B.set_title('Validation Test: F160W')
+    # ax160B.set_title('Validation Test: F160W')
     ax160B.legend()
 
     df160 = df160[df160['ORBIT'] > 1]
@@ -163,8 +164,8 @@ if __name__ == '__main__':
                    ms=8, mec='0.8', zorder=0, label='no orbit 1')
 
     ax160_no1.plot(t, normedSin(t, [0.0085, 9.6673, 0.0294]))
-    lg = ax160_no1.legend()
-    lg.draw_frame(False)
+    # lg = ax160_no1.legend()
+    # lg.draw_frame(False)
 
     fn160_AFEM = '2015_Jul_14TinyTimF160Result.csv'  # apply AFEM
     df160_AFEM = pd.read_csv(
@@ -184,8 +185,8 @@ if __name__ == '__main__':
                     ms=8, mec='0.8', zorder=0, label="AFEM")
 
     ax160_AFEM.plot(t, normedSin(t, [0.0088, 9.27, -0.12]), lw=1.8)
-    lg = ax160_AFEM.legend()
-    lg.draw_frame(False)
+    # lg = ax160_AFEM.legend()
+    # lg.draw_frame(False)
     # ax160A = fig.add_subplot(gs[2, 1], sharex=ax160B)
     # ax160A.plot(df160['Time'], f160A0, 'o', color='0.8', zorder=0)
     # gs.update(hspace=0, wspace=0)
@@ -193,9 +194,9 @@ if __name__ == '__main__':
     gs.update(hspace=0, wspace=0)
     ax125_AFEM.set_xticks(ax125_AFEM.get_xticks()[0:-1])
     for ax in [ax160B, ax160_no1, ax160_AFEM, axOut]:
-        ax.set_yticks([])
+        ax.set_yticklabels([])
     for ax in [ax125B, ax160B, ax125_no1, ax160_no1, axOut]:
-        ax.set_xticks([])
+        ax.set_xticklabels([])
     # for ax in [ax125B, ax125_no1, ax125_AFEM]:
     #     ax.set_ylabel('Normalized flux')
     for ax in fig.axes:
@@ -204,7 +205,24 @@ if __name__ == '__main__':
     # for ax in[ax125_AFEM, ax160_AFEM]:
     #     ax.set_xlabel('Time (h)')
     # ax125B.set_ylabel('Normalized flux')
-    fig.tight_layout()
+
+    for ax in [ax125B, ax125_no1, ax125_AFEM]:
+        ax.text(0.02, 0.05, 'F125W', transform=ax.transAxes,
+                weight='bold', color='b')
+    for ax in [ax160B, ax160_no1, ax160_AFEM]:
+        ax.text(0.02, 0.05, 'F160W', transform=ax.transAxes,
+                weight='bold', color='r')
+    for ax in [ax125B]:
+        ax.text(0.02, 0.90, 'Sinusoidal fit/Dither Position 1,3 vs. 2,4',
+                weight='bold', transform=ax.transAxes)
+    for ax in [ax125_no1]:
+        ax.text(0.02, 0.90, 'Only Orbits 2-6',
+                weight='bold', transform=ax.transAxes)
+    for ax in [ax125_AFEM]:
+        ax.text(0.02, 0.90, 'Effect of flat field uncertainties',
+                weight='bold', transform=ax.transAxes)
+    fig.suptitle('Verification Tests of the Photometric Modulations')
+    fig.tight_layout(rect=[0, 0.03, 1, 0.97])
     plt.show()
     plt.savefig('systematics.pdf')
     # chisq125 = (((f125B0 - 1.0) / 0.015)**2).sum()

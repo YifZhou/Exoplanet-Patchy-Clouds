@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     for i in range(len(specPos)):
         ax.text(
-            textPos[i], JHratio[i] + 0.02, tgName[i], fontsize=12, zorder=10)
+            textPos[i], JHratio[i] + 0.02, tgName[i], fontsize=16, zorder=10)
 
     # fig1, ax1 = plt.subplots()
     # ax1.plot(specPos, ampJ, '+', label='J', ms=12, mew=1.5)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     ax.plot(np.linspace(4.5, 17, 10),
             np.linspace(4.5, 17, 10) * m + b, ls='--', lw=2.0, color='0.2',
             zorder=0)
-    ax.set_title('J and H variation amplitude ratios')
+    ax.set_title('J and H Amplitude Ratio vs. Spectral Type')
     plt.show()
     fig.savefig('JH.pdf')
     # fig1.savefig('AmpvsSpecType.pdf')

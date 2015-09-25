@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: letter_vAF.aux
+The style file: apj.bst
+Database file #1: letter_vAFNotes.bib
+Database file #2: ref.bib.bib
+Repeated entry---line 705 of file ref.bib.bib
+ : @article{Ducourant2008
+ :                       ,
+I'm skipping whatever remains of this entry
+You've used 42 entries,
+            2947 wiz_defined-function locations,
+            922 strings with 13805 characters,
+and the built_in function-call counts, 23225 in all, are:
+= -- 1830
+> -- 1994
+< -- 9
++ -- 731
+- -- 687
+* -- 2182
+:= -- 4457
+add.period$ -- 42
+call.type$ -- 42
+change.case$ -- 393
+chr.to.int$ -- 42
+cite$ -- 42
+duplicate$ -- 805
+empty$ -- 1141
+format.name$ -- 815
+if$ -- 4368
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 40
+newline$ -- 130
+num.names$ -- 168
+pop$ -- 403
+preamble$ -- 1
+purify$ -- 393
+quote$ -- 0
+skip$ -- 674
+stack$ -- 0
+substring$ -- 853
+swap$ -- 11
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 378
+warning$ -- 0
+while$ -- 167
+width$ -- 0
+write$ -- 423
+(There was 1 error message)

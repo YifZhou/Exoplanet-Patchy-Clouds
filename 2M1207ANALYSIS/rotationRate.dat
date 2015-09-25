@@ -1,6 +1,6 @@
 name,mass,radius,period,label
-2M1207b,4,1.2,10.1,2m1207b
-Beta Pic b,7,1.65,8.1,$\beta$ Pic
+2M1207b,4,1.2,10.1,2M1207b
+Beta Pic b,7,1.65,8.1,$\beta$ Pic b
 earth,3.13e-3,0.089,24.,Earth
 mars,3.36e-4,0.0475,24.72,Mars
 jupiter,1.,1.,9.94,Jupiter

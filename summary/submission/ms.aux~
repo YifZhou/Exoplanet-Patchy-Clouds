@@ -1,0 +1,138 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand*\HyPL@Entry[1]{}
+\citation{Ackerman2001,Burrows2006a,Helling2008,Allard2012}
+\citation{Burrows2006a,Marley2010}
+\citation{Marley2012}
+\citation{Marois2008a}
+\citation{Chauvin2004}
+\citation{Currie2011,Madhusudhan2011,Skemer2011,Skemer2012}
+\citation{Apai2013,Buenzli2012,Buenzli2015,Radigan2012,Yang2015,Metchev2015,Heinze2015}
+\citation{Kostov2013}
+\citation{Chauvin2004}
+\citation{Chauvin2005}
+\citation{Song2006}
+\citation{Ducourant2008}
+\citation{Baraffe2003}
+\citation{Barman2011b}
+\citation{Sterzik2004}
+\citation{Mohanty2007}
+\citation{Mohanty2007,Skemer2011,Barman2011b}
+\citation{Patience2010}
+\citation{Skemer2011}
+\citation{Barman2011b}
+\HyPL@Entry{0<</P(1)>>}
+\newlabel{FirstPage}{{}{1}{}{section*.1}{}}
+\@writefile{toc}{\contentsline {abstract}{ABSTRACT}{1}{section*.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\citation{Mackenty2008}
+\citation{Song2006}
+\citation{Berta2012,Kreidberg2014}
+\citation{Krist1995}
+\citation{Biretta2014}
+\HyPL@Entry{1<</P(2)>>}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Point spread function subtraction allows isolating the secondary and accurately measuring its brightness in our WFC3 F160W images. {\em  Upper}: original image, the position of 2M1207 b is indicated by a white circle. {\em  Lower:} residual image -- after the subtraction of the hybrid PSF, 2M1207b is detected at a high significance level.}}{2}{figure.1}}
+\newlabel{fig:1}{{1}{2}{Point spread function subtraction allows isolating the secondary and accurately measuring its brightness in our WFC3 F160W images. {\em Upper}: original image, the position of 2M1207 b is indicated by a white circle. {\em Lower:} residual image -- after the subtraction of the hybrid PSF, 2M1207b is detected at a high significance level}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Observation}{2}{section.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data Reduction}{2}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Photometry}{2}{subsection.3.1}}
+\citation{Bonnefoy2014}
+\citation{Patience2010}
+\citation{Biretta2014}
+\citation{dressel2012wide}
+\HyPL@Entry{2<</P(3)>>}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Uncertainty Analysis: White noise}{3}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Uncertainty Analysis: Flat field uncertainties}{3}{subsection.3.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Verification of Photometric Modulations and Amplitude Estimate}{3}{section.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Tests and Verification}{3}{subsection.4.1}}
+\citation{Mandell2013}
+\HyPL@Entry{3<</P(4)>>}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces F125W (left) and F160W (right) light curves under different variability verification tests. Individual measurements are plotted with gray crosses. and binned photometry are plotted with points or squares. Best fitted sinusoids are plotted with solid lines. {\em  Upper}: binned measurements taken in dithering position 1 and 3 (red points) and that taken in 2 and 4 (blue squares) are plotted with different symbols. They demonstrate same trend of modulation. In upper left panel, the green line a sinusoid fitted with all parameters freely varying, and the purple line is a sinusoid fitted with the period set the same as that of F125W. {\em  Middle}: sinusoids fitted without using the data taken in Orbit \#1. These curves are almost identical to the curves plotted in upper panel. {\em  Lower}: photometry measured with AFEM-added images and best fitted sinul curves. These points and curves are also almost identical to those plotted in the upper panel.}}{4}{figure.2}}
+\newlabel{fig:2}{{2}{4}{F125W (left) and F160W (right) light curves under different variability verification tests. Individual measurements are plotted with gray crosses. and binned photometry are plotted with points or squares. Best fitted sinusoids are plotted with solid lines. {\em Upper}: binned measurements taken in dithering position 1 and 3 (red points) and that taken in 2 and 4 (blue squares) are plotted with different symbols. They demonstrate same trend of modulation. In upper left panel, the green line a sinusoid fitted with all parameters freely varying, and the purple line is a sinusoid fitted with the period set the same as that of F125W. {\em Middle}: sinusoids fitted without using the data taken in Orbit \#1. These curves are almost identical to the curves plotted in upper panel. {\em Lower}: photometry measured with AFEM-added images and best fitted sinul curves. These points and curves are also almost identical to those plotted in the upper panel}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Amplitude and Period Measurements}{4}{subsection.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Result}{4}{section.5}}
+\newlabel{Results}{{5}{4}{Result}{section.5}{}}
+\HyPL@Entry{4<</P(5)>>}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Normalized light curves for 2M1207 B (upper) and A (lower) with filter F125W (left) and F160W (right). Unbinned measurements are plotted in gray crosses and binned photometry are plotted with red points. Best fitted sinusoids are plotted with blue solid lines.}}{5}{figure.3}}
+\newlabel{fig:3}{{3}{5}{Normalized light curves for 2M1207 B (upper) and A (lower) with filter F125W (left) and F160W (right). Unbinned measurements are plotted in gray crosses and binned photometry are plotted with red points. Best fitted sinusoids are plotted with blue solid lines}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Distributions for period (left) and amplitude (right) for the light curves of F125W and F160W. The bin sizes for the histograms of period and amplitude are 0.25 hours and 0.5\%, respectively. Histograms are normalized to the maxima. In the right panel, Gaussian profiles are fitted to the histograms and plotted in solid lines.}}{5}{figure.4}}
+\newlabel{fig:4}{{4}{5}{Distributions for period (left) and amplitude (right) for the light curves of F125W and F160W. The bin sizes for the histograms of period and amplitude are 0.25 hours and 0.5\%, respectively. Histograms are normalized to the maxima. In the right panel, Gaussian profiles are fitted to the histograms and plotted in solid lines}{figure.4}{}}
+\citation{Metchev2015}
+\citation{Snellen2014}
+\citation{Snellen2014}
+\citation{Sterzik2004}
+\citation{Klein2003,Mohanty2013}
+\citation{Showman2013}
+\citation{Showman2013}
+\citation{Apai2013}
+\citation{Zhang2014}
+\citation{Showman2013}
+\citation{Apai2013,Buenzli2012,Buenzli2015,Yang2015}
+\citation{Yang2015}
+\HyPL@Entry{5<</P(6)>>}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{6}{section.6}}
+\bibcite{Ackerman2001}{{1}{2001}{{Ackerman \& Marley}}{{}}}
+\bibcite{Allard2012}{{2}{2012}{{{Allard} {et~al.}}}{{}}}
+\bibcite{Apai2013}{{3}{2013}{{Apai {et~al.}}}{{}}}
+\bibcite{Baraffe2003}{{4}{2003}{{{Baraffe} {et~al.}}}{{}}}
+\bibcite{Barman2011b}{{5}{2011}{{{Barman} {et~al.}}}{{}}}
+\HyPL@Entry{6<</P(7)>>}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces comparison of 2M1207's rotation period and color change with brown dwarfs, $\beta $ Pic{} b, and solar system planets. {\em  Left}: period vs. mass plot for 2M1207b (red square), solar system planets and $\beta $ Pic{} b (blue squares), and brown dwarfs (black circles, gray shade). Final rotation rates for 2M1207b and $\beta $ Pic{} b estimated based on conservation of angular momentum are plotted with faint red and blue squares, respectively. The mass of brown dwarfs are assumed to be 30 M$_{\mathrm  {Jup}}${}. The gray rectangle that has a $\pm $15 M$_{\mathrm  {Jup}}$range in $x$, and a $\pm \sigma $ of brown dwarf periods range in $y$, indicates a region where brown dwarfs most likely to appear in this diagram. Rotation period monotonically decreases with the increase of mass. {\em  Right}: ratio of modulation amplitude in J and H band vs. spectral type for 2M1207b and brown dwarfs. The point for 2M1207b is shifted to +$x$ for half spectral type for clarification. The colors of the points represent J$-$H magnitude, and the sizes of the points are proportional to the J-band modulation amplitudes. The gray dashed line is the result of a linear fit to these points. Correlation of J- and H-band modulation amplitude ratio and spectral type is shown.}}{7}{figure.5}}
+\newlabel{fig:5}{{5}{7}{comparison of 2M1207's rotation period and color change with brown dwarfs, \bpic {} b, and solar system planets. {\em Left}: period vs. mass plot for 2M1207b (red square), solar system planets and \bpic {} b (blue squares), and brown dwarfs (black circles, gray shade). Final rotation rates for 2M1207b and \bpic {} b estimated based on conservation of angular momentum are plotted with faint red and blue squares, respectively. The mass of brown dwarfs are assumed to be 30 \mjup {}. The gray rectangle that has a $\pm $15 \mjup range in $x$, and a $\pm \sigma $ of brown dwarf periods range in $y$, indicates a region where brown dwarfs most likely to appear in this diagram. Rotation period monotonically decreases with the increase of mass. {\em Right}: ratio of modulation amplitude in J and H band vs. spectral type for 2M1207b and brown dwarfs. The point for 2M1207b is shifted to +$x$ for half spectral type for clarification. The colors of the points represent J$-$H magnitude, and the sizes of the points are proportional to the J-band modulation amplitudes. The gray dashed line is the result of a linear fit to these points. Correlation of J- and H-band modulation amplitude ratio and spectral type is shown}{figure.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusions}{7}{section.7}}
+\bibcite{Berta2012}{{6}{2012}{{Berta {et~al.}}}{{}}}
+\bibcite{Biretta2014}{{7}{2014}{{Biretta}}{{}}}
+\bibcite{Bonnefoy2014}{{8}{2014}{{Bonnefoy {et~al.}}}{{}}}
+\bibcite{Buenzli2012}{{9}{2012}{{Buenzli {et~al.}}}{{}}}
+\bibcite{Buenzli2015}{{10}{2015}{{Buenzli {et~al.}}}{{}}}
+\bibcite{Burrows2006a}{{11}{2006}{{Burrows {et~al.}}}{{}}}
+\bibcite{Chauvin2004}{{12}{2004}{{{Chauvin} {et~al.}}}{{}}}
+\bibcite{Chauvin2005}{{13}{2005}{{{Chauvin} {et~al.}}}{{}}}
+\bibcite{Currie2011}{{14}{2011}{{{Currie} {et~al.}}}{{}}}
+\bibcite{dressel2012wide}{{15}{2012}{{Dressel}}{{}}}
+\bibcite{Ducourant2008}{{16}{2008}{{Ducourant {et~al.}}}{{}}}
+\bibcite{Heinze2015}{{17}{2015}{{{Heinze} {et~al.}}}{{}}}
+\bibcite{Helling2008}{{18}{2008}{{Helling {et~al.}}}{{}}}
+\bibcite{Klein2003}{{19}{2003}{{{Klein} {et~al.}}}{{}}}
+\bibcite{Kostov2013}{{20}{2013}{{{Kostov} \& {Apai}}}{{}}}
+\bibcite{Kreidberg2014}{{21}{2014}{{Kreidberg {et~al.}}}{{}}}
+\bibcite{Krist1995}{{22}{1995}{{Krist}}{{}}}
+\bibcite{Mackenty2008}{{23}{2008}{{{MacKenty} {et~al.}}}{{}}}
+\bibcite{Madhusudhan2011}{{24}{2011}{{{Madhusudhan} {et~al.}}}{{}}}
+\bibcite{Mandell2013}{{25}{2013}{{Mandell {et~al.}}}{{}}}
+\bibcite{Marley2012}{{26}{2012}{{{Marley} {et~al.}}}{{}}}
+\bibcite{Marley2010}{{27}{2010}{{{Marley} {et~al.}}}{{}}}
+\bibcite{Marois2008a}{{28}{2008}{{Marois {et~al.}}}{{}}}
+\bibcite{Metchev2015}{{29}{2015}{{Metchev {et~al.}}}{{}}}
+\bibcite{Mohanty2013}{{30}{2013}{{{Mohanty} {et~al.}}}{{}}}
+\bibcite{Mohanty2007}{{31}{2007}{{Mohanty {et~al.}}}{{}}}
+\bibcite{Patience2010}{{32}{2010}{{Patience {et~al.}}}{{}}}
+\bibcite{Radigan2012}{{33}{2012}{{Radigan {et~al.}}}{{}}}
+\bibcite{Showman2013}{{34}{2013}{{{Showman} \& {Kaspi}}}{{}}}
+\bibcite{Skemer2011}{{35}{2011}{{{Skemer} {et~al.}}}{{}}}
+\bibcite{Skemer2012}{{36}{2012}{{{Skemer} {et~al.}}}{{}}}
+\bibcite{Snellen2014}{{37}{2014}{{Snellen {et~al.}}}{{}}}
+\bibcite{Song2006}{{38}{2006}{{Song {et~al.}}}{{}}}
+\bibcite{Sterzik2004}{{39}{2004}{{{Sterzik} {et~al.}}}{{}}}
+\bibcite{Yang2015}{{40}{2015}{{{Yang} {et~al.}}}{{}}}
+\bibcite{Zhang2014}{{41}{2014}{{{Zhang} \& {Showman}}}{{}}}
+\bibdata{msNotes}
+\bibstyle{apsrev4-1}
+\citation{REVTEX41Control}
+\citation{apsrev41Control}
+\HyPL@Entry{7<</P(8)>>}
+\newlabel{LastPage}{{}{8}{}{}{}}

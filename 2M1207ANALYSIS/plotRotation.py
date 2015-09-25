@@ -27,8 +27,8 @@ if __name__ == '__main__':
     ax_p.errorbar(
         [0.00017, 0.00256], [26, 26], yerr=2.0,
         lolims=True, color='k', ls='')
-    ax_p.errorbar(4, 10.05, xerr=1, yerr=2.9, color='k')
-    # ax_p.set_ylim(0, 30)
+    ax_p.errorbar(4, 10.05, xerr=[1], yerr=[[0.9], [0.8]], color='k')
+
     # ax.arrow(x0, y0, 0, -0.3, fc='b', lw=0.2, head_width=0.05,
     # head_length=0.1)
 
@@ -41,6 +41,7 @@ if __name__ == '__main__':
     # suppose BD has period of 1 Mjup
     ax_p.plot(np.zeros(len(BDperiod)) + 30, BDperiod,
               'o', mec='k', mfc='none', ms=10)
+    ax_p.text(45, 10, 'Brown dwarfs', rotation=90)
     # ax_p.plot(np.zeros(len(BDperiod)) + 30, vBD,
     #           'o', mec='k', mfc='none', ms=10)
     ax_p.add_patch(patches.Rectangle((15, BDperiod.mean() - BDperiod.std()),
@@ -52,16 +53,45 @@ if __name__ == '__main__':
 
     for i in range(len(name)):
         if i == 4:
-            ax_p.text(mass[i] / 2.0, period[i] + 1.2, label[i])
+            ax_p.text(mass[i] / 2.0, period[i] + 1.2, label[i], fontsize=16)
         elif i == 5:
-            ax_p.text(mass[i] / 2.0, period[i] - 1.5, label[i])
+            ax_p.text(mass[i] / 2.0, period[i] - 1.5, label[i], fontsize=16)
         elif i == 6:
-            ax_p.text(mass[i] / 5.0, period[i], label[i])
+            ax_p.text(mass[i] / 6.5, period[i], label[i], fontsize=16)
+        elif i == 0:
+            ax_p.text(mass[i] / 1.5, period[i] + 1.2, label[i], fontsize=16)
         else:
-            ax_p.text(mass[i] * 1.3, period[i], label[i])
-    ax_p.text(0.00017 * 1.2, 26, 'Mercury')
-    ax_p.text(0.00256 * 1.2, 26, 'Venus')
-    ax_p.set_title('Rotation periods of planets and brown dwarfs')
+            ax_p.text(mass[i] * 1.3, period[i], label[i], fontsize=16)
+    ax_p.text(0.00017 * 1.2, 26, 'Mercury', fontsize=16)
+    ax_p.text(0.00256 * 1.2, 26, 'Venus', fontsize=16)
+
+    Pperiod = np.array([21.4, 4.08, 2.91, 19.35, 9.64, 25.81,
+                        18.46, 20.16, 40.27])
+    Pmass = np.array([250., 80, 100, 150, 130, 250, 180, 130, 150])
+    # ax_p.plot(Pmass, Pperiod, 's', mfc='none', label='Pleiades')
+
+    Omass = np.array([0.17, 0.05, 0.08, 0.22, 0.27, 0.21, 0.27,
+                      0.06, 0.12, 0.09, 0.16, 0.12, 0.12, 0.18,
+                      0.04, 0.02, 0.12, 0.02, 0.22, 0.19, 0.18,
+                      0.14, 0.05, 0.11, 0.06, 0.19, 0.29, 0.05,
+                      0.04, 0.11]) * 1000  # convert to jupiter mass
+    Operiod = np.array([56.1, 9.46, 35.2, 100.0, 18.0, 96.8,
+                        100.4, 19.2, 31.0, 14.6, 15.7, 33.7,
+                        102.1, 40.1, 15.5, 4.70, 3.80, 5.79,
+                        45.1, 30.0, 38.5, 11.4, 87.6, 35.9,
+                        16.9, 98.0, 82.5, 34.3, 4.06, 32.3])
+    # ax_p.plot(Omass, Operiod, '^', mfc='none', label='$\epsilon$ Ori')
+    # ax_p.legend()
+    ax_p.set_ylim(0, 30)
+    # ax_p.set_xlim(1e-4, 5e2)
+    ax_p.set_title('Rotation Periods of planets and Brown Dwarfs')
+    ax_p.plot(4, 5, 's', ms=12, mfc='red', alpha=0.4)
+    ax_p.arrow(4, 9, 0, -2.2, fc='0.4', ec='0.4', lw=3,
+               head_width=1.2, head_length=0.8)
+    ax_p.plot(7, 3.0, 's', ms=12, mfc='blue', alpha=0.4)
+    ax_p.arrow(7, 7.2, 0, -2.4, fc='0.4', ec='0.4', lw=3,
+               head_width=1.8, head_length=0.8)
+    ax_p.set_ylim(0, 29)
 
     plt.show()
     plt.savefig('rotationDiagram.pdf')

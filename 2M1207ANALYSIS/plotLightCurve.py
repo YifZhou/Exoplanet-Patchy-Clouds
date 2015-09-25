@@ -77,14 +77,14 @@ def plotLightCurve(DataFrame125, DataFrame160, applyCorr=False):
         fluxB1250 = fluxB1250 / (fluxA1250 * corr125[1] + corr125[0])
         fluxB1600 = fluxB1600 / (fluxA1600 * corr160[1] + corr160[0])
     ax_F125.plot(DataFrame125.index, fluxA1250,
-                 linewidth=0, marker='s', label='priamry')
+                 linewidth=0, marker='s', label='2M1207 A')
     ax_F125.plot(DataFrame125.index, fluxB1250,
-                 linewidth=0, marker='o', label='secondary')
+                 linewidth=0, marker='o', label='2M1207 b')
     ax_F125.set_title('F125W')
     ax_F160.plot(DataFrame160.index, fluxA1600,
-                 linewidth=0, marker='s', label='primary')
+                 linewidth=0, marker='s', label='2M1207 A')
     ax_F160.plot(DataFrame160.index, fluxB1600,
-                 linewidth=0, marker='o', label='secondary')
+                 linewidth=0, marker='o', label='2M1207 b')
     ax_F160.set_title('F160W')
     # fluxA1250 = (DataFrame125['FLUXA'] / DataFrame125['FLUXA'].mean()).values
     # fluxA1600 = (DataFrame160['FLUXA'] / DataFrame160['FLUXA'].mean()).values

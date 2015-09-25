@@ -5,7 +5,7 @@ import numpy as np
 from astropy.io import fits
 import matplotlib as mpl
 from matplotlib.colors import BoundaryNorm
-
+plt.style.use('paper')
 """make an image to illustrate the 2M1207 system
 especially the difficulty
 """
@@ -22,9 +22,10 @@ if __name__ == '__main__':
     cax1 = ax1.imshow(im, cmap='hot', origin='lower',
                       interpolation='nearest',
                       norm=BoundaryNorm(bd1, ncolors=255))
-    ax1.plot(15.855, 8.204, 'o', ms=14, mfc='none', mew=1.5, mec='white')
-    ax1.annotate('2M1207 B', xy=(15.855, 8.204), xytext=(17, 7),
-                 fontsize=14)
+    ax1.plot(15.855, 8.204, 'o', ms=36, mfc='none', mew=2.5, mec='white')
+    ax1.annotate('2M1207b', xy=(18.855, 8.204), xytext=(18.5, 7),
+                 fontsize='18', color='white', weight='bold')
+    ax1.set_title('F160W Image of 2M1207 A and b')
     ax1.set_xlim([0, 26])
     ax1.set_ylim([0, 26])
     sub = im - psf
@@ -34,6 +35,7 @@ if __name__ == '__main__':
     cax2 = ax2.imshow(sub, cmap='hot', origin='lower',
                       interpolation='nearest',
                       norm=BoundaryNorm(bd2, ncolors=255))
+    ax2.set_title('Primary Subtraction Reveals 2M1207 b')
     cbar1 = fig1.colorbar(cax1, ticks=np.logspace(-1, 4, 6))
     cbar1.formatter = mpl.ticker.LogFormatter()
     cbar1.update_ticks()
@@ -45,6 +47,6 @@ if __name__ == '__main__':
         ax.set_xlabel('X (pixel)')
         ax.set_ylabel('Y (pixel)')
 
-    # plt.show()
+    plt.show()
     fig1.savefig('original.pdf')
     fig2.savefig('subtracted.pdf')

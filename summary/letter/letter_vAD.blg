@@ -4,44 +4,49 @@ The top-level auxiliary file: letter_vAD.aux
 The style file: apj.bst
 Database file #1: letter_vADNotes.bib
 Database file #2: ref.bib.bib
-You've used 28 entries,
+Repeated entry---line 555 of file ref.bib.bib
+ : @article{Barman2011
+ :                    ,
+I'm skipping whatever remains of this entry
+You've used 31 entries,
             2947 wiz_defined-function locations,
-            837 strings with 11233 characters,
-and the built_in function-call counts, 15617 in all, are:
-= -- 1221
-> -- 1354
+            857 strings with 11806 characters,
+and the built_in function-call counts, 17237 in all, are:
+= -- 1352
+> -- 1486
 < -- 7
-+ -- 496
-- -- 468
-* -- 1471
-:= -- 3002
-add.period$ -- 28
-call.type$ -- 28
-change.case$ -- 265
-chr.to.int$ -- 28
-cite$ -- 28
-duplicate$ -- 539
-empty$ -- 764
-format.name$ -- 550
-if$ -- 2932
++ -- 544
+- -- 513
+* -- 1621
+:= -- 3312
+add.period$ -- 31
+call.type$ -- 31
+change.case$ -- 291
+chr.to.int$ -- 31
+cite$ -- 31
+duplicate$ -- 596
+empty$ -- 847
+format.name$ -- 604
+if$ -- 3241
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 26
-newline$ -- 88
-num.names$ -- 112
-pop$ -- 271
+missing$ -- 29
+newline$ -- 97
+num.names$ -- 124
+pop$ -- 297
 preamble$ -- 1
-purify$ -- 265
+purify$ -- 291
 quote$ -- 0
-skip$ -- 452
+skip$ -- 501
 stack$ -- 0
-substring$ -- 560
+substring$ -- 629
 swap$ -- 11
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 252
+type$ -- 279
 warning$ -- 0
-while$ -- 111
+while$ -- 123
 width$ -- 0
-write$ -- 283
+write$ -- 313
+(There was 1 error message)
