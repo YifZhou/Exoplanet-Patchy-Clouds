@@ -1,5 +1,5 @@
 function pFit=periodFit(fn, p0)
-[t, ~, fB] = textread(fn, '%f %f %f');
+[t, fB] = textread(fn, '%f, %f');
 figure();
 F=@(p,xdata)p(1)*sin((2*pi/p(2))*xdata+p(3)) + 1;
 [pFit,~,~,~,~] = lsqcurvefit(F,p0,t,fB);

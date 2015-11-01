@@ -16,5 +16,5 @@ def linearFit(x, y, dy=None):
     b = b.flat[0]
     m = m.flat[0]
     sigb, sigm = np.sqrt(np.diag(mat1))
-    chisq = 1. / (len(x) - 2) * ((y - m * x - b)**2 / dy**2).sum(axis=-1)
+    chisq = 1. / (len(x) - 2) * np.sum((y - m * x - b)**2 / dy**2)
     return b, m, sigb, sigm, chisq

@@ -11,6 +11,7 @@ import os
 import pandas as pd
 from math import floor
 
+
 def getTargetNo(file_list):
     """
     get the target number
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     orbitNo = []
     ditherNo = []
     exposureNo = []
-    
+
     for fits_file in sorted(glob.glob(os.path.join(dataDir, target, '*{0}.fits'.format(fileType)))):
         fits_content = fits.open(fits_file)
         file_list.append(fits_file.split('/')[-1])
@@ -41,13 +42,14 @@ if __name__ == '__main__':
         time_list.append(header['time-obs'])
         exposureTime.append(header['exptime'])
         targOff1 = floor(header['postarg1'])
-        targOff2 = floor(header['postarg2']) * 2 # so that dither number could be expressed as targOff1 + tarOff2
+        # so that dither number could be expressed as targOff1 + tarOff2
+        targOff2 = floor(header['postarg2']) * 2
         ditherNo.append(int(targOff1 + targOff2))
         fits_content.close()
 
     orbitNo = getTargetNo(file_list)
     filter0 = filter_list[0]
-    orbit0 =  orbitNo[0]
+    orbit0 = orbitNo[0]
     exposure0 = 0
     for filter_i, orbit_i in zip(filter_list, orbitNo):
         if filter_i == filter0 and orbit_i == orbit0:
@@ -65,6 +67,6 @@ if __name__ == '__main__':
     fileInfo = pd.DataFrame([line for line in zip(file_list,
                                                   filter_list, orbitNo, angle_list,
                                                   ditherNo, exposureNo, date_list,
-                                                  time_list, exposureTime)], columns =
-                            ['file name', 'filter', 'orbit', 'Pos Angle', 'dither', 'exposure set', 'obs date', 'obs time', 'exposure time'])
-    fileInfo.to_csv('{0}_{1}_fileInfo.csv'.format(target, fileType), index = False)
+                                                  time_list, exposureTime)], columns=['file name', 'filter', 'orbit', 'Pos Angle', 'dither', 'exposure set', 'obs date', 'obs time', 'exposure time'])
+    fileInfo.to_csv(
+        '{0}_{1}_fileInfo.csv'.format(target, fileType), index=False)

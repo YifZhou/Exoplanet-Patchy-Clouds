@@ -1,0 +1,13 @@
+#! /usr/bin/env python
+from __future__ import print_function, division
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+"""visualize the MCMC result
+"""
+
+
+def 2dHist(data1, data2):
+    dist2d = sns.jointplot(data1, data2, kind='kde')
+    return dist2d

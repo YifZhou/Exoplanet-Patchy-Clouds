@@ -55,7 +55,7 @@ if __name__ == '__main__':
         index_col='datetime')
     df160 = df160.sort_index()
     df160['Time'] = np.float32(
-        df160.index.values - df160.index.values[0]) / (60 * 60 * 1e9)
+        df160.index.values - df125.index.values[0]) / (60 * 60 * 1e9)
     f125A0, f125B0 = normFlux(df125, normDither=True)
     f160A0, f160B0 = normFlux(df160, normDither=True)
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     gs = mpl.gridspec.GridSpec(3, 2)
     axOut = fig.add_subplot(gs[:, :])
-    axOut.set_xlabel('Time (h)', labelpad=24)
+    axOut.set_xlabel('Time - 2014-04-11 08:07:47 [h]', labelpad=24)
     axOut.set_ylabel('Normalized flux', labelpad=42)
     ax125B = fig.add_subplot(gs[0, 0])
     df125_1 = df125[(df125['DITHER'] == 0) | (df125['DITHER'] == 2)]

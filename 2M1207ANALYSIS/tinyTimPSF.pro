@@ -353,6 +353,7 @@ function PSFPhotometry, fn, filterName, angle, dither, xy0
   amps = fit2PSFs(im, PSF1, PSF2, mask4, weight = 1/err^2)
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+
   ;; Set_Plot, 'Z', /COPY
   ;; p = plotFitResult(im, PSF1*amps[0], PSF2*amps[1], round(comp_xy))
   ;; p.Save, './fitPlots/' + strmid(fn, 0, 9) + '.pdf', resolution = 300, /transparent
@@ -461,6 +462,10 @@ function PSFPhotometry1, fn, filterName, angle, dither, xy0, removeResidual=remo
   ;;print, total(PSF1), total(PSF2)
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', im
   writefits, './fitsResult/'+strmid(fn, 0, 9) + '.fits', PSF1*amps[0] + PSF2*amps[1]+amps[2], /append
+  writefits, './fitsResult/PSF1.fits', PSF1*amps[0]
+  writefits, './fitsResult/PSF2.fits', PSF2*amps[1]
+  fixpix, residual0, mask, residual_fixed
+  writefits, './fitsResult/residual.fits', residual_fixed
   ;; writefits, './fitsResult/example.fits', im
   ;; writefits, './fitsResult/example.fits', PSF1*amps[0] + amps[2], /append
   ;; Set_Plot, 'Z', /COPY
@@ -495,34 +500,34 @@ PRO tinytimPSF, addAFEM=addAFEM
   chisq = fltarr(N_elements(F125ID))
   IF keyword_set(addAFEM) THEN AFEM0 = 1+randomn(seed, 256, 256)*0.01 $ ;; make an AFEM
   ELSE AFEM0 = [] ;; if keyword is not set, set it as void
-  FOR i=0, N_elements(F125ID) - 1 DO BEGIN
-     id = F125ID[i]
-     a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
-     fluxA[i] = a[0]
-     fluxB[i] = a[1]
-     sky[i] = a[2]
-     chisq[i] = a[3]
-     Primary_x[i] = a[4]
-     Primary_y[i] = a[5]
-     Secondary_x[i] = a[6]
-     Secondary_y[i] = a[7]
-     fluxErrA[i] = a[8]
-     fluxErrB[i] = a[9]
-  ENDFOR
-  F125Info = add_tag(F125Info, 'fluxa', fluxa)
-  F125Info = add_tag(F125Info, 'fluxErrA', fluxErrA)
-  F125Info = add_tag(F125Info, 'fluxb', fluxb)
-  F125Info = add_tag(F125Info, 'fluxErrB', fluxErrB)
-  F125Info = add_tag(F125Info, 'sky', sky)
-  F125Info = add_tag(F125Info, 'Primary_x', Primary_x)
-  F125Info = add_tag(F125Info, 'Primary_y', Primary_y)
-  F125Info = add_tag(F125Info, 'Secondary_x', Secondary_x)
-  F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
-  F125Info = add_tag(F125Info, 'Chisq', chisq)
+  ;; FOR i=0, N_elements(F125ID) - 1 DO BEGIN
+  ;;    id = F125ID[i]
+  ;;    a = PSFPhotometry1(F125Info.filename[id], F125Info.filter[id], long(F125Info.PosAngle[id]), long(F125Info.dither[id]), xy[*, long(F125Info.dither[id]), long(F125Info.posAngle[id])], /removeResidual, AFEM=AFEM0)
+  ;;    fluxA[i] = a[0]
+  ;;    fluxB[i] = a[1]
+  ;;    sky[i] = a[2]
+  ;;    chisq[i] = a[3]
+  ;;    Primary_x[i] = a[4]
+  ;;    Primary_y[i] = a[5]
+  ;;    Secondary_x[i] = a[6]
+  ;;    Secondary_y[i] = a[7]
+  ;;    fluxErrA[i] = a[8]
+  ;;    fluxErrB[i] = a[9]
+  ;; ENDFOR
+  ;; F125Info = add_tag(F125Info, 'fluxa', fluxa)
+  ;; F125Info = add_tag(F125Info, 'fluxErrA', fluxErrA)
+  ;; F125Info = add_tag(F125Info, 'fluxb', fluxb)
+  ;; F125Info = add_tag(F125Info, 'fluxErrB', fluxErrB)
+  ;; F125Info = add_tag(F125Info, 'sky', sky)
+  ;; F125Info = add_tag(F125Info, 'Primary_x', Primary_x)
+  ;; F125Info = add_tag(F125Info, 'Primary_y', Primary_y)
+  ;; F125Info = add_tag(F125Info, 'Secondary_x', Secondary_x)
+  ;; F125Info = add_tag(F125Info, 'Secondary_y', Secondary_y)
+  ;; F125Info = add_tag(F125Info, 'Chisq', chisq)
 
-  save, F125Info, file = 'TinyTimF125Result.sav'
-  csvFN = dateString()+'TinyTimF125Result.csv'
-  spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
+  ;; save, F125Info, file = 'TinyTimF125Result.sav'
+  ;; csvFN = dateString()+'TinyTimF125Result.csv'
+  ;; spawn, 'python sav2csv.py TinyTimF125Result.sav ' + csvFN   ;; convert .sav file to csv file for easier using.
 
   ;;; F160W
   F160Info = myReadCSV(F160InfoFN, ['filename', 'filter', 'orbit', 'PosAngle', 'dither', 'exposureset', 'obsdate', 'obstime', 'expoTime'])

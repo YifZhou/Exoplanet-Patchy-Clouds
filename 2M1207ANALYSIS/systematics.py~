@@ -207,14 +207,16 @@ if __name__ == '__main__':
     # ax125B.set_ylabel('Normalized flux')
 
     for ax in [ax125B, ax125_no1, ax125_AFEM]:
-        ax.text(0.02, 0.05, 'F125W', transform=ax.transAxes)
+        ax.text(0.02, 0.05, 'F125W', transform=ax.transAxes,
+                weight='bold', color='b')
     for ax in [ax160B, ax160_no1, ax160_AFEM]:
-        ax.text(0.02, 0.05, 'F160W', transform=ax.transAxes)
+        ax.text(0.02, 0.05, 'F160W', transform=ax.transAxes,
+                weight='bold', color='r')
     for ax in [ax125B]:
-        ax.text(0.02, 0.90, 'Sinusoidal fit/subsets comparison',
+        ax.text(0.02, 0.90, 'Sinusoidal fit/Dither Position 1,3 vs. 2,4',
                 weight='bold', transform=ax.transAxes)
     for ax in [ax125_no1]:
-        ax.text(0.02, 0.90, 'Only Orbit 2-6',
+        ax.text(0.02, 0.90, 'Only Orbits 2-6',
                 weight='bold', transform=ax.transAxes)
     for ax in [ax125_AFEM]:
         ax.text(0.02, 0.90, 'Effect of flat field uncertainties',

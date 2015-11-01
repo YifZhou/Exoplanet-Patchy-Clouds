@@ -231,19 +231,28 @@ volume = {760},
 year = {2012}
 }
 
-@article{Yang2014,
-author = {Yang, Hao and Apai, D\'{a}niel and Marley, Mark S. and Saumon, Didier and Morley, Caroline V. and Buenzli, Esther and Artigau, \'{E}tienne and Radigan, Jacqueline and Metchev, Stanimir and Burgasser, Adam J. and Mohanty, Subhanjoy and Lowrance, Patrick J. and Showman, Adam P. and Karalidi, Theodora and Flateau, Davin and Heinze, Aren N.},
-doi = {10.1088/2041-8205/798/1/L13},
-issn = {2041-8213},
-journal = {ApJ},
-mendeley-groups = {Exoplanet Patchy Clouds},
-month = dec,
-number = {1},
-pages = {L13},
-title = {{HST ROTATIONAL SPECTRAL MAPPING OF TWO L-TYPE BROWN DWARFS: VARIABILITY IN AND OUT OF WATER BANDS INDICATES HIGH-ALTITUDE HAZE LAYERS}},
-url = {http://stacks.iop.org/2041-8205/798/i=1/a=L13},
-volume = {798},
-year = {2014}
+
+
+@ARTICLE{Yang2015,
+   author = {{Yang}, H. and {Apai}, D. and {Marley}, M.~S. and {Saumon}, D. and 
+	{Morley}, C.~V. and {Buenzli}, E. and {Artigau}, {\'E}. and 
+	{Radigan}, J. and {Metchev}, S. and {Burgasser}, A.~J. and {Mohanty}, S. and 
+	{Lowrance}, P.~J. and {Showman}, A.~P. and {Karalidi}, T. and 
+	{Flateau}, D. and {Heinze}, A.~N.},
+    title = "{HST Rotational Spectral Mapping of Two L-type Brown Dwarfs: Variability in and out of Water Bands indicates High-altitude Haze Layers}",
+  journal = {\apjl},
+archivePrefix = "arXiv",
+   eprint = {1411.2911},
+ primaryClass = "astro-ph.EP",
+ keywords = {brown dwarfs, stars: atmospheres, stars: individual: 2MASS J18212815+1414010 2MASS J15074769-1627386 2MASS J01365662+0933473, stars: low-mass},
+     year = 2015,
+    month = jan,
+   volume = 798,
+      eid = {L13},
+    pages = {L13},
+      doi = {10.1088/2041-8205/798/1/L13},
+   adsurl = {http://adsabs.harvard.edu/abs/2015ApJ...798L..13Y},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
 @article{Radigan2012,
@@ -501,6 +510,24 @@ archivePrefix = "arXiv",
   adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 
+@ARTICLE{Chauvin2004,
+   author = {{Chauvin}, G. and {Lagrange}, A.-M. and {Dumas}, C. and {Zuckerman}, B. and 
+	{Mouillet}, D. and {Song}, I. and {Beuzit}, J.-L. and {Lowrance}, P.
+	},
+    title = "{A giant planet candidate near a young brown dwarf. Direct VLT/NACO observations using IR wavefront sensing}",
+  journal = {\aap},
+   eprint = {astro-ph/0409323},
+ keywords = {2MASSWJ 1207334-393254, brown dwarf, giant planet, adaptive optics imaging and spectroscopy},
+     year = 2004,
+    month = oct,
+   volume = 425,
+    pages = {L29-L32},
+      doi = {10.1051/0004-6361:200400056},
+   adsurl = {http://adsabs.harvard.edu/abs/2004A%26A...425L..29C},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
 @ARTICLE{Chauvin2005,
    author = {{Chauvin}, G. and {Lagrange}, A.-M. and {Dumas}, C. and {Zuckerman}, B. and 
 	{Mouillet}, D. and {Song}, I. and {Beuzit}, J.-L. and {Lowrance}, P.
@@ -633,5 +660,182 @@ booktitle = {Society of Photo-Optical Instrumentation Engineers (SPIE) Conferenc
     pages = {1},
       doi = {10.1117/12.790039},
    adsurl = {http://adsabs.harvard.edu/abs/2008SPIE.7010E..1FM},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Currie2011,
+   author = {{Currie}, T. and {Burrows}, A. and {Itoh}, Y. and {Matsumura}, S. and 
+	{Fukagawa}, M. and {Apai}, D. and {Madhusudhan}, N. and {Hinz}, P.~M. and 
+	{Rodigas}, T.~J. and {Kasper}, M. and {Pyo}, T.-S. and {Ogino}, S.
+	},
+    title = "{A Combined Subaru/VLT/MMT 1-5 {$\mu$}m Study of Planets Orbiting HR 8799: Implications for Atmospheric Properties, Masses, and Formation}",
+  journal = {\apj},
+archivePrefix = "arXiv",
+   eprint = {1101.1973},
+ primaryClass = "astro-ph.EP",
+ keywords = {brown dwarfs, instrumentation: adaptive optics, planetary systems, stars: individual: HR 8799, techniques: image processing},
+     year = 2011,
+    month = mar,
+   volume = 729,
+      eid = {128},
+    pages = {128},
+      doi = {10.1088/0004-637X/729/2/128},
+   adsurl = {http://adsabs.harvard.edu/abs/2011ApJ...729..128C},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Madhusudhan2011,
+   author = {{Madhusudhan}, N. and {Burrows}, A. and {Currie}, T.},
+    title = "{Model Atmospheres for Massive Gas Giants with Thick Clouds: Application to the HR 8799 Planets and Predictions for Future Detections}",
+  journal = {\apj},
+archivePrefix = "arXiv",
+   eprint = {1102.5089},
+ primaryClass = "astro-ph.EP",
+ keywords = {planetary systems, planets and satellites: general, planets and satellites: individual: HR 8799b HR 8799c HR 8799d},
+     year = 2011,
+    month = aug,
+   volume = 737,
+      eid = {34},
+    pages = {34},
+      doi = {10.1088/0004-637X/737/1/34},
+   adsurl = {http://adsabs.harvard.edu/abs/2011ApJ...737...34M},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Ducourant2008,
+   author = {{Ducourant}, C. and {Teixeira}, R. and {Chauvin}, G. and {Daigne}, G. and 
+	{Le Campion}, J.-F. and {Song}, I. and {Zuckerman}, B.},
+    title = "{An accurate distance to 2M1207Ab}",
+  journal = {\aap},
+archivePrefix = "arXiv",
+   eprint = {0711.0842},
+ keywords = {stars: distances, stars: low-mass, brown dwarfs, planetary systems},
+     year = 2008,
+    month = jan,
+   volume = 477,
+    pages = {L1-L4},
+      doi = {10.1051/0004-6361:20078886},
+   adsurl = {http://adsabs.harvard.edu/abs/2008A%26A...477L...1D},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Baraffe2003,
+   author = {{Baraffe}, I. and {Chabrier}, G. and {Barman}, T.~S. and {Allard}, F. and 
+	{Hauschildt}, P.~H.},
+    title = "{Evolutionary models for cool brown dwarfs and extrasolar giant planets. The case of HD 209458}",
+  journal = {\aap},
+   eprint = {astro-ph/0302293},
+ keywords = {planetary systems, stars: brown dwarfs, stars: evolution, stars: individual (HD 209458)},
+     year = 2003,
+    month = may,
+   volume = 402,
+    pages = {701-712},
+      doi = {10.1051/0004-6361:20030252},
+   adsurl = {http://adsabs.harvard.edu/abs/2003A%26A...402..701B},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Sterzik2004,
+   author = {{Sterzik}, M.~F. and {Pascucci}, I. and {Apai}, D. and {van der Bliek}, N. and 
+	{Dullemond}, C.~P.},
+    title = "{Evolution of young brown dwarf disks in the mid-infrared}",
+  journal = {\aap},
+   eprint = {astro-ph/0406460},
+ keywords = {accretion, accretion disks, stars: low-mass, brown dwarfs, stars: formation},
+     year = 2004,
+    month = nov,
+   volume = 427,
+    pages = {245-250},
+      doi = {10.1051/0004-6361:20041502},
+   adsurl = {http://adsabs.harvard.edu/abs/2004A%26A...427..245S},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Klein2003,
+   author = {{Klein}, R. and {Apai}, D. and {Pascucci}, I. and {Henning}, T. and 
+	{Waters}, L.~B.~F.~M.},
+    title = "{First Detection of Millimeter Dust Emission from Brown Dwarf Disks}",
+  journal = {\apjl},
+   eprint = {astro-ph/0307076},
+ keywords = {Accretion, Accretion Disks, Stars: Circumstellar Matter, Stars: Formation, Stars: Individual: Alphanumeric: CFHT-BD-Tau 4, Stars: Individual: Alphanumeric: IC 348 613, Stars: Low-Mass, Brown Dwarfs},
+     year = 2003,
+    month = aug,
+   volume = 593,
+    pages = {L57-L60},
+      doi = {10.1086/377729},
+   adsurl = {http://adsabs.harvard.edu/abs/2003ApJ...593L..57K},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Mohanty2013,
+   author = {{Mohanty}, S. and {Greaves}, J. and {Mortlock}, D. and {Pascucci}, I. and 
+	{Scholz}, A. and {Thompson}, M. and {Apai}, D. and {Lodato}, G. and 
+	{Looper}, D.},
+    title = "{Protoplanetary Disk Masses from Stars to Brown Dwarfs}",
+  journal = {\apj},
+archivePrefix = "arXiv",
+   eprint = {1305.6896},
+ primaryClass = "astro-ph.SR",
+ keywords = {brown dwarfs, protoplanetary disks, stars: formation, stars: pre-main sequence, stars: variables: T Tauri, Herbig Ae/Be, submillimeter: stars},
+     year = 2013,
+    month = aug,
+   volume = 773,
+      eid = {168},
+    pages = {168},
+      doi = {10.1088/0004-637X/773/2/168},
+   adsurl = {http://adsabs.harvard.edu/abs/2013ApJ...773..168M},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+
+@ARTICLE{Showman2013,
+   author = {{Showman}, A.~P. and {Kaspi}, Y.},
+    title = "{Atmospheric Dynamics of Brown Dwarfs and Directly Imaged Giant Planets}",
+  journal = {\apj},
+archivePrefix = "arXiv",
+   eprint = {1210.7573},
+ primaryClass = "astro-ph.EP",
+ keywords = {brown dwarfs, convection, methods: numerical, stars: low-mass, turbulence, waves},
+     year = 2013,
+    month = oct,
+   volume = 776,
+      eid = {85},
+    pages = {85},
+      doi = {10.1088/0004-637X/776/2/85},
+   adsurl = {http://adsabs.harvard.edu/abs/2013ApJ...776...85S},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Zhang2014,
+   author = {{Zhang}, X. and {Showman}, A.~P.},
+    title = "{Atmospheric Circulation of Brown Dwarfs: Jets, Vortices, and Time Variability}",
+  journal = {\apjl},
+archivePrefix = "arXiv",
+   eprint = {1403.2143},
+ primaryClass = "astro-ph.EP",
+ keywords = {brown dwarfs, methods: numerical, stars: atmospheres, stars: low-mass},
+     year = 2014,
+    month = jun,
+   volume = 788,
+      eid = {L6},
+    pages = {L6},
+      doi = {10.1088/2041-8205/788/1/L6},
+   adsurl = {http://adsabs.harvard.edu/abs/2014ApJ...788L...6Z},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+
+@ARTICLE{Reiners2008,
+   author = {{Reiners}, A. and {Basri}, G.},
+    title = "{Chromospheric Activity, Rotation, and Rotational Braking in M and L Dwarfs}",
+  journal = {\apj},
+archivePrefix = "arXiv",
+   eprint = {0805.1059},
+ keywords = {Stars: Activity, Stars: Flare, Stars: Late-Type, Stars: Low-Mass, Brown Dwarfs, Stars: Rotation},
+     year = 2008,
+    month = sep,
+   volume = 684,
+    pages = {1390-1403},
+      doi = {10.1086/590073},
+   adsurl = {http://adsabs.harvard.edu/abs/2008ApJ...684.1390R},
   adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }

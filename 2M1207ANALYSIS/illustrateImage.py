@@ -47,6 +47,51 @@ if __name__ == '__main__':
         ax.set_xlabel('X (pixel)')
         ax.set_ylabel('Y (pixel)')
 
-    plt.show()
+    # plt.show()
     fig1.savefig('original.pdf')
     fig2.savefig('subtracted.pdf')
+
+    PSF1 = fits.getdata('./fitsResult/PSF1.fits', 0)
+    PSF2 = fits.getdata('./fitsResult/PSF2.fits', 0)
+    fig3, ax3 = plt.subplots()
+    cax3 = ax3.imshow(PSF1, cmap='hot', origin='lower',
+                      interpolation='nearest',
+                      norm=BoundaryNorm(bd1, ncolors=255))
+    ax3.set_title('TinyTim PSF for 2M1207A')
+    ax3.set_xlim([0, 26])
+    ax3.set_ylim([0, 26])
+    cbar3 = fig3.colorbar(cax3, ticks=np.logspace(-1, 4, 6))
+    cbar3.formatter = mpl.ticker.LogFormatter()
+    cbar3.update_ticks()
+    ax3.set_xlabel('X (pixel)')
+    ax3.set_ylabel('Y (pixel)')
+    fig3.savefig('TT_2M1207A.pdf')
+
+    fig4, ax4 = plt.subplots()
+    cax4 = ax4.imshow(PSF2, cmap='hot', origin='lower',
+                      interpolation='nearest',
+                      norm=BoundaryNorm(np.logspace(-3, 2, 255), ncolors=255))
+    ax4.set_title('TinyTim PSF for 2M1207b')
+    ax4.set_xlim([0, 26])
+    ax4.set_ylim([0, 26])
+    cbar4 = fig4.colorbar(cax4, ticks=np.logspace(-3, 2, 6))
+    cbar4.formatter = mpl.ticker.LogFormatter()
+    cbar4.update_ticks()
+    ax4.set_xlabel('X (pixel)')
+    ax4.set_ylabel('Y (pixel)')
+    fig4.savefig('TT_2M1207b.pdf')
+
+    residual = fits.getdata('./fitsResult/residual.fits', 0)
+    fig5, ax5 = plt.subplots()
+    cax5 = ax5.imshow(residual, cmap='hot', origin='lower',
+                      interpolation='nearest',
+                      norm=BoundaryNorm(np.linspace(-30, 30, 255), ncolors=255))
+    ax5.set_title('Correction map')
+    ax5.set_xlim([0, 26])
+    ax5.set_ylim([0, 26])
+    cbar5 = fig5.colorbar(cax5, ticks=np.linspace(-30, 30, 6))
+    # cbar5.formatter = mpl.ticker.LogFormatter()
+    cbar5.update_ticks()
+    ax5.set_xlabel('X (pixel)')
+    ax5.set_ylabel('Y (pixel)')
+    fig5.savefig('TT_residual.pdf')

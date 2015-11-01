@@ -40,7 +40,7 @@ if __name__ == '__main__':
     vBD = 2 * np.pi * (1 * 69911) / (BDperiod * 3600)
     # suppose BD has period of 1 Mjup
     ax_p.plot(np.zeros(len(BDperiod)) + 30, BDperiod,
-              'o', mec='k', mfc='none', ms=10)
+              'o', mec='k', mfc='none', ms=10, label='Metchev et al. (2015)')
     ax_p.text(45, 10, 'Brown dwarfs', rotation=90)
     # ax_p.plot(np.zeros(len(BDperiod)) + 30, vBD,
     #           'o', mec='k', mfc='none', ms=10)
@@ -93,6 +93,11 @@ if __name__ == '__main__':
                head_width=1.8, head_length=0.8)
     ax_p.set_ylim(0, 29)
 
+    BDperiod2 = np.loadtxt('scholz2015.dat')
+    BDperiod2 = BDperiod2 * 24  # convert day to hour
+    ax_p.plot(np.zeros(BDperiod2.shape) + 45, BDperiod2,
+              '^', mec='b', mfc='none', ms=10, label='Scholz et al. (2015)')
+    ax_p.legend(loc='best')
     plt.show()
     plt.savefig('rotationDiagram.pdf')
     # fig_v, ax_v = plt.subplots()
