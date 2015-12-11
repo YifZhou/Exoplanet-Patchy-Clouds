@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="file:///Users/ZhouYf/.emacs.d/markdown_css/github.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="reply-to-proof-query-form">Reply to Proof Query Form</h1>
+<blockquote>
+<p>Page 3</p>
+</blockquote>
+<blockquote>
+<hr />
+<p>Q1<br />
+Figure [1] is not cited in order in the text. Please cite this<br />
+figure in sequence in the text.</p>
+</blockquote>
+<p>Please following sentence at the end of the third paragraph of section<br />
+3.1 to cite figure 1.</p>
+<p>We demonstrate examples of original images, images with primary<br />
+subtracted, \textit{Tiny Tim} PSFs and correction maps in Figure<br />
+\ref{fig:1}</p>
+<blockquote>
+<p>Page 11</p>
+</blockquote>
+<blockquote>
+<hr />
+<p>Q2<br />
+Please provide text for appendix.</p>
+</blockquote>
+<p>Please remove the appendix. The appendix is no longer needed when the<br />
+two tables are included in the main text.</p>
+<blockquote>
+<h2 id="page-11">Page 11</h2>
+</blockquote>
+<blockquote>
+<p>Q3<br />
+Please check the details for any journal references that do not have a pale purple link (CrossRef doi) or a blue link (NASA ADS or arXiv e-print) in the two-column proof (article-style layout). A journal reference with no links may contain some incorrect information.</p>
+</blockquote>
+<blockquote>
+<p>Page 11</p>
+</blockquote>
+<blockquote>
+<hr />
+</blockquote>
+<blockquote>
+<p>Q4<br />
+Please provide the arXiv number for<br />
+[Biller et al. 2015, Karalidi et al. 2015] and update the references,<br />
+if possible.</p>
+</blockquote>
+<p>Biller et al. 2015 are published on ApJ Letters. The NASA ADS entry<br />
+for this paper is<br />
+<a href="http://adsabs.harvard.edu/abs/2015ApJ...813L..23B" class="uri">http://adsabs.harvard.edu/abs/2015ApJ...813L..23B</a>. The arXiv number is 1510.07625.</p>
+<p>Karalidi et al. 2015 is published on ApJ now. The NASA ADS entry for<br />
+this paper is <a href="http://adsabs.harvard.edu/abs/2015ApJ...814...65K" class="uri">http://adsabs.harvard.edu/abs/2015ApJ...814...65K</a>. The<br />
+arXiv number is 1510.04251.</p>
+<blockquote>
+<p>Page 11</p>
+</blockquote>
+<blockquote>
+<hr />
+</blockquote>
+<blockquote>
+<p>Q5<br />
+Please provide the publisher details in references<br />
+[Bouvier et al. 2014, Dressel 2012].</p>
+</blockquote>
+<p>Boubier et al. 2014<br />
+NASA ADS entry <a href="http://adsabs.harvard.edu/abs/2014prpl.conf..433B" class="uri">http://adsabs.harvard.edu/abs/2014prpl.conf..433B</a></p>
+<p>Dressel 2012<br />
+NASA ADS entry <a href="http://adsabs.harvard.edu/abs/2012wfci.book.....D" class="uri">http://adsabs.harvard.edu/abs/2012wfci.book.....D</a></p>
+<blockquote>
+<p>Page 11</p>
+</blockquote>
+<blockquote>
+<hr />
+</blockquote>
+<blockquote>
+<p>Q6<br />
+Please update reference [Lallo et al. 2005] if possible.<br />
+Lallo et al. 2015<br />
+NASA ADS entry <a href="http://adsabs.harvard.edu/abs/2005tel..rept....3L" class="uri">http://adsabs.harvard.edu/abs/2005tel..rept....3L</a></p>
+</blockquote>
+</body>
+</html>

@@ -1,0 +1,26 @@
+#Reply to Proof Query Form
+
+>Page 3
+
+>-------------------------------------------------------------------------------
+>Q1
+>Figure [1] is not cited in order in the text. Please cite this
+>figure in sequence in the text.
+
+Please following sentence at the end of the third paragraph of section
+3.1 to cite figure 1.
+
+We demonstrate examples of original images, images with primary
+subtracted, \textit{Tiny Tim} PSFs and correction maps in Figure
+\ref{fig:1}
+
+>Page 11
+
+>-------------------------------------------------------------------------------
+>Q2
+>Please provide text for appendix.
+
+Please remove the appendix. The appendix is no longer needed when the
+two tables are included in the main text.
+
+sa

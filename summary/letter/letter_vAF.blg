@@ -4,18 +4,14 @@ The top-level auxiliary file: letter_vAF.aux
 The style file: apj.bst
 Database file #1: letter_vAFNotes.bib
 Database file #2: ref.bib.bib
-Repeated entry---line 705 of file ref.bib.bib
- : @article{Ducourant2008
- :                       ,
-I'm skipping whatever remains of this entry
 You've used 42 entries,
             2947 wiz_defined-function locations,
-            922 strings with 13805 characters,
-and the built_in function-call counts, 23225 in all, are:
+            922 strings with 13823 characters,
+and the built_in function-call counts, 23221 in all, are:
 = -- 1830
 > -- 1994
 < -- 9
-+ -- 731
++ -- 729
 - -- 687
 * -- 2182
 := -- 4457
@@ -39,7 +35,7 @@ purify$ -- 393
 quote$ -- 0
 skip$ -- 674
 stack$ -- 0
-substring$ -- 853
+substring$ -- 851
 swap$ -- 11
 text.length$ -- 2
 text.prefix$ -- 0
@@ -49,4 +45,3 @@ warning$ -- 0
 while$ -- 167
 width$ -- 0
 write$ -- 423
-(There was 1 error message)
